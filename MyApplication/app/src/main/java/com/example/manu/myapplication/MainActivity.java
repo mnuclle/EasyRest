@@ -91,29 +91,29 @@ public class MainActivity extends AppCompatActivity {
                 BlockingQueue<Runnable> workQueue = new LinkedBlockingDeque<Runnable>(maximumPoolSize);
                 Executor threadPoolExecutor = new ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveTime, TimeUnit.SECONDS, workQueue) ;
 
-                    if(tipoUsr == 1)
-                    {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                            new PostTask().executeOnExecutor(threadPoolExecutor);
-                        } else {
-                            new PostTask().execute();
-                        }
+//                    if(tipoUsr == 1)
+//                    {
+//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+//                            new PostTask().executeOnExecutor(threadPoolExecutor);
+//                        } else {
+//                            new PostTask().execute();
+//                        }
+//
+//                    }
+//                    else if(tipoUsr == 2)
+//                    {
+//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+//                            new PostTaskEmp().executeOnExecutor(threadPoolExecutor);
+//                        } else {
+//                            new PostTaskEmp().execute();
+//                        }
+//                    }
+//                    else
+//                    {
+//                        Toast.makeText(v.getContext(),"No selecciono tipo empleado",Toast.LENGTH_LONG).show();
+//                    }
 
-                    }
-                    else if(tipoUsr == 2)
-                    {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                            new PostTaskEmp().executeOnExecutor(threadPoolExecutor);
-                        } else {
-                            new PostTaskEmp().execute();
-                        }
-                    }
-                    else
-                    {
-                        Toast.makeText(v.getContext(),"No selecciono tipo empleado",Toast.LENGTH_LONG).show();
-                    }
-
-
+                new PostTaskEmp().execute();
                     /************ GET **********
                     new GetTask().execute();
                      */
@@ -306,7 +306,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 String response = "No se conecto";
                 StringBuilder result = new StringBuilder();
-                URL url2 = new URL("http://172.16.0.2:8082/api/usuario/validarUsuarioCliente");
+                URL url2 = new URL("http://172.16.0.3:8082/api/usuario/validarUsuarioCliente");
                 HttpURLConnection urlConn = (HttpURLConnection)url2.openConnection();
                 try {
 
@@ -457,7 +457,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 String response = "No se conecto";
                 StringBuilder result = new StringBuilder();
-                URL url2 = new URL("http://172.16.0.2:8082/api/usuario/validarUsuarioEmpleado");
+                URL url2 = new URL("http://172.16.0.3:8082/api/usuario/validarUsuarioEmpleado");
                 HttpURLConnection urlConn = (HttpURLConnection)url2.openConnection();
                 try {
 

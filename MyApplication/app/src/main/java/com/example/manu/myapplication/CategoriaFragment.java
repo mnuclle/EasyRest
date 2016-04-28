@@ -1,6 +1,7 @@
 package com.example.manu.myapplication;
 
 import android.app.Activity;
+import android.app.ListFragment;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -17,7 +18,7 @@ import android.view.ViewGroup;
  * Use the {@link CategoriaFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CategoriaFragment extends Fragment {
+public class CategoriaFragment extends ListFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
