@@ -1,6 +1,7 @@
 package com.example.manu.myapplication;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -16,7 +17,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.manu.myapplication.Entidades.CuentasMesa;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -27,6 +31,7 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -56,12 +61,11 @@ public class MainActivity extends AppCompatActivity {
     private EditText txtUsuario;
     private EditText txtContraseña;
     private Button btnIniciarSesion;
-    private  Button btnPost;
-    private String nombreUsuario;
-    private String contraseña;
+    private TextView lblContraseña;
     private Spinner cmbTipoUsuario;
-    private int tipoUsr = 0;
-    /*si es 1 es cliente si es 2 es Empleado*/
+    private int tipoUsr = 0; /*si es 1 es cliente si es 2 es Empleado*/
+    private Usuario us;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,72 +74,51 @@ public class MainActivity extends AppCompatActivity {
 
         txtUsuario = (EditText) findViewById(R.id.txtUsuario);
         txtContraseña = (EditText) findViewById(R.id.txtContraseña);
+        lblContraseña = (TextView) findViewById(R.id.lblContraseña);
         btnIniciarSesion = (Button) findViewById(R.id.btnIniciarSesion);
-        btnPost = (Button) findViewById(R.id.btnPost);
         cmbTipoUsuario = (Spinner) findViewById(R.id.cmbTipoUsuario);
-
         loadSpinner();
-
-        nombreUsuario = txtUsuario.getText().toString().trim();
-        contraseña = txtContraseña.getText().toString().trim();
+        txtUsuario.setText("DAMIANCERRO");
+        txtContraseña.setText("DCERRO1");
 
         btnIniciarSesion.setOnClickListener(new View.OnClickListener() {
             @TargetApi(Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
 
-                int corePoolSize = 60;
-                int maximumPoolSize = 80;
-                int keepAliveTime = 10;
+                us = new Usuario();
+                us.setContraseña(txtContraseña.getText().toString().trim());
+                us.setNombreUsuario(txtUsuario.getText().toString().trim());
 
-                BlockingQueue<Runnable> workQueue = new LinkedBlockingDeque<Runnable>(maximumPoolSize);
-                Executor threadPoolExecutor = new ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveTime, TimeUnit.SECONDS, workQueue) ;
+                Usuario[] usa = new Usuario[1];
+                usa[0] = us;
 
-//                    if(tipoUsr == 1)
-//                    {
-//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-//                            new PostTask().executeOnExecutor(threadPoolExecutor);
-//                        } else {
-//                            new PostTask().execute();
-//                        }
-//
-//                    }
-//                    else if(tipoUsr == 2)
-//                    {
-//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-//                            new PostTaskEmp().executeOnExecutor(threadPoolExecutor);
-//                        } else {
-//                            new PostTaskEmp().execute();
-//                        }
-//                    }
-//                    else
-//                    {
-//                        Toast.makeText(v.getContext(),"No selecciono tipo empleado",Toast.LENGTH_LONG).show();
-//                    }
+                    if(tipoUsr == 1)
+                    {
+                        new PostTask(v.getContext()).execute(usa);
+                    }
+                    else if(tipoUsr == 2)
+                    {
+                        new PostTaskEmp(v.getContext()).execute(usa);
 
-                new PostTaskEmp().execute();
-                    /************ GET **********
-                    new GetTask().execute();
-                     */
+                    }
+                    else
+                    {
+                        Toast.makeText(v.getContext(),"No selecciono tipo empleado",Toast.LENGTH_LONG).show();
+                    }
             }
 
         }
         );
 
-        btnPost.setOnClickListener(new View.OnClickListener() {
-            @TargetApi(Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onClick(View v) {
 
 
-                /************ POST *********
-                new PostTask().execute();
-                 */
 
-            }
+                                           /************ POST *********
+                                            new PostTask().execute();
+                                            */
 
-        }
-        );
+
 
 
 
@@ -158,9 +141,13 @@ public class MainActivity extends AppCompatActivity {
                 String empleado = "EMPLEADO";
                 if (cliente.equals(text)) {
                     tipoUsr = 1;
+                    lblContraseña.setVisibility(View.INVISIBLE);
+                    txtContraseña.setVisibility(View.INVISIBLE);
                 }
                 if (empleado.equals(text)) {
                     tipoUsr = 2;
+                    lblContraseña.setVisibility(View.VISIBLE);
+                    txtContraseña.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -171,15 +158,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void executePostCliente()
-    {
-        new PostTask().execute();
-    }
 
-    private void executePostEmpleado()
-    {
-        new PostTaskEmp().execute();
-    }
     /*
     class GetTask extends AsyncTask<String,String,String> {
 
@@ -298,18 +277,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
 */
-    class PostTask extends AsyncTask<String,String,String> {
+    class PostTask extends AsyncTask<Usuario,String,String> {
 
         private Exception exception;
-
-        protected String doInBackground(String... urls) {
+        private Context contexto;
+        private int error = 0;
+        String response = "No se conecto";
+        public PostTask(Context context)
+        {
+            this.contexto=context;
+        }
+        protected String doInBackground(Usuario... params) {
             try {
-                String response = "No se conecto";
+
                 StringBuilder result = new StringBuilder();
-                URL url2 = new URL("http://172.16.0.3:8082/api/usuario/validarUsuarioCliente");
+                URL url2 = new URL("http://172.16.0.2:8082/api/usuario/validarUsuarioCliente");
                 HttpURLConnection urlConn = (HttpURLConnection)url2.openConnection();
                 try {
-
+                    Usuario us = params[0];
                     urlConn.setChunkedStreamingMode(0);
                     urlConn.setDoOutput(true);
                     urlConn.setDoInput(true);
@@ -318,7 +303,8 @@ public class MainActivity extends AppCompatActivity {
                     urlConn.connect();
                     //Create JSONObject here
                     JSONObject jsonParam = new JSONObject();
-                    jsonParam.put("documento", "34555333");
+                    jsonParam.put("nombreUsuario", us.nombreUsuario);
+
 
                     PrintWriter ow = new PrintWriter(urlConn.getOutputStream());
 
@@ -343,12 +329,9 @@ public class MainActivity extends AppCompatActivity {
 
                     if(leyo = true)
                     {
-                        try {
-                            JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(StandardCharsets.UTF_8))));
+                        JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(StandardCharsets.UTF_8))));
 
-                            try {
-
-                                response = "POST: ";
+                            response = "POST: ";
 
                                 reader1.beginObject();
                                 int idUsuario = -1;
@@ -389,43 +372,13 @@ public class MainActivity extends AppCompatActivity {
                                 }
                                 response += "\nCliente: " + idUsuario + " " + nombreUsuario + " " + idRol + " " + fechaAlta + " " + fechaBaja + ".";
                                 reader1.endObject();
-
-
-
-
-
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-
-                        }
-                        catch (Exception e)
-                        {
-                            e.printStackTrace();
-                        }
                     }
                     else
                     {
-                        response = "USUARIO Y CONTRASEÑA NO VALIDOS";
+                        response = "Usuario y contraseña incorrectos.";
                     }
 
-
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-
-                }
-                finally {
-                    urlConn.disconnect();
-
-
-
-                }
-
-
-                {
-
-                    Intent intent = new Intent(MainActivity.this, SaludarActivity.class);
+                    Intent intent = new Intent(MainActivity.this, ListaCuentas.class);
 
                     Bundle b = new Bundle();
                     b.putString("USUARIO", response);
@@ -433,7 +386,14 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtras(b);
                     startActivity(intent);
 
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    error = 1;
                 }
+                finally {
+                    urlConn.disconnect();
+                }
+
 
             } catch (Exception e) {
                 this.exception = e;
@@ -443,22 +403,33 @@ public class MainActivity extends AppCompatActivity {
             return null;
         }
 
+
         protected void onPostExecute(String st) {
-            // TODO: check this.exception
-            // TODO: do something with the feed
+            if (error == 1)
+            {
+                Toast.makeText(contexto,response,Toast.LENGTH_LONG).show();
+            }
         }
     }
 
-    class PostTaskEmp extends AsyncTask<String,String,String> {
+    class PostTaskEmp extends AsyncTask<Usuario,String,String> {
 
         private Exception exception;
-
-        protected String doInBackground(String... urls) {
+        private int error = 0;
+        private Context contexto;
+        String response = "No se conecto";
+        public PostTaskEmp(Context contexto)
+        {
+            this.contexto = contexto;
+        }
+        protected String doInBackground(Usuario... params){
             try {
-                String response = "No se conecto";
+
                 StringBuilder result = new StringBuilder();
-                URL url2 = new URL("http://172.16.0.3:8082/api/usuario/validarUsuarioEmpleado");
+                URL url2 = new URL("http://172.16.0.2:8082/api/usuario/validarUsuarioEmpleado");
                 HttpURLConnection urlConn = (HttpURLConnection)url2.openConnection();
+                Usuario us = params[0];
+                Bundle b = new Bundle();
                 try {
 
                     urlConn.setChunkedStreamingMode(0);
@@ -469,8 +440,8 @@ public class MainActivity extends AppCompatActivity {
                     urlConn.connect();
                     //Create JSONObject here
                     JSONObject jsonParam = new JSONObject();
-                    jsonParam.put("nombreUsuario", "PEDROLOPEZ");
-                    jsonParam.put("contraseña", "PLOPEZ1");
+                    jsonParam.put("nombreUsuario", us.getNombreUsuario());
+                    jsonParam.put("contraseña", us.getContraseña());
 
                     PrintWriter ow = new PrintWriter(urlConn.getOutputStream());
 
@@ -495,19 +466,14 @@ public class MainActivity extends AppCompatActivity {
 
                     if(leyo = true)
                     {
-                        try {
+
                             JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(StandardCharsets.UTF_8))));
-
-                            try {
-
-                                response = "POST: ";
-
-                                reader1.beginObject();
+                            response = "POST: ";
+                            reader1.beginObject();
                                 int idUsuario = -1;
                                 String nombreUsuario = "";
                                 int idRol = -1;
-                                String fechaAlta = "";
-                                String fechaBaja = "";
+                                int idEmpleado = -1;
 
                                 while (reader1.hasNext()) {
                                     String name = reader1.nextName();
@@ -518,43 +484,26 @@ public class MainActivity extends AppCompatActivity {
                                         case "nombreUsuario":
                                             nombreUsuario = reader1.nextString();
                                             break;
-                                        case "fechaBaja":
-
-                                            if (reader1.peek() == JsonToken.NULL) {
-                                                fechaBaja = "";
-                                                reader1.skipValue();
-                                            }
-                                            else {
-                                                fechaBaja = reader1.nextString();
-                                            }
-                                            break;
                                         case "idRol":
                                             idRol =  reader1.nextInt();
                                             break;
-                                        case "fechaAlta":
-                                            fechaAlta =  reader1.nextString();
+                                        case "idEmpleado":
+                                            idEmpleado =  reader1.nextInt();
                                             break;
                                         default:
                                             reader1.skipValue();
                                             break;
                                     }
                                 }
-                                response += "\nEmpleado: " + idUsuario + " " + nombreUsuario + " " + idRol + " " + fechaAlta + " " + fechaBaja + ".";
+                                response += "\nEmpleado: " + idUsuario + " " + nombreUsuario + " " + idRol + " " + idEmpleado + ".";
+                                b.putInt("IDUSUARIO", idUsuario);
+                                b.putString("NOMBREUSUARIO", nombreUsuario);
+                                b.putInt("IDROL", idRol);
+                                b.putInt("IDEMPLEADO", idEmpleado);
+                                b.putString("USUARIO", response);
                                 reader1.endObject();
 
 
-
-
-
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-
-                        }
-                        catch (Exception e)
-                        {
-                            e.printStackTrace();
-                        }
                     }
                     else
                     {
@@ -563,41 +512,119 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                } catch (Exception e) {
-                    e.printStackTrace();
 
-                }
-                finally {
-                    urlConn.disconnect();
+                    ArrayList<CuentasMesa> lista = new ArrayList<>();
+                    HttpURLConnection urlConn1;
+                    StringBuilder result1 = new StringBuilder();
+                    URL url = new URL("http://172.16.0.2:8082/api/mesas/obtenerTodasCuentasMozo/"+b.getInt("IDEMPLEADO"));
+
+                    urlConn1 = (HttpURLConnection)url.openConnection();
+
+                    InputStream in1 = new BufferedInputStream(urlConn1.getInputStream());
+
+                    BufferedReader reader1 = new BufferedReader(new InputStreamReader(in1));
+
+                    String line1;
+                    while ((line1 = reader1.readLine()) != null) {
+                        result1.append(line1);
+                    }
+
+
+                    try {
+                        JsonReader reader2 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result1.toString().getBytes(StandardCharsets.UTF_8))));
+
+                        try {
+
+                            response = "GET: ";
+
+                            reader2.beginArray();
+                            while(reader2.hasNext()) {
+                                int idCliente = -1;
+                                int nro_documento = -1;
+                                String n_cliente = "";
+                                int idEstadoCuenta = -1;
+                                String mesas = "";
+                                double montoPedido = 0;
+
+                                reader2.beginObject();
+                                while (reader2.hasNext()) {
+                                    String name = reader2.nextName();
+                                    switch (name) {
+                                        case "id_cliente":
+                                            idCliente = reader2.nextInt();
+                                            break;
+                                        case "mesas":
+                                            mesas = reader2.nextString();
+                                            break;
+                                        case "nro_documento":
+                                            nro_documento = reader2.nextInt();
+                                            break;
+                                        case "n_cliente":
+                                            n_cliente =  reader2.nextString();
+                                            break;
+                                        case "montoPedido":
+                                            montoPedido =  reader2.nextDouble();
+                                            break;
+                                        case "idEstadoCuenta":
+                                            idEstadoCuenta =  reader2.nextInt();
+                                            break;
+                                        default:
+                                            reader2.skipValue();
+                                            break;
+                                    }
+                                }
+
+                                CuentasMesa cm = new CuentasMesa();
+                                cm.setIdCliente(idCliente);
+                                cm.setNumeroMesa(mesas);
+                                cm.setNumeroDocumento(nro_documento);
+                                cm.setNombreCuenta(n_cliente);
+                                cm.setMontoPedido(montoPedido);
+                                cm.setIdEstado(idEstadoCuenta);
+
+                                lista.add(cm);
+
+                                // response += "\nMesa: " + id + " " + cantSillas + " " + idCuenta + " " + posicion + " " + numeroMesa + ".\n";
+                                reader2.endObject();
+                            }
 
 
 
-                }
 
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            urlConn1.disconnect();
+                        }
 
-                {
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
 
-                    Intent intent = new Intent(MainActivity.this, SaludarActivity.class);
-
-                    Bundle b = new Bundle();
-                    b.putString("USUARIO", response);
-
+                    Intent intent = new Intent(MainActivity.this, ListaCuentas.class);
                     intent.putExtras(b);
+                    intent.putExtra("LISTA",lista);
                     startActivity(intent);
 
-                }
 
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    error = 1;
+                } finally {
+                 urlConn.disconnect();
+                }
             } catch (Exception e) {
                 this.exception = e;
             }
-
-
             return null;
         }
 
         protected void onPostExecute(String st) {
-            // TODO: check this.exception
-            // TODO: do something with the feed
+           if (error == 1)
+           {
+               Toast.makeText(contexto,response,Toast.LENGTH_LONG).show();
+           }
         }
     }
 

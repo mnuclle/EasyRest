@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">EASYREST</string>
 
+
     <string name="usuario">Usuario:</string>
+
     <string name="TipoUsuario">Tipo Usuario:</string>
     <string name="msgTipoUsuario">Elija Usuario</string>
     <string name="contraseña">Contraseña:</string>
@@ -12,6 +14,15 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_categoria_menu">CategoriaMenuActivity</string>
 
+
+    <string name="tituloMozo">Cuentas Mozo:</string>
+    <string name="empty_list">Sin Datos</string>
+    <string name="nombreLista">Cuentas:</string>
+
+
+
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_lista_cuentas">ListaCuentas</string>
+    <string name="title_activity_pedidos">PedidosActivity</string>
 </resources>
