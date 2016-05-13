@@ -25,4 +25,17 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_lista_cuentas">ListaCuentas</string>
     <string name="title_activity_pedidos">PedidosActivity</string>
+
+
+    <string-array name="Categorias">
+        <item>MINUTAS</item>
+        <item>LOMITOS</item>
+        <item>PASTAS</item>
+        <item>TABLAS</item>
+        <item>BEBIDAS</item>
+        <item>PIZZAS</item>
+        <item>POSTRES</item>
+        <item>DESAYUNO</item>
+    </string-array>
+
 </resources>

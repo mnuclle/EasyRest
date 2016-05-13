@@ -1,21 +1,20 @@
 package com.example.manu.myapplication;
 
-import android.app.Activity;
 import android.app.ListFragment;
-import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 
-public class CategoriaFragment extends ListFragment {
 
+public class CategoriaFragment extends ListFragment implements AdapterView.OnItemClickListener {
 
+    private ArrayList<String> list = new ArrayList<>();
 
     private String[] categorias = { "MINUTAS", "LOMITOS", "PASTAS", "TABLAS",
             "BEBIDAS", "PIZZAS", "POSTRES", "DESAYUNO"};
@@ -38,13 +37,28 @@ public class CategoriaFragment extends ListFragment {
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        // TODO Auto-generated method stub
-        super.onListItemClick(l, v, position, id);
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
-        // Mostramos un mensaje con el elemento pulsado
-        Toast.makeText(getActivity(), "Ha pulsado " + categorias[position],
-                Toast.LENGTH_SHORT).show();
+        list.add("MINUTAS");
+        list.add("LOMITOS");
+        list.add("PASTAS");
+        list.add("TABLAS");
+        list.add("BEBIDAS");
+        list.add("PIZZAS");
+        list.add("POSTRES");
+        list.add("DESAYUNO");
+
+
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(getActivity(), R.array.Categorias, android.R.layout.simple_list_item_1);
+        setListAdapter(adapter);
+        getListView().setOnItemClickListener(this);
+
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Toast.makeText(getActivity(), "Ha pulsado " + list.get(position),
+                Toast.LENGTH_SHORT).show();
+    }
 }
