@@ -22,12 +22,17 @@
 
         </activity>
         <activity
-            android:name=".SaludarActivity"
-            android:label="@string/title_activity_saludar" >
-        </activity>
-        <activity
             android:name=".CategoriaMenuActivity"
             android:label="@string/title_activity_categoria_menu" >
+
+        </activity>
+        <activity
+            android:name=".ListaCuentas"
+            android:label="@string/title_activity_lista_cuentas" >
+        </activity>
+        <activity
+            android:name=".PedidosActivity"
+            android:label="@string/title_activity_pedidos" >
         </activity>
     </application>
 

@@ -2,15 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <fragment android:name="com.example.manu.myapplication.CategoriaFragment"
-        android:id="@+id/list"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="match_parent" />
-    <fragment android:name="com.example.manu.myapplication.MenusFragment"
-        android:id="@+id/viewer"
-        android:layout_weight="2"
-        android:layout_width="0dp"
-        android:layout_height="match_parent" />
+    android:layout_height="match_parent"
+    >
+    <Button android:id="@+id/btnAceptarPedido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/AceptarPedido" />
+    <RelativeLayout
+        android:id="@+id/FragmentContainer1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
+    <RelativeLayout
+        android:id="@+id/FragmentContainer2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"/>
+
 </LinearLayout>

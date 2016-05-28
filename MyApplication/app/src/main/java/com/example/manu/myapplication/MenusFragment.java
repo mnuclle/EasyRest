@@ -1,109 +1,291 @@
 package com.example.manu.myapplication;
 
 import android.app.Activity;
-import android.net.Uri;
+import android.app.ListFragment;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.util.JsonReader;
+import android.util.JsonToken;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.example.manu.myapplication.Entidades.Menus;
+import com.example.manu.myapplication.Entidades.TodasImages;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link MenusFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link MenusFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class MenusFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class MenusFragment extends ListFragment implements AdapterView.OnItemClickListener{
+    private MenusAdapter adapter;
+    private int categ = 0;
+    private TextView menus;
+    private InterfazListadoMenus listener;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    private OnFragmentInteractionListener mListener;
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MenusFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MenusFragment newInstance(String param1, String param2) {
+    public static MenusFragment newInstance(int idCategoria) {
         MenusFragment fragment = new MenusFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt("idCategoria", idCategoria);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public MenusFragment() {
-        // Required empty public constructor
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_menus, container, false);
+        View v = inflater.inflate(R.layout.fragment_menus, container, false);
+        if (v != null) {
+            //listaMenus = (ListView) v.findViewById(R.id.list);
+            menus = (TextView) v.findViewById(R.id.textoMenus);
+        }
+        return v;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        menus.setText("Menus");
+        if (getArguments() != null) {
+            categ = getArguments().getInt("idCategoria", 0);
+            menus.setText("Categoria Seleccionada" + categ);
         }
+
+        adapter = new MenusAdapter();
+        setListAdapter(adapter);
+        getListView().setOnItemClickListener(this);
+
+        Object[] obj = new Object[2];
+        obj[0] = categ;
+        new GetTask().execute(obj);
+
+
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        /* Toast.makeText(getActivity(), "Ha pulsado menu " + position + " " + adapter.listaMenus.get(position).getNombreMenu(),
+                Toast.LENGTH_SHORT).show();*/
+         if(listener!=null)
+        {
+            listener.onMenuSelect(adapter.listaMenus.get(position));
+        }
+    }
+
+    private void loadMenus(ArrayList<Menus> listaMenus)
+    {
+        loadMenusData(listaMenus);
+    }
+    private void loadMenusData(ArrayList<Menus> listaMenus) {
+
+
+        for (Menus cm : listaMenus
+                ) {
+
+            adapter.addMenus(cm);
+        }
+        if(listaMenus.size() !=0 )
+            adapter.notifyDataSetChanged();
+
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
+        try{
+            listener = (InterfazListadoMenus) activity;
+        }catch(ClassCastException ex){
+            Log.e("ExampleFragment", "El Activity debe implementar la interfaz FragmentIterationListener");
         }
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+    class MenusAdapter extends BaseAdapter {
+        private ArrayList<Menus> listaMenus;
+        private LayoutInflater inflater;
+        private TodasImages ti;
+
+        public MenusAdapter() {
+            listaMenus = new ArrayList<>();
+            inflater = LayoutInflater.from(getActivity());
+            ti = new TodasImages();
+        }
+
+        public void addMenus(Menus info) {
+            if (info != null) {
+                listaMenus.add(info);
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return listaMenus.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return listaMenus.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        class Holder {
+            private TextView txtNombreMenu;
+            private TextView txtPrecio;
+            private ImageView imageMenus;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup arg2) {
+
+            Holder holder;
+            if (convertView == null) {
+                convertView = inflater.inflate(R.layout.elemento_lista_menus, null);
+                holder = new Holder();
+                holder.imageMenus = (ImageView) convertView
+                        .findViewById(R.id.imagenMenus);
+                holder.txtNombreMenu = (TextView) convertView
+                        .findViewById(R.id.nombreMenus);
+                holder.txtPrecio = (TextView) convertView
+                        .findViewById(R.id.precioMenus);
+
+                convertView.setTag(holder);
+            } else {
+                holder = (Holder) convertView.getTag();
+            }
+
+            Menus info = (Menus) getItem(position);
+           /* if (info.isEsMenu()) {
+                holder.imageMenus.setImageResource((ti.obtenerImagen(info.getIdMenu(), true)).getIdImagen());
+            } else {
+                holder.imageMenus.setImageResource((ti.obtenerImagen(info.getIdInsumo(), false)).getIdImagen());
+            }*/
+            holder.imageMenus.setImageResource(R.drawable.agua);
+            holder.txtNombreMenu.setText(info.getNombreMenu());
+            holder.txtPrecio.setText("$" + info.getPrecio());
+
+            return convertView;
+        }
+
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
-    }
+    class GetTask extends AsyncTask<Object, String, String> {
 
+        private Exception exception;
+        private ArrayList<Menus> listaMenus = new ArrayList<>();
+        private Menus menus = new Menus();
+
+        protected String doInBackground(Object... params) {
+            try {
+                String response = "No se conecto";
+                    HttpURLConnection urlConn;
+                    StringBuilder result = new StringBuilder();
+                    URL url = new URL("http://172.16.0.2:8082/api/menu/menusXCateg/" + (((int) params[0])+1)); //obtengo los menus de las categorias por params[0]
+
+                    urlConn = (HttpURLConnection) url.openConnection();
+
+                    InputStream in = new BufferedInputStream(urlConn.getInputStream());
+
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        result.append(line);
+                    }
+                    try {
+                        JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(StandardCharsets.UTF_8))));
+                        response = "GET: ";
+
+                        reader1.beginArray();
+                        while (reader1.hasNext()) {
+                            int idMenu = -1;
+                            int idInsumo = -1;
+                            int idCategoria = -1;
+                            String nombre = "";
+                            boolean esMenu = false;
+                            double precio = 0;
+                            reader1.beginObject();
+                            while (reader1.hasNext()) {
+                                String name = reader1.nextName();
+                                switch (name) {
+                                    case "idMenu":
+                                        if (reader1.peek() == JsonToken.NULL)
+                                        {
+                                            reader1.skipValue();
+                                        } else {
+                                            idMenu = reader1.nextInt();
+                                        }
+                                        break;
+                                    case "idInsumo":
+                                        if (reader1.peek() == JsonToken.NULL)
+                                        {
+                                            reader1.skipValue();
+                                        } else {
+                                            idInsumo = reader1.nextInt();
+                                        }
+                                        break;
+                                    case "nombre":
+                                        nombre = reader1.nextString();
+                                        break;
+                                    case "idCategoria":
+                                        idCategoria = reader1.nextInt();
+                                        break;
+                                    case "esMenu":
+                                        String esMenuAux = "S";
+                                        if (reader1.nextString() == esMenuAux)
+                                            esMenu = true;
+                                        break;
+                                    case "precio":
+                                        precio = reader1.nextDouble();
+                                        break;
+                                    default:
+                                        reader1.skipValue();
+                                        break;
+                                }
+                            }
+                            reader1.endObject();
+                            menus = new Menus();
+                            if (idInsumo == -1)
+                                menus.setIdMenu(idMenu);
+                            else
+                                menus.setIdInsumo(idInsumo);
+                            menus.setEsMenu(esMenu);
+                            menus.setPrecio(precio);
+                            menus.setNombreMenu(nombre);
+                            menus.setIdCategoria(idCategoria);
+                            listaMenus.add(menus);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        urlConn.disconnect();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                {}
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            loadMenus(listaMenus);
+        }
+    }
 }

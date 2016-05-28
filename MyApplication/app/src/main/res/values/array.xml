@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="arrayTipoUsuario">
-        <item>CLIENTE</item>
         <item>EMPLEADO</item>
+        <item>CLIENTE</item>
     </string-array>
 
+
+    <string-array name="arrayCategorias">
+        <item>MINUTAS</item>
+        <item>LOMITOS</item>
+        <item>PASTAS</item>
+        <item>TABLAS</item>
+        <item>BEBIDAS</item>
+        <item>PIZZAS</item>
+        <item>POSTRES</item>
+        <item>DESAYUNO</item>
+    </string-array>
 </resources>

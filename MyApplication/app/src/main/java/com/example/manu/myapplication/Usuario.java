@@ -14,6 +14,10 @@ public class Usuario {
     public Date fechaAlta;
     public Date fechaBaja;
 
+
+    public Usuario() {
+         }
+
     public Usuario(int idUsuario, String nombreUsuario, int idRol, Date fechaAlta, Date fechaBaja) {
         this.idUsuario = idUsuario;
         this.nombreUsuario = nombreUsuario;
