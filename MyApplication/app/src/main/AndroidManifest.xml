@@ -25,6 +25,10 @@
             android:name=".CategoriaMenuActivity"
             android:label="@string/title_activity_categoria_menu" >
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
         </activity>
         <activity
             android:name=".ListaCuentas"

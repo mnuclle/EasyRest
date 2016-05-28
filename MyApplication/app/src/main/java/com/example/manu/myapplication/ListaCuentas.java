@@ -3,6 +3,10 @@ package com.example.manu.myapplication;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.AsyncTask;
+<<<<<<< HEAD
+=======
+import android.support.v7.app.AppCompatActivity;
+>>>>>>> origin/master
 import android.os.Bundle;
 import android.util.JsonReader;
 import android.util.JsonToken;
@@ -12,12 +16,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+<<<<<<< HEAD
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.manu.myapplication.Entidades.CuentasMesa;
 import com.example.manu.myapplication.Entidades.DetallePedido;
+=======
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.manu.myapplication.Entidades.CuentasMesa;
+import com.example.manu.myapplication.Entidades.DetallesPedido;
+>>>>>>> origin/master
 import com.example.manu.myapplication.Entidades.Pedidos;
 
 import java.io.BufferedInputStream;
@@ -29,6 +44,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+<<<<<<< HEAD
+=======
+import java.util.Date;
+>>>>>>> origin/master
 
 public class ListaCuentas extends ListActivity implements
         AdapterView.OnItemClickListener
@@ -212,7 +231,11 @@ public class ListaCuentas extends ListActivity implements
 
         private Exception exception;
         private Pedidos pedido = new Pedidos();
+<<<<<<< HEAD
         private ArrayList<DetallePedido> listaDetalles = new ArrayList<>();
+=======
+        private ArrayList<DetallesPedido> listaDetalles = new ArrayList<>();
+>>>>>>> origin/master
 
         protected String doInBackground(Object... params) {
             try {
@@ -312,7 +335,11 @@ public class ListaCuentas extends ListActivity implements
 
                                 reader1.beginArray();
                                 while (reader1.hasNext()) {
+<<<<<<< HEAD
                                     DetallePedido detallePed = new DetallePedido();
+=======
+                                    DetallesPedido detallePed = new DetallesPedido();
+>>>>>>> origin/master
                                     int idDetallePedido = -1;
                                     int idPedido = -1;
                                     int cantidad = -1;
@@ -381,7 +408,11 @@ public class ListaCuentas extends ListActivity implements
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+<<<<<<< HEAD
                         for (DetallePedido det :
+=======
+                        for (DetallesPedido det :
+>>>>>>> origin/master
                                 listaDetalles) {
                             if (det.getIdInsumo() == 0) {
                                 try {
@@ -519,7 +550,10 @@ public class ListaCuentas extends ListActivity implements
 
                         Intent intent = new Intent(ListaCuentas.this, PedidosActivity.class);
                         intent.putExtra("LISTADETALLES", listaDetalles);
+<<<<<<< HEAD
                         intent.putExtra("IDCLIENTE",((int) params[0]));
+=======
+>>>>>>> origin/master
                         startActivity(intent);
                     }
                 }

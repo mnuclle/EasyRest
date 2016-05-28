@@ -1,7 +1,10 @@
 package com.example.manu.myapplication;
 
 import android.annotation.TargetApi;
+<<<<<<< HEAD
 import android.app.Activity;
+=======
+>>>>>>> origin/master
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -22,11 +25,23 @@ import android.widget.Toast;
 
 import com.example.manu.myapplication.Entidades.CuentasMesa;
 
+<<<<<<< HEAD
+=======
+import org.json.JSONArray;
+>>>>>>> origin/master
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+<<<<<<< HEAD
+=======
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+>>>>>>> origin/master
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -358,10 +373,17 @@ public class MainActivity extends Activity {
                     }
 
                     Intent intent = new Intent(MainActivity.this, ListaCuentas.class);
+<<<<<<< HEAD
 
                     Bundle b = new Bundle();
                     b.putString("USUARIO", response);
 
+=======
+
+                    Bundle b = new Bundle();
+                    b.putString("USUARIO", response);
+
+>>>>>>> origin/master
                     intent.putExtras(b);
                     startActivity(intent);
 
@@ -513,9 +535,15 @@ public class MainActivity extends Activity {
                         JsonReader reader2 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result1.toString().getBytes(StandardCharsets.UTF_8))));
 
                         try {
+<<<<<<< HEAD
 
                             response = "GET: ";
 
+=======
+
+                            response = "GET: ";
+
+>>>>>>> origin/master
                             reader2.beginArray();
                             while(reader2.hasNext()) {
                                 int idCliente = -1;

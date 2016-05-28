@@ -1,5 +1,6 @@
 package com.example.manu.myapplication;
 
+<<<<<<< HEAD
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ListActivity;
@@ -11,6 +12,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.JsonReader;
 import android.util.JsonToken;
+=======
+import android.app.ListActivity;
+import android.content.Intent;
+import android.os.Bundle;
+>>>>>>> origin/master
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+<<<<<<< HEAD
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -46,6 +53,22 @@ import java.util.ArrayList;
 public class PedidosActivity extends ListActivity implements AdapterView.OnItemClickListener{
     private Button btnElegirPedido,btnConfirmarPedido;
     private int NroCliente;
+=======
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+import com.example.manu.myapplication.Entidades.DetallesPedido;
+import com.example.manu.myapplication.Entidades.TodasImages;
+import java.util.ArrayList;
+
+
+
+
+
+
+public class PedidosActivity extends ListActivity implements AdapterView.OnItemClickListener{
+
+>>>>>>> origin/master
     private PedidosAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +76,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
         setContentView(R.layout.activity_pedidos);
 
 
+<<<<<<< HEAD
         /*Se agrega esto*/
 
         Intent intent = getIntent();
@@ -87,6 +111,8 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
         /**/
 
 
+=======
+>>>>>>> origin/master
         adapter = new PedidosAdapter();
 
         setListAdapter(adapter);
@@ -96,6 +122,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
         loadPedidosData();
 
     }
+<<<<<<< HEAD
 
     class PostTask extends AsyncTask<Object,String,String> {
 
@@ -663,26 +690,57 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
 
     class PedidosAdapter extends BaseAdapter {
         private ArrayList<DetallePedido> listaDetallesPedidos;
+=======
+    private void loadPedidosData() {
+
+        Intent intent = getIntent();
+        ArrayList<DetallesPedido> listaDetalle = (ArrayList<DetallesPedido>)intent.getExtras().get("LISTADETALLES");
+        DetallesPedido info;
+
+        for (DetallesPedido cm : listaDetalle
+                ) {
+            info = cm;
+            adapter.addDetallesInfo(info);
+        }
+        adapter.notifyDataSetChanged();
+
+    }
+
+
+    class PedidosAdapter extends BaseAdapter {
+        private ArrayList<DetallesPedido> listaDetallesPedidos;
+>>>>>>> origin/master
         private LayoutInflater inflater;
         private TodasImages ti;
 
         public PedidosAdapter() {
+<<<<<<< HEAD
             listaDetallesPedidos = new ArrayList<>();
+=======
+            listaDetallesPedidos = new ArrayList<DetallesPedido>();
+>>>>>>> origin/master
             inflater = LayoutInflater.from(PedidosActivity.this);
             ti = new TodasImages();
         }
 
+<<<<<<< HEAD
         public void addDetallesInfo(DetallePedido info) {
+=======
+        public void addDetallesInfo(DetallesPedido info) {
+>>>>>>> origin/master
             if (info != null) {
                 listaDetallesPedidos.add(info);
             }
         }
 
+<<<<<<< HEAD
         public ArrayList<DetallePedido> getList()
         {
             return listaDetallesPedidos;
         }
 
+=======
+>>>>>>> origin/master
         @Override
         public int getCount() {
             return listaDetallesPedidos.size();
@@ -693,11 +751,14 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
             return listaDetallesPedidos.get(position);
         }
 
+<<<<<<< HEAD
         public void clear()
         {
             listaDetallesPedidos = new ArrayList<>();
         }
 
+=======
+>>>>>>> origin/master
         @Override
         public long getItemId(int position) {
             return position;
@@ -730,7 +791,11 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                 holder = (Holder) convertView.getTag();
             }
 
+<<<<<<< HEAD
             DetallePedido info = (DetallePedido) getItem(position);
+=======
+            DetallesPedido info = (DetallesPedido) getItem(position);
+>>>>>>> origin/master
             if(info.getIdInsumo() == 0)
             {
                 holder.imageMenu.setImageResource((ti.obtenerImagen(info.getIdMenu(), true)).getIdImagen());
@@ -740,6 +805,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                 holder.imageMenu.setImageResource((ti.obtenerImagen(info.getIdInsumo(),false)).getIdImagen());
             }
 
+<<<<<<< HEAD
             holder.txtNombreMenu.setText(info.getNombreMenu());
             String cantidad = "" + info.getCantidad();
             holder.txtCantidad.setText(cantidad);
@@ -758,6 +824,13 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                 holder.txtCantidad.setTextColor(color);
                 holder.txtMontoDetalle.setTextColor(color);
             }
+=======
+            holder.txtNombreMenu.setText(info.getNombreMenu()+"sadasdasdasdsadasd asd sa dasd sad asddasdasdasdadasdfdsfs sdf sdfsdfsdf dsfs dsfsdfsdfsd ds fdsfsdfsdfsdd");
+            String cantidad = "" + info.getCantidad();
+            holder.txtCantidad.setText(cantidad);
+            holder.txtMontoDetalle.setText("$" + info.getTotalDetalle());
+
+>>>>>>> origin/master
             return convertView;
         }
 
@@ -766,7 +839,11 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
     @Override
     public void onItemClick(AdapterView<?> arg0, View arg1, int position,
                             long arg3) {
+<<<<<<< HEAD
         DetallePedido cm = (DetallePedido)getListAdapter().getItem(position);
+=======
+        DetallesPedido cm = (DetallesPedido)getListAdapter().getItem(position);
+>>>>>>> origin/master
         String nombre = cm.getNombreMenu();
         Toast.makeText(this, "nombre menu:" + nombre, Toast.LENGTH_LONG).show();
 

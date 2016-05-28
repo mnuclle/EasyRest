@@ -3,6 +3,7 @@ package com.example.manu.myapplication.Entidades;
 import java.io.Serializable;
 
 /**
+<<<<<<< HEAD
  * Created by Manu on 28/05/2016.
  */
 
@@ -17,6 +18,25 @@ public class DetallesPedido implements Serializable {
     public double totalDetalle;
     public int idInsumo;
     public String nombreInsumo;
+=======
+ * Created by Manu on 08/05/2016.
+ */
+public class DetallesPedido implements Serializable {
+    private int idDetallePedido;
+    private int idPedido;
+    private int idMenu;
+    private int idInsumo;
+    private int idEstado;
+    private double totalDetalle;
+    private int cantidad;
+    private String nombreMenu;
+    private double precio;
+    private int idCategoria;
+
+
+    public DetallesPedido() {
+    }
+>>>>>>> origin/master
 
     public int getIdDetallePedido() {
         return idDetallePedido;
@@ -26,6 +46,7 @@ public class DetallesPedido implements Serializable {
         this.idDetallePedido = idDetallePedido;
     }
 
+<<<<<<< HEAD
     public int getCantidad() {
         return cantidad;
     }
@@ -34,6 +55,8 @@ public class DetallesPedido implements Serializable {
         this.cantidad = cantidad;
     }
 
+=======
+>>>>>>> origin/master
     public int getIdPedido() {
         return idPedido;
     }
@@ -42,6 +65,25 @@ public class DetallesPedido implements Serializable {
         this.idPedido = idPedido;
     }
 
+<<<<<<< HEAD
+=======
+    public int getIdMenu() {
+        return idMenu;
+    }
+
+    public void setIdMenu(int idMenu) {
+        this.idMenu = idMenu;
+    }
+
+    public int getIdInsumo() {
+        return idInsumo;
+    }
+
+    public void setIdInsumo(int idInsumo) {
+        this.idInsumo = idInsumo;
+    }
+
+>>>>>>> origin/master
     public int getIdEstado() {
         return idEstado;
     }
@@ -49,6 +91,7 @@ public class DetallesPedido implements Serializable {
     public void setIdEstado(int idEstado) {
         this.idEstado = idEstado;
     }
+<<<<<<< HEAD
 
     public String getNombreEstado() {
         return nombreEstado;
@@ -64,6 +107,22 @@ public class DetallesPedido implements Serializable {
 
     public void setIdMenu(int idMenu) {
         this.idMenu = idMenu;
+=======
+    public double getTotalDetalle() {
+        return totalDetalle;
+    }
+
+    public void setTotalDetalle(double totalDetalle) {
+        this.totalDetalle = totalDetalle;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+>>>>>>> origin/master
     }
 
     public String getNombreMenu() {
@@ -74,6 +133,7 @@ public class DetallesPedido implements Serializable {
         this.nombreMenu = nombreMenu;
     }
 
+<<<<<<< HEAD
     public double getTotalDetalle() {
         return totalDetalle;
     }
@@ -96,5 +156,21 @@ public class DetallesPedido implements Serializable {
 
     public void setNombreInsumo(String nombreInsumo) {
         this.nombreInsumo = nombreInsumo;
+=======
+    public double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(double precio) {
+        this.precio = precio;
+    }
+
+    public int getIdCategoria() {
+        return idCategoria;
+    }
+
+    public void setIdCategoria(int idCategoria) {
+        this.idCategoria = idCategoria;
+>>>>>>> origin/master
     }
 }
