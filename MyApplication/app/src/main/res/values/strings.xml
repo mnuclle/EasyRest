@@ -18,13 +18,11 @@
     <string name="tituloMozo">Cuentas Mozo:</string>
     <string name="empty_list">Sin Datos</string>
     <string name="nombreLista">Cuentas:</string>
-<<<<<<< HEAD
+
     <string name="pedido">Nuevo Pedido</string>
         <string name="AceptarPedido">Pedido Listo</string>
     <string name="ConfirmarPedido">Confirmar Pedido</string>
-=======
 
->>>>>>> origin/master
 
 
 <!-- TODO: Remove or change this placeholder text -->
@@ -43,8 +41,5 @@
         <item>POSTRES</item>
         <item>DESAYUNO</item>
     </string-array>
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/master
 </resources>

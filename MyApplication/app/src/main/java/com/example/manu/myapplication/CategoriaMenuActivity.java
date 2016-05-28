@@ -1,6 +1,6 @@
 package com.example.manu.myapplication;
 
-<<<<<<< HEAD
+
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.FragmentManager;
@@ -14,17 +14,6 @@ import android.widget.Button;
 
 import com.example.manu.myapplication.Entidades.DetallePedido;
 import com.example.manu.myapplication.Entidades.Menus;
-=======
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.view.Display;
-import android.view.WindowManager;
-
-public class CategoriaMenuActivity extends FragmentActivity {
->>>>>>> origin/master
-
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -74,7 +63,7 @@ public class CategoriaMenuActivity extends FragmentActivity implements InterfazC
         fragmentTransaction.add(R.id.FragmentContainer2, fragment2);
         fragmentTransaction.commit();
 
-<<<<<<< HEAD
+
         }
 
     private ArrayList<DetallePedido> loadListadoMenus(ArrayList<Menus> listado)
@@ -140,23 +129,8 @@ public class CategoriaMenuActivity extends FragmentActivity implements InterfazC
 
         return  listadoMenusFinal;
     }
-=======
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager
-                .beginTransaction();
 
-        WindowManager wm = getWindowManager();
-        Display d = wm.getDefaultDisplay();
-        CategoriaFragment fragment1 = new CategoriaFragment();
-        MenusFragment fragment2 = new MenusFragment();
->>>>>>> origin/master
 
-        fragmentTransaction.add(R.id.FragmentContainer1, fragment1);
-        fragmentTransaction.add(R.id.FragmentContainer2, fragment2);
-        fragmentTransaction.commit();
-        }
-
-<<<<<<< HEAD
     @Override
     public void onCategoriaSelect(int idCategoria) {
 
@@ -177,8 +151,5 @@ public class CategoriaMenuActivity extends FragmentActivity implements InterfazC
     public void onMenuSelect(Menus menu) {
         listadoMenus.add(menu);
     }
-=======
 
-
->>>>>>> origin/master
 }
