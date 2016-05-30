@@ -2,16 +2,18 @@ package com.example.manu.myapplication;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.JsonReader;
 import android.util.JsonToken;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,7 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,6 +30,10 @@ import com.example.manu.myapplication.Entidades.DetallePedido;
 import com.example.manu.myapplication.Entidades.DetallesPedido;
 import com.example.manu.myapplication.Entidades.Pedidos;
 import com.example.manu.myapplication.Entidades.TodasImages;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -45,11 +50,18 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 
-public class PedidosActivity extends ListActivity implements AdapterView.OnItemClickListener{
-    private Button btnElegirPedido,btnConfirmarPedido;
+public class PedidosActivity extends ListActivity implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
+    private Button btnElegirPedido, btnConfirmarPedido;
     private int NroCliente;
-
+    private int NroOpcion = -1;
+    private int positionLista;
     private PedidosAdapter adapter;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +70,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
         /*Se agrega esto*/
 
         Intent intent = getIntent();
-        NroCliente = (int)intent.getExtras().get("IDCLIENTE");
+        NroCliente = (int) intent.getExtras().get("IDCLIENTE");
 
         btnElegirPedido = (Button) findViewById(R.id.btnElegirPedido);
 
@@ -71,7 +83,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                 startActivityCategoria();
             }
 
-        }     );
+        });
 
         btnConfirmarPedido.setOnClickListener(new View.OnClickListener() {
             @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -83,7 +95,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                 new PostTask(v.getContext()).execute(obj);
             }
 
-        }     );
+        });
 
 
         /**/
@@ -93,30 +105,69 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
         setListAdapter(adapter);
 
         getListView().setOnItemClickListener(this);
+        getListView().setOnItemLongClickListener(this);
 
         loadPedidosData();
 
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("Pedidos Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://host/path"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
+    }
 
-    class PostTask extends AsyncTask<Object,String,String> {
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        AppIndex.AppIndexApi.start(client, getIndexApiAction());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(client, getIndexApiAction());
+        client.disconnect();
+    }
+
+    class PostTask extends AsyncTask<Object, String, String> {
 
         private Exception exception;
         private Context contexto;
         private int error = 0;
         String response = "No se conecto";
-        ArrayList<DetallePedido> lista ;
+        ArrayList<DetallePedido> lista;
 
-        public PostTask(Context context)
-        {
-            this.contexto=context;
+        public PostTask(Context context) {
+            this.contexto = context;
         }
+
         protected String doInBackground(Object... params) {
             try {
 
                 StringBuilder result = new StringBuilder();
                 URL url2 = new URL("http://172.16.0.2:8082/api/pedido/enviarPedido");
-                HttpURLConnection urlConn = (HttpURLConnection)url2.openConnection();
+                HttpURLConnection urlConn = (HttpURLConnection) url2.openConnection();
                 try {
                     lista = (ArrayList<DetallePedido>) params[0];
                     urlConn.setChunkedStreamingMode(0);
@@ -138,8 +189,8 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                     //create JSON ARRAY
                     JSONArray ja = new JSONArray();
                     for (DetallePedido det : lista
-                         ) {
-                        if(det.getIdEstado() == 0) {
+                            ) {
+                        if (det.getIdEstado() == 0) {
                             DetallesPedido detalles = new DetallesPedido();
                             detalles.setIdMenu(det.getIdMenu());
                             detalles.setTotalDetalle(det.getTotalDetalle());
@@ -190,8 +241,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                 } catch (Exception e) {
                     e.printStackTrace();
                     error = 1;
-                }
-                finally {
+                } finally {
                     urlConn.disconnect();
                 }
 
@@ -210,26 +260,25 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
         }
     }
 
-    private void startActivityCategoria()
-    {
-        Intent intent = new Intent(this,CategoriaMenuActivity.class);
-        intent.putExtra("IDCLIENTE",NroCliente);
-        startActivityForResult(intent,1);
+    private void startActivityCategoria() {
+        Intent intent = new Intent(this, CategoriaMenuActivity.class);
+        intent.putExtra("IDCLIENTE", NroCliente);
+        startActivityForResult(intent, 1);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == 1) {
-            if(resultCode == Activity.RESULT_OK){
+            if (resultCode == Activity.RESULT_OK) {
                 Intent intent = data;
-                NroCliente = (int)intent.getExtras().get("IDCLIENTE");
+                NroCliente = (int) intent.getExtras().get("IDCLIENTE");
                 Bundle bundle = intent.getExtras();
 
                 ArrayList<DetallePedido> listadoMenus = (ArrayList<DetallePedido>) bundle.getSerializable("listadoMenus");
                 Object[] obj = new Object[2];
                 obj[0] = NroCliente;
-                if(listadoMenus.size() > 0)
+                if (listadoMenus.size() > 0)
                     obj[1] = listadoMenus;
                 new GetTask().execute(obj);
             }
@@ -240,12 +289,13 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
     }
 
 
-    class GetTask extends AsyncTask<Object,String,String> {
+    class GetTask extends AsyncTask<Object, String, String> {
 
         private Exception exception;
         private Pedidos pedido = new Pedidos();
         private ArrayList<DetallePedido> listaDetalles = new ArrayList<>();
         ArrayList<DetallePedido> listaMenus;
+
         protected String doInBackground(Object... params) {
             try {
                 String response = "No se conecto";
@@ -253,7 +303,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                     listaMenus = (ArrayList<DetallePedido>) params[1];
                     HttpURLConnection urlConn;
                     StringBuilder result = new StringBuilder();
-                    URL url = new URL("http://172.16.0.2:8082/api/pedido/obtenerPedido/" +((int) params[0]));
+                    URL url = new URL("http://172.16.0.2:8082/api/pedido/obtenerPedido/" + ((int) params[0]));
 
                     urlConn = (HttpURLConnection) url.openConnection();
 
@@ -272,8 +322,8 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                         reader1.beginArray();
                         while (reader1.hasNext()) {
                             int idPedido = -1;
-                            String fechaAlta="";
-                            String fechaBaja="";
+                            String fechaAlta = "";
+                            String fechaBaja = "";
                             int idEstado = -1;
                             int idCuenta = -1;
                             reader1.beginObject();
@@ -317,8 +367,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                     } finally {
                         urlConn.disconnect();
                     }
-                }catch(Exception e)
-                {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 {
@@ -568,7 +617,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
 
         Intent intent = getIntent();
         adapter.clear();
-        ArrayList<DetallePedido> listaDetalle = (ArrayList<DetallePedido>)intent.getExtras().get("LISTADETALLES");
+        ArrayList<DetallePedido> listaDetalle = (ArrayList<DetallePedido>) intent.getExtras().get("LISTADETALLES");
         DetallePedido info;
 
         for (DetallePedido cm : listaDetalle
@@ -579,6 +628,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
         adapter.notifyDataSetChanged();
 
     }
+
     private void loadPedidosData(ArrayList<DetallePedido> listaDetalle, ArrayList<DetallePedido> listaMenus) {
 
         DetallePedido info;
@@ -686,8 +736,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
         }
 
 
-        public ArrayList<DetallePedido> getList()
-        {
+        public ArrayList<DetallePedido> getList() {
             return listaDetallesPedidos;
         }
 
@@ -701,9 +750,14 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
             return listaDetallesPedidos.get(position);
         }
 
+        public DetallePedido remove(int position) {
+            DetallePedido det = listaDetallesPedidos.remove(position);
+            return det;
+        }
 
-        public void clear()
-        {
+
+
+        public void clear() {
             listaDetallesPedidos = new ArrayList<>();
         }
 
@@ -718,6 +772,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
             private TextView txtCantidad;
             private TextView txtMontoDetalle;
             private ImageView imageMenu;
+            private TextView txtEstadoMenu;
         }
 
         @Override
@@ -735,6 +790,8 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                         .findViewById(R.id.cantidadMenu);
                 holder.txtMontoDetalle = (TextView) convertView
                         .findViewById(R.id.montoDetalle);
+                holder.txtEstadoMenu = (TextView) convertView
+                        .findViewById(R.id.estadoDetalle);
                 convertView.setTag(holder);
             } else {
                 holder = (Holder) convertView.getTag();
@@ -743,28 +800,42 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
 
             DetallePedido info = (DetallePedido) getItem(position);
 
-            if(info.getIdInsumo() == 0)
-            {
+            if (info.getIdInsumo() == 0) {
                 holder.imageMenu.setImageResource((ti.obtenerImagen(info.getIdMenu(), true)).getIdImagen());
-            }
-            else
-            {
-                holder.imageMenu.setImageResource((ti.obtenerImagen(info.getIdInsumo(),false)).getIdImagen());
+            } else {
+                holder.imageMenu.setImageResource((ti.obtenerImagen(info.getIdInsumo(), false)).getIdImagen());
             }
 
             holder.txtNombreMenu.setText(info.getNombreMenu());
             String cantidad = "" + info.getCantidad();
             holder.txtCantidad.setText(cantidad);
             holder.txtMontoDetalle.setText("$" + info.getTotalDetalle());
-            if(info.getIdEstado() == 0)
-            {
+            String estado = "";
+            if (info.getIdEstado() == 0)
+                estado = "PENDIENTE DE CONFIRMACION";
+            if (info.getIdEstado() == 10)
+                estado = "EN PREPARACION";
+            if (info.getIdEstado() == 11)
+                estado = "LISTO";
+            if (info.getIdEstado() == 12)
+                estado = "REGISTRADO";
+            if (info.getIdEstado() == 13)
+                estado = "CANCELADO";
+            if (info.getIdEstado() == 14)
+                estado = "ANULADO";
+            if (info.getIdEstado() == 15)
+                estado = "ENTREGADO";
+            if (info.getIdEstado() == 16)
+                estado = "COBRADO";
+            if (info.getIdEstado() == 25)
+                estado = "COBRO PARCIAL";
+            holder.txtEstadoMenu.setText(estado);
+            if (info.getIdEstado() == 0) {
                 int color = Color.RED;
                 holder.txtNombreMenu.setTextColor(color);
                 holder.txtCantidad.setTextColor(color);
                 holder.txtMontoDetalle.setTextColor(color);
-            }
-            else
-            {
+            } else {
                 int color = Color.BLACK;
                 holder.txtNombreMenu.setTextColor(color);
                 holder.txtCantidad.setTextColor(color);
@@ -780,13 +851,78 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
     public void onItemClick(AdapterView<?> arg0, View arg1, int position,
                             long arg3) {
 
-        DetallePedido cm = (DetallePedido)getListAdapter().getItem(position);
+        DetallePedido cm = (DetallePedido) getListAdapter().getItem(position);
 
         String nombre = cm.getNombreMenu();
         Toast.makeText(this, "nombre menu:" + nombre, Toast.LENGTH_LONG).show();
 
 
     }
+
+    private void removePedidosData(int position) {
+
+        adapter.remove(position);
+        adapter.notifyDataSetChanged();
+        Toast.makeText(this, "Menú eliminado.", Toast.LENGTH_SHORT).show();
+
+    }
+
+    private void restarUno(int position) {
+        DetallePedido det = (DetallePedido) adapter.getItem(position);
+        int cantidad = det.getCantidad();
+        if (cantidad == 1)
+        {
+            removePedidosData(position);
+        }
+        else
+        {
+            det.setCantidad(cantidad-1);
+            Toast.makeText(this, "Menú eliminado.", Toast.LENGTH_SHORT).show();
+        }
+        adapter.notifyDataSetChanged();
+
+
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+        DetallePedido detalle = (DetallePedido) adapter.getItem(position);
+
+        if(detalle.getIdEstado() == 0) {
+
+            final CharSequence[] items = {
+                    "Eliminar todos", "Eliminar uno", "Cancelar"
+            };
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("ACCIONES");
+            builder.setItems(items, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int item) {
+                    // Do something with the selection
+                    if (item == 0) // Eliminar todos
+                    {
+                        removePedidosData(position);
+                    } else {
+                        if (item == 1) // Eliminar uno
+                        {
+                            restarUno(position);
+                        } else//item == 2 // Cancelar
+                        {
+                            ;
+                        }
+                    }
+                }
+            });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+        else
+        {
+            Toast.makeText(this, "Pedido ya registrado.", Toast.LENGTH_LONG).show();
+        }
+        return true;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -808,10 +944,6 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
 
         return super.onOptionsItemSelected(item);
     }
-
-
-
-
 
 
 }

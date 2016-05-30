@@ -16,4 +16,11 @@
         <item>POSTRES</item>
         <item>DESAYUNO</item>
     </string-array>
+
+    <string-array name="dialog_pedido_array">
+        <item>Eliminar uno</item>
+        <item>Eliminar todos</item>
+        <item>Cancelar</item>
+    </string-array>
+
 </resources>
