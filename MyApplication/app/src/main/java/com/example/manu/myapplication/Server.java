@@ -50,6 +50,7 @@ import java.util.concurrent.Executors;
 
 public class Server extends ListActivity implements OnItemClickListener,OnClickListener {
 
+    private String URLGlobal;
     private static final ExecutorService THREADPOOL = Executors.newCachedThreadPool();
     private Button btnEnviarNotificacion;
     private TextView txtNotificaciones;
@@ -76,6 +77,9 @@ public class Server extends ListActivity implements OnItemClickListener,OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_server);
+
+        URLGlobal = getIntent().getExtras().get("URLGlobal").toString();//CON ESTA LINEA SETEAS LA URLGLOBAL DESPUES USALA DONDE TE SIRVA
+
 
         txtNotificaciones = (TextView) findViewById(R.id.txtNotificaciones);
         txtIdPedido = (TextView) findViewById(R.id.txtIdPedido);

@@ -34,11 +34,13 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
     private int categ = 0;
     private TextView menus;
     private InterfazListadoMenus listener;
+    private String URLGlobal;
 
-    public static MenusFragment newInstance(int idCategoria) {
+    public static MenusFragment newInstance(int idCategoria,String url) {
         MenusFragment fragment = new MenusFragment();
         Bundle args = new Bundle();
         args.putInt("idCategoria", idCategoria);
+        args.putString("URLGlobal",url);
         fragment.setArguments(args);
         return fragment;
     }
@@ -61,6 +63,7 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
         menus.setText("Menus");
         if (getArguments() != null) {
             categ = getArguments().getInt("idCategoria", 0);
+            URLGlobal = getArguments().getString("URLGlobal");
             menus.setText("Categoria Seleccionada" + categ);
         }
 
@@ -70,6 +73,7 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
 
         Object[] obj = new Object[2];
         obj[0] = categ;
+        obj[1] = URLGlobal;
         new GetTask().execute(obj);
 
 
@@ -190,13 +194,15 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
         private Exception exception;
         private ArrayList<Menus> listaMenus = new ArrayList<>();
         private Menus menus = new Menus();
+        private String URLGlobal;
 
         protected String doInBackground(Object... params) {
+            URLGlobal = params[1].toString();
             try {
                 String response = "No se conecto";
                     HttpURLConnection urlConn;
                     StringBuilder result = new StringBuilder();
-                    URL url = new URL("http://172.16.0.2:8082/api/menu/menusXCateg/" + (((int) params[0])+1)); //obtengo los menus de las categorias por params[0]
+                    URL url = new URL(URLGlobal+"menu/menusXCateg/" + (((int) params[0])+1)); //obtengo los menus de las categorias por params[0]
 
                     urlConn = (HttpURLConnection) url.openConnection();
 

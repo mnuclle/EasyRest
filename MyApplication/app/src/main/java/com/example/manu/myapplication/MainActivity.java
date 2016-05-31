@@ -1,15 +1,12 @@
 package com.example.manu.myapplication;
 
 import android.annotation.TargetApi;
-
 import android.app.Activity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompatSideChannelService;
 import android.util.JsonReader;
 import android.util.JsonToken;
 import android.view.Menu;
@@ -30,7 +27,6 @@ import org.json.JSONObject;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -48,7 +44,8 @@ public class MainActivity extends Activity {
     private Spinner cmbTipoUsuario;
     private int tipoUsr = 0; /*si es 1 es cliente si es 2 es Empleado*/
     private Usuario us;
-
+    private String URLGlobal = "http://172.16.0.2:8082/api/";
+    //private String URLGlobal = "http://192.168.1.4:8082/api/"; //ACA PONE TU URL DANI - creo que es esa que puse.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,11 +75,11 @@ public class MainActivity extends Activity {
 
                     if(tipoUsr == 1)
                     {
-                        new PostTask(v.getContext()).execute(usa);
+                        new PostTask(v.getContext(),URLGlobal).execute(usa);
                     }
                     else if(tipoUsr == 2)
                     {
-                        new PostTaskEmp(v.getContext()).execute(usa);
+                        new PostTaskEmp(v.getContext(),URLGlobal).execute(usa);
 
                     }
                     else
@@ -266,15 +263,17 @@ public class MainActivity extends Activity {
         private Context contexto;
         private int error = 0;
         String response = "No se conecto";
-        public PostTask(Context context)
+        private String URLGlobal;
+        public PostTask(Context context,String url)
         {
+            this.URLGlobal = url;
             this.contexto=context;
         }
         protected String doInBackground(Usuario... params) {
             try {
 
                 StringBuilder result = new StringBuilder();
-                URL url2 = new URL("http://172.16.0.2:8082/api/usuario/validarUsuarioCliente");
+                URL url2 = new URL(URLGlobal + "usuario/validarUsuarioCliente");
                 HttpURLConnection urlConn = (HttpURLConnection)url2.openConnection();
                 try {
                     Usuario us = params[0];
@@ -364,6 +363,7 @@ public class MainActivity extends Activity {
                     Intent intent = new Intent(MainActivity.this, ListaCuentas.class);
                     Bundle b = new Bundle();
                     b.putString("USUARIO", response);
+                    b.putString("URLGlobal", URLGlobal);
 
                     intent.putExtras(b);
                     startActivity(intent);
@@ -400,15 +400,17 @@ public class MainActivity extends Activity {
         private int error = 0;
         private Context contexto;
         String response = "No se conecto";
-        public PostTaskEmp(Context contexto)
+        String URLGlobal;
+        public PostTaskEmp(Context contexto,String url)
         {
+            this.URLGlobal = url;
             this.contexto = contexto;
         }
         protected String doInBackground(Usuario... params){
             try {
 
                 StringBuilder result = new StringBuilder();
-                URL url2 = new URL("http://172.16.0.2:8082/api/usuario/validarUsuarioEmpleado");
+                URL url2 = new URL(URLGlobal + "usuario/validarUsuarioEmpleado");
                 HttpURLConnection urlConn = (HttpURLConnection)url2.openConnection();
                 Usuario us = params[0];
                 Bundle b = new Bundle();
@@ -456,7 +458,7 @@ public class MainActivity extends Activity {
                                 String nombreUsuario = "";
                                 int idRol = -1;
                                 int idEmpleado = -1;
-
+                                int idTipoEmpleado = -1;
                                 while (reader1.hasNext()) {
                                     String name = reader1.nextName();
                                     switch (name) {
@@ -472,6 +474,9 @@ public class MainActivity extends Activity {
                                         case "idEmpleado":
                                             idEmpleado =  reader1.nextInt();
                                             break;
+                                        case "idTipoEmpleado":
+                                            idTipoEmpleado = reader1.nextInt();
+                                            break;
                                         default:
                                             reader1.skipValue();
                                             break;
@@ -483,6 +488,8 @@ public class MainActivity extends Activity {
                                 b.putInt("IDROL", idRol);
                                 b.putInt("IDEMPLEADO", idEmpleado);
                                 b.putString("USUARIO", response);
+                                b.putString("URLGlobal", URLGlobal);
+                                b.putSerializable("IDTIPOEMPLEADO",idTipoEmpleado);
                                 reader1.endObject();
 
 
@@ -491,11 +498,11 @@ public class MainActivity extends Activity {
                     {
                         response = "USUARIO Y CONTRASEÑA NO VALIDOS";
                     }
-
+/*
                     //validarmos tipo empleado
                     String tipoEmpleado ="";
                     HttpURLConnection urlConnnValidarTipoEmpleado;
-                    URL urlValidarTipoEmpleado = new URL("http://172.16.0.2:8082/api/usuario/validarTipoEmpleado");
+                    URL urlValidarTipoEmpleado = new URL( URLGlobal+"usuario/validarTipoEmpleado");
                     StringBuilder result2 = new StringBuilder();
                     urlConnnValidarTipoEmpleado = (HttpURLConnection)urlValidarTipoEmpleado.openConnection();
 
@@ -544,11 +551,14 @@ public class MainActivity extends Activity {
 
 
                     if(tipoEmpleado.equals("MOZO"))
+                    {*/
+
+                    if (b.getInt("IDTIPOEMPLEADO") == 1) // 1 es el mozo
                     {
                         ArrayList<CuentasMesa> lista = new ArrayList<>();
                         HttpURLConnection urlConn1;
                         StringBuilder result1 = new StringBuilder();
-                        URL url = new URL("http://172.16.0.2:8082/api/mesas/obtenerTodasCuentasMozo/"+b.getInt("IDEMPLEADO"));
+                        URL url = new URL(URLGlobal + "mesas/obtenerTodasCuentasMozo/"+b.getInt("IDEMPLEADO"));
 
                         urlConn1 = (HttpURLConnection)url.openConnection();
 
@@ -636,20 +646,19 @@ public class MainActivity extends Activity {
                         Intent intent = new Intent(MainActivity.this, ListaCuentas.class);
                         intent.putExtras(b);
                         intent.putExtra("LISTA",lista);
+                        intent.putExtra("URLGlobal", URLGlobal);
                         startActivity(intent);
 
                     }
                     else
                     {
-                        if(tipoEmpleado.equals("COCINERO"))
+                        if (b.getInt("IDTIPOEMPLEADO") == 3) //COCINERO
                         {
-                            Intent intent = new Intent(MainActivity.this,Server.class);
+                            Intent intent = new Intent(MainActivity.this, Server.class);
+                            intent.putExtra("URLGlobal", URLGlobal);
                             startActivity(intent);
                         }
-                        else
-                        {
 
-                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

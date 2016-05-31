@@ -56,6 +56,8 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
     private int NroOpcion = -1;
     private int positionLista;
     private PedidosAdapter adapter;
+    private String URLGlobal;
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -71,7 +73,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
 
         Intent intent = getIntent();
         NroCliente = (int) intent.getExtras().get("IDCLIENTE");
-
+        URLGlobal = intent.getExtras().get("URLGlobal").toString();
         btnElegirPedido = (Button) findViewById(R.id.btnElegirPedido);
 
         btnConfirmarPedido = (Button) findViewById(R.id.btnConfirmarPedido);
@@ -91,6 +93,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
             public void onClick(View v) {
                 Object[] obj = new Object[2];
                 obj[0] = adapter.getList();
+                obj[1] = URLGlobal;
 
                 new PostTask(v.getContext()).execute(obj);
             }
@@ -157,16 +160,18 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
         private int error = 0;
         String response = "No se conecto";
         ArrayList<DetallePedido> lista;
+        private String URLGlobal;
 
         public PostTask(Context context) {
             this.contexto = context;
         }
 
         protected String doInBackground(Object... params) {
+            URLGlobal = params[1].toString();
             try {
 
                 StringBuilder result = new StringBuilder();
-                URL url2 = new URL("http://172.16.0.2:8082/api/pedido/enviarPedido");
+                URL url2 = new URL(URLGlobal+"pedido/enviarPedido");
                 HttpURLConnection urlConn = (HttpURLConnection) url2.openConnection();
                 try {
                     lista = (ArrayList<DetallePedido>) params[0];
@@ -263,6 +268,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
     private void startActivityCategoria() {
         Intent intent = new Intent(this, CategoriaMenuActivity.class);
         intent.putExtra("IDCLIENTE", NroCliente);
+        intent.putExtra("URLGlobal",URLGlobal);
         startActivityForResult(intent, 1);
     }
 
@@ -273,13 +279,15 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
             if (resultCode == Activity.RESULT_OK) {
                 Intent intent = data;
                 NroCliente = (int) intent.getExtras().get("IDCLIENTE");
+                URLGlobal = intent.getExtras().get("URLGlobal").toString();
                 Bundle bundle = intent.getExtras();
 
                 ArrayList<DetallePedido> listadoMenus = (ArrayList<DetallePedido>) bundle.getSerializable("listadoMenus");
-                Object[] obj = new Object[2];
+                Object[] obj = new Object[3];
                 obj[0] = NroCliente;
                 if (listadoMenus.size() > 0)
                     obj[1] = listadoMenus;
+                obj[2] = URLGlobal;
                 new GetTask().execute(obj);
             }
             if (resultCode == Activity.RESULT_CANCELED) {
@@ -294,16 +302,18 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
         private Exception exception;
         private Pedidos pedido = new Pedidos();
         private ArrayList<DetallePedido> listaDetalles = new ArrayList<>();
+        private String URLGlobal;
         ArrayList<DetallePedido> listaMenus;
 
         protected String doInBackground(Object... params) {
+            URLGlobal = params[2].toString();
             try {
                 String response = "No se conecto";
                 try {
                     listaMenus = (ArrayList<DetallePedido>) params[1];
                     HttpURLConnection urlConn;
                     StringBuilder result = new StringBuilder();
-                    URL url = new URL("http://172.16.0.2:8082/api/pedido/obtenerPedido/" + ((int) params[0]));
+                    URL url = new URL(URLGlobal + "pedido/obtenerPedido/" + ((int) params[0]));
 
                     urlConn = (HttpURLConnection) url.openConnection();
 
@@ -375,7 +385,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                         try {
                             HttpURLConnection urlConn;
                             StringBuilder result = new StringBuilder();
-                            URL url = new URL("http://172.16.0.2:8082/api/pedido/obtenerDetallesPedido/" + pedido.getIdPedido());
+                            URL url = new URL(URLGlobal + "pedido/obtenerDetallesPedido/" + pedido.getIdPedido());
 
                             urlConn = (HttpURLConnection) url.openConnection();
 
@@ -468,7 +478,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                                 try {
                                     HttpURLConnection urlConn;
                                     StringBuilder result = new StringBuilder();
-                                    URL url = new URL("http://172.16.0.2:8082/api/pedido/obtenerMenuDetallePedido/" + det.getIdMenu());
+                                    URL url = new URL(URLGlobal + "pedido/obtenerMenuDetallePedido/" + det.getIdMenu());
 
                                     urlConn = (HttpURLConnection) url.openConnection();
 
@@ -531,7 +541,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                                 try {
                                     HttpURLConnection urlConn;
                                     StringBuilder result = new StringBuilder();
-                                    URL url = new URL("http://172.16.0.2:8082/api/pedido/obtenerInsumoDetallePedido/" + det.getIdInsumo());
+                                    URL url = new URL(URLGlobal + "pedido/obtenerInsumoDetallePedido/" + det.getIdInsumo());
 
                                     urlConn = (HttpURLConnection) url.openConnection();
 

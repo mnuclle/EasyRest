@@ -35,12 +35,13 @@ public class ListaCuentas extends ListActivity implements
         AdapterView.OnItemClickListener
 {
     private CuentasAdapter adapter;
+    private String URLGlobal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_cuentas);
-
+        URLGlobal = getIntent().getExtras().get("URLGlobal").toString();
         adapter = new CuentasAdapter();
 
         setListAdapter(adapter);
@@ -203,7 +204,7 @@ public class ListaCuentas extends ListActivity implements
         int idCliente = cm.getIdCliente();
         Object[] listaObjetos = new Object[5];
         listaObjetos[0] = idCliente;
-
+        listaObjetos[1] = URLGlobal;
         new GetTask().execute(listaObjetos);
 
     }
@@ -213,17 +214,18 @@ public class ListaCuentas extends ListActivity implements
 
         private Exception exception;
         private Pedidos pedido = new Pedidos();
-
+        private String URLGlobal;
         private ArrayList<DetallePedido> listaDetalles = new ArrayList<>();
 
         protected String doInBackground(Object... params) {
+            URLGlobal = params[1].toString();
             try {
                 String response = "No se conecto";
                 try {
 
                         HttpURLConnection urlConn;
                         StringBuilder result = new StringBuilder();
-                        URL url = new URL("http://172.16.0.2:8082/api/pedido/obtenerPedido/" +((int) params[0]));
+                        URL url = new URL(URLGlobal + "pedido/obtenerPedido/" +((int) params[0]));
 
                         urlConn = (HttpURLConnection) url.openConnection();
 
@@ -296,7 +298,7 @@ public class ListaCuentas extends ListActivity implements
                         try {
                             HttpURLConnection urlConn;
                             StringBuilder result = new StringBuilder();
-                            URL url = new URL("http://172.16.0.2:8082/api/pedido/obtenerDetallesPedido/" + pedido.getIdPedido());
+                            URL url = new URL(URLGlobal + "pedido/obtenerDetallesPedido/" + pedido.getIdPedido());
 
                             urlConn = (HttpURLConnection) url.openConnection();
 
@@ -391,7 +393,7 @@ public class ListaCuentas extends ListActivity implements
                                 try {
                                     HttpURLConnection urlConn;
                                     StringBuilder result = new StringBuilder();
-                                    URL url = new URL("http://172.16.0.2:8082/api/pedido/obtenerMenuDetallePedido/" + det.getIdMenu());
+                                    URL url = new URL(URLGlobal + "pedido/obtenerMenuDetallePedido/" + det.getIdMenu());
 
                                     urlConn = (HttpURLConnection) url.openConnection();
 
@@ -456,7 +458,7 @@ public class ListaCuentas extends ListActivity implements
                                 try {
                                     HttpURLConnection urlConn;
                                     StringBuilder result = new StringBuilder();
-                                    URL url = new URL("http://172.16.0.2:8082/api/pedido/obtenerInsumoDetallePedido/" + det.getIdInsumo());
+                                    URL url = new URL(URLGlobal + "pedido/obtenerInsumoDetallePedido/" + det.getIdInsumo());
 
                                     urlConn = (HttpURLConnection) url.openConnection();
 
@@ -524,6 +526,7 @@ public class ListaCuentas extends ListActivity implements
                         Intent intent = new Intent(ListaCuentas.this, PedidosActivity.class);
                         intent.putExtra("LISTADETALLES", listaDetalles);
                         intent.putExtra("IDCLIENTE",((int) params[0]));
+                        intent.putExtra("URLGlobal", URLGlobal);
 
                         startActivity(intent);
                     }

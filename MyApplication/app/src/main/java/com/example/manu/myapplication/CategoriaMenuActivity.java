@@ -21,6 +21,7 @@ public class CategoriaMenuActivity extends FragmentActivity implements InterfazC
     private int NroCliente;
     private ArrayList<Menus> listadoMenus = new ArrayList<Menus>();
     private Button btnAceptar;
+    private String URLGlobal;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +29,7 @@ public class CategoriaMenuActivity extends FragmentActivity implements InterfazC
         btnAceptar = (Button) findViewById(R.id.btnAceptarPedido);
         final Intent intent = getIntent();
         NroCliente=(int) intent.getExtras().get("IDCLIENTE");
+        URLGlobal = intent.getExtras().get("URLGlobal").toString();
 
         btnAceptar.setOnClickListener(new View.OnClickListener() {
             @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -38,6 +40,7 @@ public class CategoriaMenuActivity extends FragmentActivity implements InterfazC
                 listadoMenusFinal = loadListadoMenus(listadoMenus);
                 Intent intent1 = new Intent();
                 intent1.putExtra("IDCLIENTE",NroCliente);
+                intent1.putExtra("URLGlobal",URLGlobal);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("listadoMenus",listadoMenusFinal);
                 intent1.putExtras(bundle);
@@ -57,7 +60,7 @@ public class CategoriaMenuActivity extends FragmentActivity implements InterfazC
                 .beginTransaction();
 
         CategoriaFragment fragment1 = new CategoriaFragment();
-        MenusFragment fragment2 = new MenusFragment();
+        MenusFragment fragment2 = MenusFragment.newInstance(1,URLGlobal);
 
         fragmentTransaction.add(R.id.FragmentContainer1, fragment1);
         fragmentTransaction.add(R.id.FragmentContainer2, fragment2);
@@ -135,7 +138,7 @@ public class CategoriaMenuActivity extends FragmentActivity implements InterfazC
     public void onCategoriaSelect(int idCategoria) {
 
 
-        MenusFragment frag2 = MenusFragment.newInstance(idCategoria);
+        MenusFragment frag2 = MenusFragment.newInstance(idCategoria,URLGlobal);
 
         FragmentManager fm = getFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
