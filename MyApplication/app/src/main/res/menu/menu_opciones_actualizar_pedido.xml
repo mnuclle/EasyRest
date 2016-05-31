@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:name="menuActualizarEstadoDetalle"
+    android:theme="@style/AppTheme"
+    >
+
+    <item android:id="@+id/pedidoListo"
+        android:name="pedidoListo"
+        android:icon="@drawable/listo"
+        android:title="Listo."
+        android:background="#52798f"
+        />
+    <item android:id="@+id/pedidoCancelado"
+        android:icon="@drawable/cancelar"
+        android:title="Anular."
+        android:background="#8f8752"/>
+</menu>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    >
+    <include layout="@layout/content_server" />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/linearLPedidos"
+        android:background="#314550">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:background="#476B85"
+        android:id="@+id/linearLTitulo"
+        android:layout_width="fill_parent"
+        android:layout_height="80dp" >
+
+    <ImageButton
+        android:id="@+id/btnLogo"
+        android:layout_width="75dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="10dp"
+        android:background="#476B85"
+        android:gravity="left"
+        android:scaleType="fitXY"
+        android:src="@drawable/logo" />
+        <TextView
+            android:id="@+id/txtTituloPedidos"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:gravity ="left"
+            android:background="#476B85"
+            android:textColor="#FFFFFF"
+            android:textSize="50sp"
+            android:textStyle="bold"
+            android:text="Pedidos"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="#314550"
+        android:id="@+id/linearContenido"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+                <ListView
+                    android:id="@android:id/list"
+                    android:background="#314550"
+                    android:layout_width="match_parent"
+                    android:layout_height="500dp"
+                    android:layout_weight="0.8"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginBottom="0dp"
+                    android:bottomRightRadius="100dp"
+                    android:bottomLeftRadius="100dp"
+                    android:topLeftRadius="100dp"
+                    android:topRightRadius="100dp"
+                    android:divider="#476B85"
+                    android:dividerHeight="3px">
+                </ListView>
+    </LinearLayout>
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

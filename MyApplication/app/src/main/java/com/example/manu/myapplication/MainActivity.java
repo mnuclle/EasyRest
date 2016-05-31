@@ -632,7 +632,6 @@ public class MainActivity extends Activity {
                         {
                             e.printStackTrace();
                         }
-                        //verificar si es mozo o cocinero
 
                         Intent intent = new Intent(MainActivity.this, ListaCuentas.class);
                         intent.putExtras(b);
@@ -644,7 +643,8 @@ public class MainActivity extends Activity {
                     {
                         if(tipoEmpleado.equals("COCINERO"))
                         {
-                            Intent intent = new Intent(MainActivity.this,PedidosActivity.class);
+                            Intent intent = new Intent(MainActivity.this,Server.class);
+                            startActivity(intent);
                         }
                         else
                         {
