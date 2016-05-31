@@ -279,7 +279,7 @@ public class Server extends ListActivity implements OnItemClickListener,OnClickL
             try {
                 HttpURLConnection urlConn;
                 StringBuilder result = new StringBuilder();
-                URL url = new URL("http://192.168.1.4:8082/api/pedido/detallesPedido");
+                URL url = new URL(URLGlobal + "pedido/detallesPedido");
                 ArrayList<DetallePedido> detallesArray;
                 ArrayList<Pedido> pedidosArray = new ArrayList<>();
                 Pedido pedido;
@@ -460,7 +460,7 @@ public class Server extends ListActivity implements OnItemClickListener,OnClickL
             try {
                 HttpURLConnection urlConn;
                 StringBuilder result = new StringBuilder();
-                URL url = new URL("http://192.168.0.13:8082/api/mesas/mesas2");
+                URL url = new URL(URLGlobal + "mesas/mesas2");
 
                 urlConn = (HttpURLConnection) url.openConnection();
 
@@ -571,7 +571,7 @@ public class Server extends ListActivity implements OnItemClickListener,OnClickL
 
             String response = "No se conecto";
             StringBuilder result = new StringBuilder();
-            URL url2 = new URL("http://192.168.1.4:8082/api/pedido/actualizarDetallePedido");
+            URL url2 = new URL(URLGlobal + "pedido/actualizarDetallePedido");
 
             urlConn = (HttpURLConnection) url2.openConnection();
             try {
@@ -614,7 +614,7 @@ public class Server extends ListActivity implements OnItemClickListener,OnClickL
 
             String response = "No se conecto";
             StringBuilder result = new StringBuilder();
-            URL url2 = new URL("http://192.168.0.13:8082/api/mesas/actualizarPedido");
+            URL url2 = new URL(URLGlobal + "mesas/actualizarPedido");
 
             urlConn = (HttpURLConnection) url2.openConnection();
             try {
