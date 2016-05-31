@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompatSideChannelService;
 import android.util.JsonReader;
 import android.util.JsonToken;
 import android.view.Menu;
@@ -491,89 +492,48 @@ public class MainActivity extends Activity {
                         response = "USUARIO Y CONTRASEÑA NO VALIDOS";
                     }
 
+                    //validarmos tipo empleado
+                    String tipoEmpleado ="";
+                    HttpURLConnection urlConnnValidarTipoEmpleado;
+                    URL urlValidarTipoEmpleado = new URL("http://172.16.0.2:8082/api/usuario/validarTipoEmpleado");
+                    StringBuilder result2 = new StringBuilder();
+                    urlConnnValidarTipoEmpleado = (HttpURLConnection)urlValidarTipoEmpleado.openConnection();
 
+                    InputStream isValidarTipoEmpleado = new BufferedInputStream(urlConnnValidarTipoEmpleado.getInputStream());
 
+                    BufferedReader readerValidarTipoEmpleado = new BufferedReader(new InputStreamReader(isValidarTipoEmpleado));
 
-                    ArrayList<CuentasMesa> lista = new ArrayList<>();
-                    HttpURLConnection urlConn1;
-                    StringBuilder result1 = new StringBuilder();
-                    URL url = new URL("http://172.16.0.2:8082/api/mesas/obtenerTodasCuentasMozo/"+b.getInt("IDEMPLEADO"));
-
-                    urlConn1 = (HttpURLConnection)url.openConnection();
-
-                    InputStream in1 = new BufferedInputStream(urlConn1.getInputStream());
-
-                    BufferedReader reader1 = new BufferedReader(new InputStreamReader(in1));
-
-                    String line1;
-                    while ((line1 = reader1.readLine()) != null) {
-                        result1.append(line1);
+                    String lineValidarTipoEmpleado;
+                    while ((lineValidarTipoEmpleado = readerValidarTipoEmpleado.readLine()) != null) {
+                        result2.append(lineValidarTipoEmpleado);
                     }
 
 
                     try {
-                        JsonReader reader2 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result1.toString().getBytes(StandardCharsets.UTF_8))));
+                        JsonReader jsonReader2 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result2.toString().getBytes(StandardCharsets.UTF_8))));
 
                         try {
                             response = "GET: ";
 
-                            reader2.beginArray();
-                            while(reader2.hasNext()) {
-                                int idCliente = -1;
-                                int nro_documento = -1;
-                                String n_cliente = "";
-                                int idEstadoCuenta = -1;
-                                String mesas = "";
-                                double montoPedido = 0;
+                            jsonReader2.beginArray();
+                            while (jsonReader2.hasNext()) {
 
-                                reader2.beginObject();
-                                while (reader2.hasNext()) {
-                                    String name = reader2.nextName();
+                                jsonReader2.beginObject();
+                                while (jsonReader2.hasNext()) {
+                                    String name = jsonReader2.nextName();
                                     switch (name) {
-                                        case "id_cliente":
-                                            idCliente = reader2.nextInt();
-                                            break;
-                                        case "mesas":
-                                            mesas = reader2.nextString();
-                                            break;
-                                        case "nro_documento":
-                                            nro_documento = reader2.nextInt();
-                                            break;
-                                        case "n_cliente":
-                                            n_cliente =  reader2.nextString();
-                                            break;
-                                        case "montoPedido":
-                                            montoPedido =  reader2.nextDouble();
-                                            break;
-                                        case "idEstadoCuenta":
-                                            idEstadoCuenta =  reader2.nextInt();
+                                        case "tipoEmpleado":
+                                            tipoEmpleado = jsonReader2.nextString();
                                             break;
                                         default:
-                                            reader2.skipValue();
+                                            jsonReader2.skipValue();
                                             break;
                                     }
                                 }
-
-                                CuentasMesa cm = new CuentasMesa();
-                                cm.setIdCliente(idCliente);
-                                cm.setNumeroMesa(mesas);
-                                cm.setNumeroDocumento(nro_documento);
-                                cm.setNombreCuenta(n_cliente);
-                                cm.setMontoPedido(montoPedido);
-                                cm.setIdEstado(idEstadoCuenta);
-
-                                lista.add(cm);
-
-                                // response += "\nMesa: " + id + " " + cantSillas + " " + idCuenta + " " + posicion + " " + numeroMesa + ".\n";
-                                reader2.endObject();
                             }
-
-
-
-
                         } catch (Exception e) {
                             e.printStackTrace();
-                            urlConn1.disconnect();
+                            urlConnnValidarTipoEmpleado.disconnect();
                         }
 
                     }
@@ -582,12 +542,115 @@ public class MainActivity extends Activity {
                         e.printStackTrace();
                     }
 
-                    Intent intent = new Intent(MainActivity.this, ListaCuentas.class);
-                    intent.putExtras(b);
-                    intent.putExtra("LISTA",lista);
-                    startActivity(intent);
+
+                    if(tipoEmpleado.equals("MOZO"))
+                    {
+                        ArrayList<CuentasMesa> lista = new ArrayList<>();
+                        HttpURLConnection urlConn1;
+                        StringBuilder result1 = new StringBuilder();
+                        URL url = new URL("http://172.16.0.2:8082/api/mesas/obtenerTodasCuentasMozo/"+b.getInt("IDEMPLEADO"));
+
+                        urlConn1 = (HttpURLConnection)url.openConnection();
+
+                        InputStream in1 = new BufferedInputStream(urlConn1.getInputStream());
+
+                        BufferedReader reader1 = new BufferedReader(new InputStreamReader(in1));
+
+                        String line1;
+                        while ((line1 = reader1.readLine()) != null) {
+                            result1.append(line1);
+                        }
 
 
+                        try {
+                            JsonReader reader2 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result1.toString().getBytes(StandardCharsets.UTF_8))));
+
+                            try {
+                                response = "GET: ";
+
+                                reader2.beginArray();
+                                while(reader2.hasNext()) {
+                                    int idCliente = -1;
+                                    int nro_documento = -1;
+                                    String n_cliente = "";
+                                    int idEstadoCuenta = -1;
+                                    String mesas = "";
+                                    double montoPedido = 0;
+
+                                    reader2.beginObject();
+                                    while (reader2.hasNext()) {
+                                        String name = reader2.nextName();
+                                        switch (name) {
+                                            case "id_cliente":
+                                                idCliente = reader2.nextInt();
+                                                break;
+                                            case "mesas":
+                                                mesas = reader2.nextString();
+                                                break;
+                                            case "nro_documento":
+                                                nro_documento = reader2.nextInt();
+                                                break;
+                                            case "n_cliente":
+                                                n_cliente =  reader2.nextString();
+                                                break;
+                                            case "montoPedido":
+                                                montoPedido =  reader2.nextDouble();
+                                                break;
+                                            case "idEstadoCuenta":
+                                                idEstadoCuenta =  reader2.nextInt();
+                                                break;
+                                            default:
+                                                reader2.skipValue();
+                                                break;
+                                        }
+                                    }
+
+                                    CuentasMesa cm = new CuentasMesa();
+                                    cm.setIdCliente(idCliente);
+                                    cm.setNumeroMesa(mesas);
+                                    cm.setNumeroDocumento(nro_documento);
+                                    cm.setNombreCuenta(n_cliente);
+                                    cm.setMontoPedido(montoPedido);
+                                    cm.setIdEstado(idEstadoCuenta);
+
+                                    lista.add(cm);
+
+                                    // response += "\nMesa: " + id + " " + cantSillas + " " + idCuenta + " " + posicion + " " + numeroMesa + ".\n";
+                                    reader2.endObject();
+                                }
+
+
+
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                urlConn1.disconnect();
+                            }
+
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+                        //verificar si es mozo o cocinero
+
+                        Intent intent = new Intent(MainActivity.this, ListaCuentas.class);
+                        intent.putExtras(b);
+                        intent.putExtra("LISTA",lista);
+                        startActivity(intent);
+
+                    }
+                    else
+                    {
+                        if(tipoEmpleado.equals("COCINERO"))
+                        {
+                            Intent intent = new Intent(MainActivity.this,PedidosActivity.class);
+                        }
+                        else
+                        {
+
+                        }
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     error = 1;
