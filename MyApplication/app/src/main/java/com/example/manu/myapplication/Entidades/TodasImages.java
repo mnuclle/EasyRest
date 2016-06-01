@@ -23,6 +23,7 @@ public class TodasImages {
         Images imagen_4 = new Images(4, R.drawable.hamburguesa, true, 2);
         Images imagen_5 = new Images(5, R.drawable.lomito, true, 3);
         Images imagen_6 = new Images(6, R.drawable.parrilla, true, 4);
+        Images imagen_7 = new Images(7, R.drawable.parrilla, true, 1);
 
         listaImagen.add(imagen_1);
         listaImagen.add(imagen_2);
@@ -30,6 +31,7 @@ public class TodasImages {
         listaImagen.add(imagen_4);
         listaImagen.add(imagen_5);
         listaImagen.add(imagen_6);
+        listaImagen.add(imagen_7);
        
     }
 
