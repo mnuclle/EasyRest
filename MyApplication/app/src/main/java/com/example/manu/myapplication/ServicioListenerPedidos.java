@@ -1,6 +1,9 @@
 package com.example.manu.myapplication;
 
 import android.app.IntentService;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
@@ -33,6 +36,9 @@ public class ServicioListenerPedidos extends IntentService {
     Socket skCliente;
     String respuesta = "sin respuesta";
     ResultReceiver rec;
+    private String URLGlobal;
+    private Notification notificacion;
+    private NotificationManager notifMan;
     public ServicioListenerPedidos() {
         super("ServicioListenerPedidos");
     }
@@ -40,6 +46,7 @@ public class ServicioListenerPedidos extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
 
+        URLGlobal = intent.getExtras().getString("URLGlobal").toString();
          rec= intent.getParcelableExtra("receiverTag");
         Socket socket = null;
         DataInputStream dataInputStream = null;
@@ -60,8 +67,23 @@ public class ServicioListenerPedidos extends IntentService {
 
                 String messageFromClient, messageToClient, request;
 
-                //If no message sent from client, this code will block the program
-                //  messageFromClient = dataInputStream.readUTF();
+                Intent intNotif = new Intent(this,Server.class);
+                intNotif.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);;
+                PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+                        intNotif, 0);
+
+
+                notifMan = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                Notification notification = new Notification.Builder(this)
+                        .setSmallIcon(R.drawable.logo)  // the status icon
+                        .setTicker("NotificacionStatus")  // the status text
+                        .setWhen(System.currentTimeMillis())  // the time stamp
+                        .setContentTitle(getText(R.string.app_name))  // the label of the entry
+                        .setContentText("Nuevo Pedido.")  // the contents of the entry
+                        .setContentIntent(contentIntent)  // The intent to send when the entry is clicked
+                        .build();
+
+                notification.flags |= Notification.FLAG_ONGOING_EVENT |Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
 
 
 
@@ -73,40 +95,9 @@ public class ServicioListenerPedidos extends IntentService {
                 in.putExtra("json",mesas);
                 LocalBroadcastManager.getInstance(this)
                         .sendBroadcast(in);
-                final JSONObject jsondata;
-                // try {
-                // jsondata = new JSONObject(messageFromClient);
 
+                notifMan.notify(R.string.app_name,notification);
 
-                // request = jsondata.getString("request");
-
-                // if (request.equals(REQUEST_CONNECT_CLIENT)) {
-                // String clientIPAddress = jsondata.getString("ipAddress");
-                //txtIp.setText(clientIPAddress);
-
-                // Add client IP to a list
-                // clientIPs.add(clientIPAddress);
-                messageToClient = "Conexion Aceptada!!!";
-
-
-
-                //obtenerMesas();
-
-
-
-                //llamariamos a la web api y actualizariamos los pedidos pendientes a cocina....
-
-                // dataOutputStream.writeUTF(messageToClient);
-                //  }
-                //else {
-                // There might be other queries, but as of now nothing.
-                // dataOutputStream.flush();
-                //}
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                        //Log.e(TAG, "Unable to get request");
-//                        dataOutputStream.flush();
-//                    }
             }
 
         } catch (IOException e) {

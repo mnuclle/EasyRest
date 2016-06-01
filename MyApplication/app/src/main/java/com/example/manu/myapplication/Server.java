@@ -2,6 +2,8 @@ package com.example.manu.myapplication;
 
 import android.annotation.SuppressLint;
 import android.app.ListActivity;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -51,13 +53,11 @@ import java.util.concurrent.Executors;
 public class Server extends ListActivity implements OnItemClickListener,OnClickListener {
 
     private String URLGlobal;
-    private static final ExecutorService THREADPOOL = Executors.newCachedThreadPool();
-    private Button btnEnviarNotificacion;
     private TextView txtNotificaciones;
     private TextView txtIdPedido;
     private Button btnEnviarIdPedido;
     Socket skCliente;
-
+    private NotificationManager notifMan;
     private int SocketServerPort = 47000;
     private static final String REQUEST_CONNECT_CLIENT = "request-connect-client";
     private List<String> clientIPs;
@@ -104,18 +104,14 @@ public class Server extends ListActivity implements OnItemClickListener,OnClickL
         setListAdapter(detallePedidoAdapter);
 
         detallePedidoAdapter.notifyDataSetChanged();
-
-
         clientIPs = new ArrayList<String>();
-
-
         btnEnviarIdPedido.setOnClickListener(this);
 
-        txtNotificaciones.setText("Notifiaciones  /t");
 
         //si usamos un servicio
       i =new Intent(this, ServicioListenerPedidos.class);
 
+        i.putExtra("URLGlobal",URLGlobal);
         i.putExtra("receiverTag", mReceiver);
 
         threadListener = new Thread(new Runnable() {
@@ -425,6 +421,7 @@ public class Server extends ListActivity implements OnItemClickListener,OnClickL
                                 detallePedidoAdapter.notifyDataSetChanged();
                             }
                         });
+                       // detallePedidoAdapter.notifyDataSetChanged();
 
 
 

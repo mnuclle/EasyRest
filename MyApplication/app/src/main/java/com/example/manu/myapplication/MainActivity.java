@@ -44,8 +44,8 @@ public class MainActivity extends Activity {
     private Spinner cmbTipoUsuario;
     private int tipoUsr = 0; /*si es 1 es cliente si es 2 es Empleado*/
     private Usuario us;
-    private String URLGlobal = "http://172.16.0.2:8082/api/";
-    //private String URLGlobal = "http://192.168.1.4:8082/api/"; //ACA PONE TU URL DANI - creo que es esa que puse.
+    //private String URLGlobal = "http://172.16.0.2:8082/api/";
+    private String URLGlobal = "http://192.168.1.3:8082/api/"; //ACA PONE TU URL DANI - creo que es esa que puse.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,10 +58,15 @@ public class MainActivity extends Activity {
         btnIniciarSesion = (Button) findViewById(R.id.btnIniciarSesion);
         cmbTipoUsuario = (Spinner) findViewById(R.id.cmbTipoUsuario);
         loadSpinner();
+<<<<<<< HEAD
         txtUsuario.setText("DAMIANCERRO");
         txtContraseña.setText("DCERRO1");
 //        txtUsuario.setText("SEBASTIANCARDOZO");
 //        txtContraseña.setText("SCARDOZO1");
+=======
+        txtUsuario.setText("PEDROLOPEZ");
+        txtContraseña.setText("PLOPEZ1");
+>>>>>>> origin/master
 
         btnIniciarSesion.setOnClickListener(new View.OnClickListener() {
             @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -500,60 +505,6 @@ public class MainActivity extends Activity {
                     {
                         response = "USUARIO Y CONTRASEÑA NO VALIDOS";
                     }
-/*
-                    //validarmos tipo empleado
-                    String tipoEmpleado ="";
-                    HttpURLConnection urlConnnValidarTipoEmpleado;
-                    URL urlValidarTipoEmpleado = new URL( URLGlobal+"usuario/validarTipoEmpleado");
-                    StringBuilder result2 = new StringBuilder();
-                    urlConnnValidarTipoEmpleado = (HttpURLConnection)urlValidarTipoEmpleado.openConnection();
-
-                    InputStream isValidarTipoEmpleado = new BufferedInputStream(urlConnnValidarTipoEmpleado.getInputStream());
-
-                    BufferedReader readerValidarTipoEmpleado = new BufferedReader(new InputStreamReader(isValidarTipoEmpleado));
-
-                    String lineValidarTipoEmpleado;
-                    while ((lineValidarTipoEmpleado = readerValidarTipoEmpleado.readLine()) != null) {
-                        result2.append(lineValidarTipoEmpleado);
-                    }
-
-
-                    try {
-                        JsonReader jsonReader2 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result2.toString().getBytes(StandardCharsets.UTF_8))));
-
-                        try {
-                            response = "GET: ";
-
-                            jsonReader2.beginArray();
-                            while (jsonReader2.hasNext()) {
-
-                                jsonReader2.beginObject();
-                                while (jsonReader2.hasNext()) {
-                                    String name = jsonReader2.nextName();
-                                    switch (name) {
-                                        case "tipoEmpleado":
-                                            tipoEmpleado = jsonReader2.nextString();
-                                            break;
-                                        default:
-                                            jsonReader2.skipValue();
-                                            break;
-                                    }
-                                }
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            urlConnnValidarTipoEmpleado.disconnect();
-                        }
-
-                    }
-                    catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
-
-
-                    if(tipoEmpleado.equals("MOZO"))
-                    {*/
 
                     if (b.getInt("IDTIPOEMPLEADO") == 1) // 1 es el mozo
                     {
