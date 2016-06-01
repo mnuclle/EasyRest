@@ -44,8 +44,8 @@ public class MainActivity extends Activity {
     private Spinner cmbTipoUsuario;
     private int tipoUsr = 0; /*si es 1 es cliente si es 2 es Empleado*/
     private Usuario us;
-    //private String URLGlobal = "http://172.16.0.2:8082/api/";
-    private String URLGlobal = "http://192.168.1.3:8082/api/"; //ACA PONE TU URL DANI - creo que es esa que puse.
+    private String URLGlobal = "http://172.16.0.2:8082/api/";
+//    private String URLGlobal = "http://192.168.1.3:8082/api/"; //ACA PONE TU URL DANI - creo que es esa que puse.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,15 +58,15 @@ public class MainActivity extends Activity {
         btnIniciarSesion = (Button) findViewById(R.id.btnIniciarSesion);
         cmbTipoUsuario = (Spinner) findViewById(R.id.cmbTipoUsuario);
         loadSpinner();
-<<<<<<< HEAD
+
         txtUsuario.setText("DAMIANCERRO");
         txtContraseña.setText("DCERRO1");
 //        txtUsuario.setText("SEBASTIANCARDOZO");
 //        txtContraseña.setText("SCARDOZO1");
-=======
-        txtUsuario.setText("PEDROLOPEZ");
-        txtContraseña.setText("PLOPEZ1");
->>>>>>> origin/master
+
+//        txtUsuario.setText("PEDROLOPEZ");
+//        txtContraseña.setText("PLOPEZ1");
+
 
         btnIniciarSesion.setOnClickListener(new View.OnClickListener() {
             @TargetApi(Build.VERSION_CODES.KITKAT)
