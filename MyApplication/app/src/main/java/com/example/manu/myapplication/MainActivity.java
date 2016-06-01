@@ -60,6 +60,8 @@ public class MainActivity extends Activity {
         loadSpinner();
         txtUsuario.setText("DAMIANCERRO");
         txtContraseña.setText("DCERRO1");
+//        txtUsuario.setText("SEBASTIANCARDOZO");
+//        txtContraseña.setText("SCARDOZO1");
 
         btnIniciarSesion.setOnClickListener(new View.OnClickListener() {
             @TargetApi(Build.VERSION_CODES.KITKAT)
