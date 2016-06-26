@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/pedidoListo"
+        android:icon="@drawable/listo"
+        android:title="Listo"
+        android:background="#52798f"
+        />
+    <item android:id="@+id/pedidoCancelado2"
+        android:icon="@drawable/cancelar"
+        android:title="Anular"
+        android:background="#8f8752"/>
+</menu>

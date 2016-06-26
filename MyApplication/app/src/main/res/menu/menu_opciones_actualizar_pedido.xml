@@ -3,15 +3,12 @@
     android:name="menuActualizarEstadoDetalle"
     android:theme="@style/AppTheme"
     >
-
-    <item android:id="@+id/pedidoListo"
-        android:name="pedidoListo"
+    <item android:id="@+id/pedidoEnPreparacion"
         android:icon="@drawable/listo"
-        android:title="Listo."
-        android:background="#52798f"
-        />
+        android:title="En preparacion"
+        android:background="#8f8752"/>
     <item android:id="@+id/pedidoCancelado"
         android:icon="@drawable/cancelar"
-        android:title="Anular."
+        android:title="Anular"
         android:background="#8f8752"/>
 </menu>

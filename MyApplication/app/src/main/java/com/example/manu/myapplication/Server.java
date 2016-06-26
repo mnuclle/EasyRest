@@ -24,6 +24,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -70,6 +71,15 @@ public class Server extends ListActivity implements OnItemClickListener,OnClickL
     Intent i;
     MyResultReceiver mReceiver;
 
+    private final String nombreEstadoDetallePedidoRegistrado = "REGISTRADO";
+    private final String nombreEstadoDetallePedidoEnPreparacion = "EN PREPARACION";
+    private final String nombreEstadoDetallePedidoListo = "LISTO";
+    private final String nombreEstadoDetallePedidoCancelado = "CANCELADO";
+    private final int idEstadoDetallePedidoRegistrado = 12;
+    private final int idEstadoDetallePedidoEnPreparacion = 10;
+    private final int idEstadoDetallePedidoCocinado = 11;
+    private final int idEstadoDetallePedidoCancelado = 13;
+
     //lista
     private DetallePedidoAdapter detallePedidoAdapter;
 
@@ -109,7 +119,7 @@ public class Server extends ListActivity implements OnItemClickListener,OnClickL
 
 
         //si usamos un servicio
-      i =new Intent(this, ServicioListenerPedidos.class);
+        i =new Intent(this, ServicioListenerPedidos.class);
 
         i.putExtra("URLGlobal",URLGlobal);
         i.putExtra("receiverTag", mReceiver);
@@ -117,7 +127,7 @@ public class Server extends ListActivity implements OnItemClickListener,OnClickL
         threadListener = new Thread(new Runnable() {
             @Override
             public void run() {
-               Context c = getApplicationContext();
+                Context c = getApplicationContext();
                 c.startService(i);
             }
         });
@@ -133,49 +143,149 @@ public class Server extends ListActivity implements OnItemClickListener,OnClickL
 
     private BroadcastReceiver onEvent=new BroadcastReceiver() {
         public void onReceive(Context ctxt, Intent i) {
-           txtNotificaciones.setText(i.getStringExtra("json"));
+            txtNotificaciones.setText(i.getStringExtra("json"));
         }
     };
+
+
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_opciones_actualizar_pedido, menu);
+
+        if (v == getListView()) {
+            ListView listaDetalles = (ListView) v;
+            AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) menuInfo;
+            DetallePedido detalle = (DetallePedido) listaDetalles.getItemAtPosition(acmi.position);
+            int idEstado = detalle.getIdEstado();
+
+            //registrado? si es registrado mostrar cancelar o en preparacion
+            if(idEstado == 12)
+            {
+                MenuInflater inflater = getMenuInflater();
+                inflater.inflate(R.menu.menu_opciones_actualizar_pedido, menu);
+            }
+            else
+            {   //en preparacion mostrar cancelar o listo
+                MenuInflater inflater = getMenuInflater();
+                inflater.inflate(R.menu.menu_opciones_actualizar_pedido2, menu);
+            }
+        }
     }
+
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         final DetallePedido detalle =(DetallePedido) detallePedidoAdapter.getItem(info.position);
         switch (item.getItemId()) {
-            case R.id.pedidoListo:
-                if(detalle.getIdDetallePedido() > 0)
+            //en preparacion
+            case R.id.pedidoEnPreparacion:
+                if(detalle.getIdDetallePedido() >0)
                 {
+                    detalle.setNombreEstado(nombreEstadoDetallePedidoEnPreparacion);
+                    detalle.setIdEstado(idEstadoDetallePedidoEnPreparacion);
                     Thread thPedidos = new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            actualizarEstadoDetallePedidoFinalizado(detalle);
-                            obtenerDetallesPedidos();
-                        }
-                    });
-                    thPedidos.start();
-                return true;}
-            case R.id.pedidoCancelado:
-                if(detalle.getIdDetallePedido() > 0)
-                {
-                    Thread thPedidos = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            actualizarEstadoDetallePedidoFinalizado(detalle);
+                            actualizarEstadoDetallePedido(detalle);
                             obtenerDetallesPedidos();
                         }
                     });
                     thPedidos.start();
                     return true;}
+                //finalizar
+            case R.id.pedidoListo:
+                if(detalle.getIdDetallePedido() > 0)
+                {
+                    detalle.setNombreEstado(nombreEstadoDetallePedidoListo);
+                    detalle.setIdEstado(idEstadoDetallePedidoCocinado);
+                    Thread thPedidos = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            actualizarEstadoDetallePedido(detalle);
+                            obtenerDetallesPedidos();
+                        }
+                    });
+                    thPedidos.start();
+                    return true;}
+                //cancelar
+            case R.id.pedidoCancelado:
+                if(detalle.getIdDetallePedido() > 0)
+                {
+                    detalle.setNombreEstado(nombreEstadoDetallePedidoCancelado);
+                    detalle.setIdEstado(idEstadoDetallePedidoCancelado);
+                    Thread thPedidos = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            actualizarEstadoDetallePedido(detalle);
+                            obtenerDetallesPedidos();
+                        }
+                    });
+                    thPedidos.start();
+                    return true;}
+            case R.id.pedidoCancelado2:
+                if(detalle.getIdDetallePedido() > 0)
+                {
+                    detalle.setNombreEstado(nombreEstadoDetallePedidoCancelado);
+                    detalle.setIdEstado(idEstadoDetallePedidoCancelado);
+                    Thread thPedidos = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            actualizarEstadoDetallePedido(detalle);
+                            obtenerDetallesPedidos();
+                        }
+                    });
+                    thPedidos.start();
+                    return true;}
+
             default:
                 return super.onContextItemSelected(item);
+        }
+    }
+
+    public void actualizarEstadoDetallePedido(DetallePedido detalle)
+    {
+        HttpURLConnection urlConn = null;
+        try {
+
+            String response = "No se conecto";
+            StringBuilder result = new StringBuilder();
+            URL url2 = new URL(URLGlobal + "pedido/actualizarDetallePedido");
+
+            urlConn = (HttpURLConnection) url2.openConnection();
+            try {
+
+
+                urlConn.setChunkedStreamingMode(0);
+                urlConn.setDoOutput(true);
+                urlConn.setDoInput(true);
+                urlConn.setRequestProperty("Content-Type", "application/json");
+                urlConn.setRequestMethod("POST");
+                urlConn.connect();
+                //Create JSONObject here
+                JSONObject jsonParam = new JSONObject();
+
+                jsonParam.put("idDetallePedido", detalle.getIdDetallePedido());
+                jsonParam.put("nombreEstado", detalle.getNombreEstado());
+                jsonParam.put("idPedido",detalle.getIdPedido());
+
+
+                PrintWriter ow = new PrintWriter(urlConn.getOutputStream());
+
+                ow.print(jsonParam.toString());
+                // ow.flush();
+                ow.close();
+
+                int reqcoda = urlConn.getResponseCode();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+        } finally {
+            if (urlConn != null)
+                urlConn.disconnect();
         }
     }
 
@@ -368,6 +478,18 @@ public class Server extends ListActivity implements OnItemClickListener,OnClickL
                                                         case "cantidad":
                                                             detalle.setCantidad(reader1.nextInt());
                                                             break;
+                                                        case "observacion":
+                                                            if (reader1.peek() == JsonToken.NULL) {
+                                                                detalle.setObservacion("SIN OBSERVACION");
+                                                                reader1.skipValue();
+                                                            } else {
+                                                                detalle.setObservacion(reader1.nextString());
+                                                            }
+                                                            break;
+                                                        case "idEstado":
+                                                            detalle.setIdEstado(reader1.nextInt());
+                                                            detalle.setNombreEstado(obtenerNombrePorIdEstado(detalle.getIdEstado()));
+                                                            break;
                                                         default:
                                                             reader1.skipValue();
                                                             break;
@@ -384,6 +506,9 @@ public class Server extends ListActivity implements OnItemClickListener,OnClickL
                                                 detallesVector[i].setCantidad(detallesArray.get(i).getCantidad());
                                                 detallesVector[i].setIdDetallePedido(detallesArray.get(i).getIdDetallePedido());
                                                 detallesVector[i].setIdPedido(detallesArray.get(i).getIdPedido());
+                                                detallesVector[i].setObservacion(detallesArray.get(i).getObservacion());
+                                                detallesVector[i].setIdEstado(detallesArray.get(i).getIdEstado());
+                                                detallesVector[i].setNombreEstado(obtenerNombrePorIdEstado(detallesVector[i].getIdEstado()));
                                             }
                                             pedido.setArrayDetallesPedido(detallesVector);
                                         }
@@ -421,7 +546,7 @@ public class Server extends ListActivity implements OnItemClickListener,OnClickL
                                 detallePedidoAdapter.notifyDataSetChanged();
                             }
                         });
-                       // detallePedidoAdapter.notifyDataSetChanged();
+                        //detallePedidoAdapter.notifyDataSetChanged();
 
 
 
@@ -449,6 +574,13 @@ public class Server extends ListActivity implements OnItemClickListener,OnClickL
 
         }
 
+    }
+    private String obtenerNombrePorIdEstado(int idEstadoDetalle)
+    {
+        if(idEstadoDetalle == 12)
+            return nombreEstadoDetallePedidoRegistrado;
+        else
+            return nombreEstadoDetallePedidoEnPreparacion;
     }
 
     public void obtenerMesas() {
@@ -645,7 +777,7 @@ public class Server extends ListActivity implements OnItemClickListener,OnClickL
                 // ow.flush();
                 ow.close();
 
-               int reqcoda = urlConn.getResponseCode();
+                int reqcoda = urlConn.getResponseCode();
             } catch (Exception e) {
             }
         } catch (Exception e) {
@@ -670,9 +802,9 @@ public class Server extends ListActivity implements OnItemClickListener,OnClickL
                 e.printStackTrace();
             }
 
-           conectarActualizarPedido(idPedido, idEstado);
+            conectarActualizarPedido(idPedido, idEstado);
             //obtenerMesas();
-           // actualizarTexto2();
+            // actualizarTexto2();
             return null;
         }
 
@@ -802,8 +934,8 @@ public class Server extends ListActivity implements OnItemClickListener,OnClickL
 
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {
-               //asi funciono pero me parece que esto a la larga consume mucha memoria porque
-               // podria estar abriendo muchos hilos por cada actualizacion de pedidos
+            //asi funciono pero me parece que esto a la larga consume mucha memoria porque
+            // podria estar abriendo muchos hilos por cada actualizacion de pedidos
             Thread thpedidos2 = new Thread(new Runnable() {
                 @Override
                 public void run() {

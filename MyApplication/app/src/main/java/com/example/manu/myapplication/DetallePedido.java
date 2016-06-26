@@ -14,6 +14,15 @@ public class DetallePedido implements Serializable {
     private float totalDetalle;
     private int idInsumo;
     private String nombreEstado;
+    private String observacion;
+
+    public String getObservacion() {
+        return observacion;
+    }
+
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
+    }
 
     public String getNombreEstado() {
         return nombreEstado;
