@@ -2,23 +2,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
-    tools:context=".CategoriaMenuActivity" >
+    android:orientation="vertical"
+    tools:context=".CategoriaMenuActivity"
+    android:background="#314550">
 
-    <Button android:id="@+id/btnAceptarPedido"
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:background="#314550">
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/AceptarPedido" />
-
+        android:orientation="vertical"
+        android:background="#314550"
+        android:layout_weight="1">
+    <Button android:id="@+id/btnAceptarPedido"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="#FFFFFF"
+        android:text="@string/AceptarPedido"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:layout_margin="25dp"
+        android:background="@drawable/botonformato"
+        android:layout_gravity="center_horizontal"/>
     <RelativeLayout
         android:id="@+id/FragmentContainer1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"/>
+        android:background="#314550"/>
+    </LinearLayout>
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="#476B85"
+        android:layout_weight="0"/>
     <RelativeLayout
         android:id="@+id/FragmentContainer2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="0.5"/>
+        android:layout_weight="0.3"
+        android:background="#314550"/>
+
+
+</LinearLayout>
+
 
 </LinearLayout>

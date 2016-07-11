@@ -2,6 +2,7 @@ package com.example.manu.myapplication;
 
 import android.app.Activity;
 import android.app.ListFragment;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.JsonReader;
@@ -15,6 +16,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.manu.myapplication.Entidades.DetallePedido;
 import com.example.manu.myapplication.Entidades.Menus;
 import com.example.manu.myapplication.Entidades.TodasImages;
 
@@ -35,12 +37,15 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
     private TextView menus;
     private InterfazListadoMenus listener;
     private String URLGlobal;
+    private TextView cantidadMenus;
+    private ArrayList<DetallePedido> listadoDetallePedido;
 
-    public static MenusFragment newInstance(int idCategoria,String url) {
+    public static MenusFragment newInstance(int idCategoria, String url, ArrayList<DetallePedido> listadoDetallePedido) {
         MenusFragment fragment = new MenusFragment();
         Bundle args = new Bundle();
         args.putInt("idCategoria", idCategoria);
         args.putString("URLGlobal",url);
+        args.putSerializable("LISTADODETALLEPEDIDO",listadoDetallePedido);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,6 +57,7 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
         if (v != null) {
             //listaMenus = (ListView) v.findViewById(R.id.list);
             menus = (TextView) v.findViewById(R.id.textoMenus);
+            cantidadMenus = (TextView) v.findViewById(R.id.cantidadDeMenus);
         }
         return v;
     }
@@ -62,18 +68,51 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
 
         menus.setText("Menus");
         if (getArguments() != null) {
-            categ = getArguments().getInt("idCategoria", 0);
+            categ = getArguments().getInt("idCategoria", 8);
             URLGlobal = getArguments().getString("URLGlobal");
-            menus.setText("Categoria Seleccionada" + categ);
+            listadoDetallePedido = (ArrayList<DetallePedido>) getArguments().getSerializable("LISTADODETALLEPEDIDO");
+            String categoria = "";
+            switch (categ){
+                case 0 :
+                    categoria = "MINUTAS";
+                    break;
+                case 1 :
+                    categoria = "LOMITOS";
+                    break;
+                case 2 :
+                    categoria = "PASTAS";
+                    break;
+                case 3 :
+                    categoria = "TABLAS";
+                    break;
+                case 4 :
+                    categoria = "BEBIDAS";
+                    break;
+                case 5 :
+                    categoria = "PIZZAS";
+                    break;
+                case 6 :
+                    categoria = "POSTRES";
+                    break;
+                case 7 :
+                    categoria = "DESAYUNO";
+                    break;
+                default:
+                    categoria = "NO SELECCCIONÓ CATEGORÍA.";
+                    break;
+            }
+
+            menus.setText(categoria);
         }
 
         adapter = new MenusAdapter();
         setListAdapter(adapter);
         getListView().setOnItemClickListener(this);
 
-        Object[] obj = new Object[2];
+        Object[] obj = new Object[3];
         obj[0] = categ;
         obj[1] = URLGlobal;
+        obj[2] = listadoDetallePedido;
         new GetTask().execute(obj);
 
 
@@ -87,16 +126,44 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
          if(listener!=null)
         {
             listener.onMenuSelect(adapter.listaMenus.get(position));
+            Menus menu = adapter.listaMenus.get(position);
+            loadMenusSumarCantidad(menu);
         }
     }
 
-    private void loadMenus(ArrayList<Menus> listaMenus)
+    private void loadMenusSumarCantidad(Menus menu)
     {
+        ArrayList<Menus> listadoMenus = adapter.listaMenus;
+        adapter.clear();
+        for (Menus men: listadoMenus
+             ) {
+                if (men.getNombreMenu().equals(menu.getNombreMenu()))
+                {
+                    int cantidad = men.getCantidad() + 1;
+                    men.setCantidad(cantidad);
+                }
+             adapter.addMenus(men);
+        }
+        adapter.notifyDataSetChanged();
+    }
+    private void loadMenus(ArrayList<Menus> listaMenus, ArrayList<DetallePedido> listadoDetallePedido)
+    {
+        for (Menus m : listaMenus
+             ) {
+            for (DetallePedido det : listadoDetallePedido
+                 ) {
+                if (m.getNombreMenu().equals(det.getNombreMenu()))
+                {
+                    m.setCantidad(det.getCantidad());
+                    break;
+                }
+            }
+        }
         loadMenusData(listaMenus);
     }
     private void loadMenusData(ArrayList<Menus> listaMenus) {
 
-
+        adapter.clear();
         for (Menus cm : listaMenus
                 ) {
 
@@ -134,6 +201,9 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
             }
         }
 
+        public void clear() {
+            listaMenus = new ArrayList<>();
+        }
         @Override
         public int getCount() {
             return listaMenus.size();
@@ -153,6 +223,7 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
             private TextView txtNombreMenu;
             private TextView txtPrecio;
             private ImageView imageMenus;
+            private TextView cantidad;
         }
 
         @Override
@@ -168,6 +239,8 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
                         .findViewById(R.id.nombreMenus);
                 holder.txtPrecio = (TextView) convertView
                         .findViewById(R.id.precioMenus);
+                holder.cantidad = (TextView) convertView
+                        .findViewById(R.id.cantidadDeMenus);
 
                 convertView.setTag(holder);
             } else {
@@ -180,6 +253,17 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
             } else {
                 holder.imageMenus.setImageResource((ti.obtenerImagen(info.getIdInsumo(), false)).getIdImagen());
             }*/
+            int color;
+            if (info.getCantidad() == 0)
+                color = Color.WHITE;
+            else
+                color = Color.parseColor("#F38129");
+
+            holder.cantidad.setTextColor(color);
+            if(info.getCantidad() == 0)
+                holder.cantidad.setText("0");
+            else
+                holder.cantidad.setText(""+info.getCantidad());
             holder.imageMenus.setImageResource(R.drawable.agua);
             holder.txtNombreMenu.setText(info.getNombreMenu());
             holder.txtPrecio.setText("$" + info.getPrecio());
@@ -192,12 +276,15 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
     class GetTask extends AsyncTask<Object, String, String> {
 
         private Exception exception;
+
         private ArrayList<Menus> listaMenus = new ArrayList<>();
+        private ArrayList<DetallePedido> listadoDetallePedido;
         private Menus menus = new Menus();
         private String URLGlobal;
 
         protected String doInBackground(Object... params) {
             URLGlobal = params[1].toString();
+            listadoDetallePedido = (ArrayList<DetallePedido>) params[2];
             try {
                 String response = "No se conecto";
                     HttpURLConnection urlConn;
@@ -291,7 +378,7 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
 
         @Override
         protected void onPostExecute(String s) {
-            loadMenus(listaMenus);
+            loadMenus(listaMenus,listadoDetallePedido);
         }
     }
 }

@@ -26,7 +26,7 @@ public class CategoriaFragment extends ListFragment implements AdapterView.OnIte
         super.onActivityCreated(savedInstanceState);
 
 
-        ArrayAdapter adapter = ArrayAdapter.createFromResource(getActivity(), R.array.Categorias, android.R.layout.simple_list_item_1);
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(getActivity(), R.array.Categorias, R.layout.element_list_categoria);
         setListAdapter(adapter);
         getListView().setOnItemClickListener(this);
 

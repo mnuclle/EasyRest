@@ -20,6 +20,7 @@ import java.util.Iterator;
 public class CategoriaMenuActivity extends FragmentActivity implements InterfazCategorias,InterfazListadoMenus{
     private int NroCliente;
     private ArrayList<Menus> listadoMenus = new ArrayList<Menus>();
+    private ArrayList<DetallePedido> listadoDetalleAConfirmar;
     private Button btnAceptar;
     private String URLGlobal;
     @Override
@@ -30,6 +31,8 @@ public class CategoriaMenuActivity extends FragmentActivity implements InterfazC
         final Intent intent = getIntent();
         NroCliente=(int) intent.getExtras().get("IDCLIENTE");
         URLGlobal = intent.getExtras().get("URLGlobal").toString();
+        Bundle bundle = intent.getExtras();
+        listadoDetalleAConfirmar = (ArrayList<DetallePedido>) bundle.getSerializable("LISTAACONDFIRMAR");
 
         btnAceptar.setOnClickListener(new View.OnClickListener() {
             @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -60,7 +63,7 @@ public class CategoriaMenuActivity extends FragmentActivity implements InterfazC
                 .beginTransaction();
 
         CategoriaFragment fragment1 = new CategoriaFragment();
-        MenusFragment fragment2 = MenusFragment.newInstance(1,URLGlobal);
+        MenusFragment fragment2 = MenusFragment.newInstance(1,URLGlobal,listadoDetalleAConfirmar);
 
         fragmentTransaction.add(R.id.FragmentContainer1, fragment1);
         fragmentTransaction.add(R.id.FragmentContainer2, fragment2);
@@ -71,7 +74,13 @@ public class CategoriaMenuActivity extends FragmentActivity implements InterfazC
 
     private ArrayList<DetallePedido> loadListadoMenus(ArrayList<Menus> listado)
     {
-        ArrayList<DetallePedido> listadoMenusFinal = new ArrayList<>();
+        ArrayList<DetallePedido> listadoMenusFinal;
+
+        if (listadoDetalleAConfirmar != null )
+            listadoMenusFinal = listadoDetalleAConfirmar;
+        else
+            listadoMenusFinal = new ArrayList<>();
+
         boolean agrego = false;
         for(Iterator<Menus> it = listado.iterator(); it.hasNext();)
         {
@@ -138,7 +147,7 @@ public class CategoriaMenuActivity extends FragmentActivity implements InterfazC
     public void onCategoriaSelect(int idCategoria) {
 
 
-        MenusFragment frag2 = MenusFragment.newInstance(idCategoria,URLGlobal);
+        MenusFragment frag2 = MenusFragment.newInstance(idCategoria,URLGlobal,listadoDetalleAConfirmar);
 
         FragmentManager fm = getFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();

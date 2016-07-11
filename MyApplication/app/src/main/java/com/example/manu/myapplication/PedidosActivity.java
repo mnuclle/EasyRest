@@ -3,6 +3,7 @@ package com.example.manu.myapplication;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DialogFragment;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -48,15 +49,19 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 
-public class PedidosActivity extends ListActivity implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
+public class PedidosActivity extends ListActivity implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, DialogObservaciones.NoticeDialogListener {
     private Button btnElegirPedido, btnConfirmarPedido;
     private int NroCliente;
     private int NroOpcion = -1;
     private int positionLista;
     private PedidosAdapter adapter;
     private String URLGlobal;
+    private ArrayList<DetallePedido> listaMenusAConfirmar;
+    private TextView montoTotalPedido;
+    private TextView cuentaPedido;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -74,6 +79,11 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
         Intent intent = getIntent();
         NroCliente = (int) intent.getExtras().get("IDCLIENTE");
         URLGlobal = intent.getExtras().get("URLGlobal").toString();
+
+
+        cuentaPedido = (TextView) findViewById(R.id.cuentaPedido);
+        cuentaPedido.setText(intent.getExtras().get("CUENTAPEDIDO").toString());
+        montoTotalPedido = (TextView) findViewById(R.id.montoTotalPedido);
         btnElegirPedido = (Button) findViewById(R.id.btnElegirPedido);
 
         btnConfirmarPedido = (Button) findViewById(R.id.btnConfirmarPedido);
@@ -204,6 +214,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                             detalles.setCantidad(det.getCantidad());
                             detalles.setIdEstado(12);
                             detalles.setNombreInsumo(det.getNombreMenu());
+                            detalles.setObservacion(det.getObservacion());
 
                             JSONObject jsonObjectArray = new JSONObject();
                             jsonObjectArray.put("idDetallePedido", null);
@@ -216,6 +227,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                             jsonObjectArray.put("totalDetalle", detalles.getTotalDetalle());
                             jsonObjectArray.put("idInsumo", detalles.getIdInsumo() != 0 ? detalles.getIdInsumo() : null);
                             jsonObjectArray.put("nombreInsumo", detalles.getNombreInsumo());
+                            jsonObjectArray.put("observacion",(detalles.getObservacion() == null || detalles.getObservacion().trim().isEmpty()) ? null : detalles.getObservacion().trim());
                             ja.put(jsonObjectArray);
                         }
                     }
@@ -269,6 +281,18 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
         Intent intent = new Intent(this, CategoriaMenuActivity.class);
         intent.putExtra("IDCLIENTE", NroCliente);
         intent.putExtra("URLGlobal",URLGlobal);
+        listaMenusAConfirmar = new ArrayList<>();
+        for (Iterator<DetallePedido> it = adapter.getList().iterator(); it.hasNext();)
+        {
+            DetallePedido auxDetalle = it.next();
+            if(auxDetalle.getIdEstado() == 0)
+                listaMenusAConfirmar.add(auxDetalle);
+        }
+
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("LISTAACONDFIRMAR",listaMenusAConfirmar);
+        intent.putExtras(bundle);
         startActivityForResult(intent, 1);
     }
 
@@ -287,7 +311,11 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                 obj[0] = NroCliente;
                 if (listadoMenus.size() > 0)
                     obj[1] = listadoMenus;
-                obj[2] = URLGlobal;
+                else {
+                    listadoMenus = new ArrayList<>();
+                    obj[1] = listadoMenus;
+                }
+                    obj[2] = URLGlobal;
                 new GetTask().execute(obj);
             }
             if (resultCode == Activity.RESULT_CANCELED) {
@@ -410,6 +438,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                                     int idMenu = -1;
                                     int idEstado = -1;
                                     int idInsumo = -1;
+                                    String observacion = "";
                                     double totalDetalle = -1;
                                     reader1.beginObject();
                                     while (reader1.hasNext()) {
@@ -446,6 +475,13 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                                             case "idEstado":
                                                 idEstado = reader1.nextInt();
                                                 break;
+                                            case "observacion":
+                                                if (reader1.peek() == JsonToken.NULL) {
+                                                    reader1.skipValue();
+                                                } else {
+                                                    observacion = reader1.nextString();
+                                                }
+                                                break;
                                             default:
                                                 reader1.skipValue();
                                                 break;
@@ -460,7 +496,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                                     detallePed.setIdMenu(idMenu);
                                     detallePed.setIdEstado(idEstado);
                                     detallePed.setTotalDetalle(totalDetalle);
-
+                                    detallePed.setObservacion(observacion);
                                     listaDetalles.add(detallePed);
 
                                 }
@@ -624,7 +660,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
     }
 
     private void loadPedidosData() {
-
+        Double montoDetalles = 0.0;
         Intent intent = getIntent();
         adapter.clear();
         ArrayList<DetallePedido> listaDetalle = (ArrayList<DetallePedido>) intent.getExtras().get("LISTADETALLES");
@@ -633,95 +669,76 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
         for (DetallePedido cm : listaDetalle
                 ) {
             info = cm;
+            if (cm.getIdEstado() == 11 || cm.getIdEstado() == 12 || cm.getIdEstado() == 13 || cm.getIdEstado() == 16 )
+                montoDetalles = montoDetalles + cm.getTotalDetalle();
             adapter.addDetallesInfo(info);
         }
+        montoTotalPedido.setText("$" + montoDetalles);
         adapter.notifyDataSetChanged();
 
     }
 
     private void loadPedidosData(ArrayList<DetallePedido> listaDetalle, ArrayList<DetallePedido> listaMenus) {
-
+        Double montoDetalles = 0.0;
         DetallePedido info;
         adapter.clear();
         for (DetallePedido cm : listaDetalle
                 ) {
             info = cm;
-            adapter.addDetallesInfo(info);
-        }
-        for (DetallePedido cm : listaMenus
-                ) {
-            info = cm;
+            if (cm.getIdEstado() == 11 || cm.getIdEstado() == 12 || cm.getIdEstado() == 13 || cm.getIdEstado() == 16 )
+                montoDetalles = montoDetalles + cm.getTotalDetalle();
             adapter.addDetallesInfo(info);
         }
 
+        for (DetallePedido cm : listaMenus
+                ) {
+            info = cm;
+            if (cm.getIdEstado() == 11 || cm.getIdEstado() == 12 || cm.getIdEstado() == 13 || cm.getIdEstado() == 16 )
+                montoDetalles = montoDetalles + cm.getTotalDetalle();
+            adapter.addDetallesInfo(info);
+        }
+        montoTotalPedido.setText("$" + montoDetalles);
         adapter.notifyDataSetChanged();
 
     }
 
     private void loadPedidosData(ArrayList<DetallePedido> listaDetalle) {
 
-        DetallePedido info;
-        adapter.clear();
-        for (DetallePedido cm : listaDetalle
-                ) {
-            if (cm.getIdEstado() == 0)
-                cm.setIdEstado(12);
-            info = cm;
-            adapter.addDetallesInfo(info);
+        ArrayList<DetallePedido> listadoMenus = new ArrayList<DetallePedido>();
+        Object[] obj = new Object[3];
+        obj[0] = NroCliente;
+        if (listadoMenus.size() > 0)
+            obj[1] = listadoMenus;
+        else {
+            listadoMenus = new ArrayList<>();
+            obj[1] = listadoMenus;
         }
+        obj[2] = URLGlobal;
 
-        adapter.notifyDataSetChanged();
+        new GetTask().execute(obj);
 
         Toast.makeText(this, "Pedido registrado", Toast.LENGTH_SHORT).show();
 
     }
 
-    /*private ArrayList<DetallesPedido> loadMenusInDetalles(ArrayList<Menus> listadoMenus)
-    {
-        boolean primeraVez = true;
-        ArrayList<DetallesPedido> listaDetallesMenu = new ArrayList<>();
-        for (Menus menu: listadoMenus
-             ) {
+    private void loadPedidosData(ArrayList<DetallePedido> listaDetalle, int idDetallePedido) {
 
-            DetallesPedido det = new DetallesPedido();
-            det.setIdMenu(menu.getIdMenu());
-            det.setIdInsumo(menu.getIdInsumo());
-            det.setIdCategoria(menu.getIdCategoria());
-            det.setCantidad(1);
-            det.setPrecio(menu.getPrecio());
-            det.setNombreMenu(menu.getNombreMenu());
-            det.setIdEstado(0);
-            det.setTotalDetalle((det.getCantidad()*det.getPrecio()));
-
-            if(primeraVez) {
-                listaDetallesMenu.add(det);
-                primeraVez = false;
-            }
-            else {
-                for(Iterator<DetallesPedido> it = listaDetallesMenu.iterator(); it.hasNext();)
-                {
-                    DetallesPedido detalle = it.next();
-                    //ConcurrentModificationException
-                    if (((detalle.getIdInsumo() == det.getIdInsumo()) && detalle.getIdInsumo() != 0) || ((detalle.getIdMenu() == det.getIdMenu()) && detalle.getIdMenu() != 0)) {
-                        detalle.setCantidad(detalle.getCantidad() + 1);
-                        detalle.setTotalDetalle(detalle.getCantidad()*detalle.getPrecio());
-                        break;
-                    } else {
-                        listaDetallesMenu.add(det);
-                    }
-                }
-
-
-
-
-            }
-
+        ArrayList<DetallePedido> listadoMenus = new ArrayList<DetallePedido>();
+        Object[] obj = new Object[3];
+        obj[0] = NroCliente;
+        if (listadoMenus.size() > 0)
+            obj[1] = listadoMenus;
+        else {
+            listadoMenus = new ArrayList<>();
+            obj[1] = listadoMenus;
         }
+        obj[2] = URLGlobal;
 
-        return listaDetallesMenu;
+        new GetTask().execute(obj);
+
+        Toast.makeText(this, "Menú anulado.", Toast.LENGTH_SHORT).show();
+
     }
-*/
-
 
     class PedidosAdapter extends BaseAdapter {
         private ArrayList<DetallePedido> listaDetallesPedidos;
@@ -782,6 +799,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
             private TextView txtCantidad;
             private TextView txtMontoDetalle;
             private ImageView imageMenu;
+            private TextView txtObservaciones;
             private TextView txtEstadoMenu;
         }
 
@@ -802,6 +820,8 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                         .findViewById(R.id.montoDetalle);
                 holder.txtEstadoMenu = (TextView) convertView
                         .findViewById(R.id.estadoDetalle);
+                holder.txtObservaciones = (TextView) convertView
+                        .findViewById(R.id.observaciones);
                 convertView.setTag(holder);
             } else {
                 holder = (Holder) convertView.getTag();
@@ -840,16 +860,46 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
             if (info.getIdEstado() == 25)
                 estado = "COBRO PARCIAL";
             holder.txtEstadoMenu.setText(estado);
+            int color;
             if (info.getIdEstado() == 0) {
-                int color = Color.RED;
-                holder.txtNombreMenu.setTextColor(color);
-                holder.txtCantidad.setTextColor(color);
-                holder.txtMontoDetalle.setTextColor(color);
-            } else {
-                int color = Color.BLACK;
-                holder.txtNombreMenu.setTextColor(color);
-                holder.txtCantidad.setTextColor(color);
-                holder.txtMontoDetalle.setTextColor(color);
+                color = Color.parseColor("#F38129");
+        }
+            else
+            {
+                if (info.getIdEstado() == 14 || info.getIdEstado() == 13)
+                    color = Color.GRAY;
+                else
+                    color = Color.WHITE;
+            }
+            holder.txtNombreMenu.setTextColor(color);
+            holder.txtCantidad.setTextColor(color);
+            holder.txtMontoDetalle.setTextColor(color);
+            holder.txtObservaciones.setTextColor(color);
+            holder.txtEstadoMenu.setTextColor(color);
+
+
+            String observ = info.getObservacion();
+            if (info.getIdEstado() == 0) {
+                if (observ == null) {
+                    holder.txtObservaciones.setText("Toca para agregar una observación al menú.");
+                } else {
+                    if (observ.trim().isEmpty())
+                        holder.txtObservaciones.setText("Toca para agregar una observación al menú.");
+                    else
+                        holder.txtObservaciones.setText(info.getObservacion());
+                }
+            }
+            else {
+                if (observ == null) {
+                    holder.txtObservaciones.setText("Sin observaciones.");
+                } else {
+
+
+                    if (observ.trim().isEmpty())
+                        holder.txtObservaciones.setText("Sin observaciones.");
+                    else
+                        holder.txtObservaciones.setText(info.getObservacion());
+                }
             }
 
             return convertView;
@@ -862,9 +912,47 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                             long arg3) {
 
         DetallePedido cm = (DetallePedido) getListAdapter().getItem(position);
+        if(cm.getIdEstado() == 0) {
+            DialogObservaciones dialog = new DialogObservaciones();
+            dialog.setItem(cm);
+            dialog.show(getFragmentManager(), "DialogObservaciones");
+        }
 
-        String nombre = cm.getNombreMenu();
-        Toast.makeText(this, "nombre menu:" + nombre, Toast.LENGTH_LONG).show();
+    }
+
+    // The dialog fragment receives a reference to this Activity through the
+    // Fragment.onAttach() callback, which it uses to call the following methods
+    // defined by the NoticeDialogFragment.NoticeDialogListener interface
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+        adapter.notifyDataSetChanged();
+
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        // User touched the dialog's negative button
+
+    }
+
+    private void anularMenuPedido(int position)
+    {
+        Object[] obj = new Object[3];
+        obj[1] = URLGlobal;
+        DetallePedido detalle = (DetallePedido) adapter.getItem(position);
+
+        obj[0] = detalle.getIdDetallePedido();
+        obj[2] = adapter.getList();
+
+
+
+
+        new AnularDetalleTask().execute(obj);
+
+
+
+       // adapter.remove(position);
+      //  adapter.notifyDataSetChanged();
 
 
     }
@@ -901,7 +989,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
         if(detalle.getIdEstado() == 0) {
 
             final CharSequence[] items = {
-                    "Eliminar todos", "Eliminar uno", "Cancelar"
+                    "Eliminar todos", "Eliminar uno","Cancelar"
             };
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -927,8 +1015,31 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
             alert.show();
         }
         else
+        if (!(detalle.getIdEstado() == 14 || detalle.getIdEstado() == 13 || detalle.getIdEstado() == 16 || detalle.getIdEstado() == 25))
         {
-            Toast.makeText(this, "Pedido ya registrado.", Toast.LENGTH_LONG).show();
+            final CharSequence[] items = {
+                    "Anular Menu Pedido", "Cancelar"
+            };
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("ACCIONES");
+            builder.setItems(items, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int item) {
+                    // Do something with the selection
+                    if (item == 0) // Anular Menu Pedido
+                    {
+                        anularMenuPedido(position);
+                    } else {
+                       ;
+                    }
+                }
+            });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+        else
+        {
+            Toast.makeText(this, "Sin acciones para menu anulado, cancelado o cobrado.", Toast.LENGTH_SHORT).show();
         }
         return true;
     }
@@ -954,6 +1065,85 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
 
         return super.onOptionsItemSelected(item);
     }
+
+
+
+    class AnularDetalleTask extends AsyncTask<Object, String, String> {
+
+        private String URLGlobal;
+        private int idDetallePedido;
+        ArrayList<DetallePedido> listaDetalle;
+        protected String doInBackground(Object... params) {
+            URLGlobal = params[1].toString();
+            listaDetalle = (ArrayList<DetallePedido>)(params[2]);
+            idDetallePedido = (int) params[0];
+            try {
+                String response = "No se conecto";
+
+                try {
+                    HttpURLConnection urlConn;
+                    StringBuilder result = new StringBuilder();
+                    URL url = new URL(URLGlobal + "pedido/anularDetallePedido");
+                    urlConn = (HttpURLConnection) url.openConnection();
+                    try {
+
+                        urlConn.setChunkedStreamingMode(0);
+                        urlConn.setDoOutput(true);
+                        urlConn.setDoInput(true);
+                        urlConn.setRequestProperty("Content-Type", "application/json");
+                        urlConn.setRequestMethod("POST");
+                        urlConn.connect();
+                        //Create JSONObject here
+                        JSONObject jsonParam = new JSONObject();
+                        jsonParam.put("idDetallePedido",  + ((int) params[0]));
+
+                        PrintWriter ow = new PrintWriter(urlConn.getOutputStream());
+
+                        ow.print(jsonParam.toString());
+                        // ow.flush();
+                        ow.close();
+
+
+                        int reqcoda = urlConn.getResponseCode();
+
+                        InputStream in = new BufferedInputStream(urlConn.getInputStream());
+
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+
+
+                        String line;
+                        boolean leyo = false;
+                        while ((line = reader.readLine()) != null) {
+                            result.append(line);
+                            leyo = true;
+                        }
+
+
+                    }
+                    catch (Exception e ) {
+                        e.printStackTrace();
+                    }
+                    finally {
+                        urlConn.disconnect();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+
+                }
+
+                } catch (Exception e) {
+                e.printStackTrace();
+
+            }
+
+            return null;
+        }
+
+        protected void onPostExecute(String st) {
+            loadPedidosData(listaDetalle,idDetallePedido);
+        }
+    }
+
 
 
 }

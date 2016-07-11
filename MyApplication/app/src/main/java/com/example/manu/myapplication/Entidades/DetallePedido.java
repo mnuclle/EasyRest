@@ -17,7 +17,23 @@ public class DetallePedido implements Serializable {
     private int idInsumo;
      private double precio;
     private int idCategoria;
+    private String observacion;
 
+    public String getNombreEstado() {
+        return nombreEstado;
+    }
+
+    public void setNombreEstado(String nombreEstado) {
+        this.nombreEstado = nombreEstado;
+    }
+
+    public String getObservacion() {
+        return observacion;
+    }
+
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
+    }
 
     public DetallePedido() {
     }

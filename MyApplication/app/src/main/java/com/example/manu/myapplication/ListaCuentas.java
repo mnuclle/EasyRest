@@ -1,6 +1,7 @@
 package com.example.manu.myapplication;
 
 import android.app.ListActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -36,12 +37,14 @@ public class ListaCuentas extends ListActivity implements
 {
     private CuentasAdapter adapter;
     private String URLGlobal;
-
+    private int idEmpleado;
+    private boolean primerIngreso = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_cuentas);
         URLGlobal = getIntent().getExtras().get("URLGlobal").toString();
+        idEmpleado = (int)getIntent().getExtras().get("IDEMPLEADO");
         adapter = new CuentasAdapter();
 
         setListAdapter(adapter);
@@ -63,71 +66,24 @@ public class ListaCuentas extends ListActivity implements
             info = cm;
             adapter.addCuentasInfo(info);
         }
-
-        /*
-        info.setNombreCuenta("Juan Perez");
-        info.setNumeroDocumento(35966806);
-        info.setNumeroMesa("2-3-4");
-        info.setMontoPedido(0);
-        adapter.addCuentasInfo(info);
-
-        info = new CuentasMesa();
-        info.setNombreCuenta("Manuel Calle");
-        info.setNumeroDocumento(34555888);
-        info.setNumeroMesa("5-6-7");
-        info.setMontoPedido(250);
-        adapter.addCuentasInfo(info);
-
-        info = new CuentasMesa();
-        info.setNombreCuenta("Daniel Peres");
-        info.setNumeroDocumento(32654987);
-        info.setNumeroMesa("1");
-        info.setMontoPedido(360.50);
-        adapter.addCuentasInfo(info);
-
-
-        info = new CuentasMesa();
-        info.setNombreCuenta("Karen Valverde");
-        info.setNumeroDocumento(39658896);
-        info.setNumeroMesa("9");
-        info.setMontoPedido(0);
-        adapter.addCuentasInfo(info);
-
-
-        info = new CuentasMesa();
-        info.setNombreCuenta("Catherine Huguet");
-        info.setNumeroDocumento(45678912);
-        info.setNumeroMesa("8");
-        info.setMontoPedido(1205);
-        adapter.addCuentasInfo(info);
-
-        info = new CuentasMesa();
-        info.setNombreCuenta("Daniel Peres");
-        info.setNumeroDocumento(32654987);
-        info.setNumeroMesa("1");
-        info.setMontoPedido(360.50);
-        adapter.addCuentasInfo(info);
-
-
-        info = new CuentasMesa();
-        info.setNombreCuenta("Karen Valverde");
-        info.setNumeroDocumento(39658896);
-        info.setNumeroMesa("9");
-        info.setMontoPedido(0);
-        adapter.addCuentasInfo(info);
-
-
-        info = new CuentasMesa();
-        info.setNombreCuenta("Catherine Huguet");
-        info.setNumeroDocumento(45678912);
-        info.setNumeroMesa("8");
-        info.setMontoPedido(1205);
-        adapter.addCuentasInfo(info);
-*/
         adapter.notifyDataSetChanged();
 
     }
 
+    private void loadCuentasData(ArrayList<CuentasMesa> arrayList) {
+
+        Intent intent = getIntent();
+        ArrayList<CuentasMesa> listaCuentas = arrayList;
+        adapter.clear();
+        CuentasMesa info;
+        for (CuentasMesa cm : listaCuentas
+                ) {
+            info = cm;
+            adapter.addCuentasInfo(info);
+        }
+        adapter.notifyDataSetChanged();
+
+    }
 
     class CuentasAdapter extends BaseAdapter {
         private ArrayList<CuentasMesa> cuentasMesa;
@@ -142,6 +98,9 @@ public class ListaCuentas extends ListActivity implements
             if (info != null) {
                 cuentasMesa.add(info);
             }
+        }
+        public void clear() {
+            cuentasMesa = new ArrayList<>();
         }
 
         @Override
@@ -164,6 +123,7 @@ public class ListaCuentas extends ListActivity implements
             private TextView txtMesas;
             private TextView txtMontoPedido;
             private ImageView imgIcono;
+            private TextView txtNombreMesas;
                     }
 
         @Override
@@ -180,6 +140,8 @@ public class ListaCuentas extends ListActivity implements
                         .findViewById(R.id.mesas);
                 holder.txtMontoPedido = (TextView) convertView
                         .findViewById(R.id.montoPedido);
+                holder.txtNombreMesas = (TextView) convertView
+                        .findViewById(R.id.nombreMesas);
 
                 convertView.setTag(holder);
             } else {
@@ -191,9 +153,20 @@ public class ListaCuentas extends ListActivity implements
             holder.txtCuenta.setText(info.getNombreCuenta() + " - " + info.getNumeroDocumento());
             holder.txtMesas.setText(info.getNumeroMesa());
             holder.txtMontoPedido.setText("$" + info.getMontoPedido());
+            holder.txtNombreMesas.setText("Mesas");
 
             return convertView;
         }
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!primerIngreso)
+            new PostTaskEmp(URLGlobal, idEmpleado).execute();
+        else
+            primerIngreso = false;
 
     }
 
@@ -205,8 +178,8 @@ public class ListaCuentas extends ListActivity implements
         Object[] listaObjetos = new Object[5];
         listaObjetos[0] = idCliente;
         listaObjetos[1] = URLGlobal;
+        listaObjetos[2] = "MESA: " + cm.getNumeroMesa() + " - CLIENTE: " + cm.getNumeroDocumento() + ", " + cm.getNombreCuenta() ;
         new GetTask().execute(listaObjetos);
-
     }
 
 
@@ -324,6 +297,7 @@ public class ListaCuentas extends ListActivity implements
                                     int idMenu = -1;
                                     int idEstado = -1;
                                     int idInsumo = -1;
+                                    String observacion = "";
                                     double totalDetalle = -1;
                                     reader1.beginObject();
                                     while (reader1.hasNext()) {
@@ -360,6 +334,13 @@ public class ListaCuentas extends ListActivity implements
                                             case "idEstado":
                                                 idEstado = reader1.nextInt();
                                                 break;
+                                            case "observacion":
+                                                if (reader1.peek() == JsonToken.NULL) {
+                                                     reader1.skipValue();
+                                                } else {
+                                                    observacion = reader1.nextString();
+                                                }
+                                                break;
                                             default:
                                                 reader1.skipValue();
                                                 break;
@@ -374,7 +355,7 @@ public class ListaCuentas extends ListActivity implements
                                     detallePed.setIdMenu(idMenu);
                                     detallePed.setIdEstado(idEstado);
                                     detallePed.setTotalDetalle(totalDetalle);
-
+                                    detallePed.setObservacion(observacion);
                                     listaDetalles.add(detallePed);
 
                                 }
@@ -527,7 +508,7 @@ public class ListaCuentas extends ListActivity implements
                         intent.putExtra("LISTADETALLES", listaDetalles);
                         intent.putExtra("IDCLIENTE",((int) params[0]));
                         intent.putExtra("URLGlobal", URLGlobal);
-
+                        intent.putExtra("CUENTAPEDIDO",params[2].toString());
                         startActivity(intent);
                     }
                 }
@@ -567,6 +548,128 @@ public class ListaCuentas extends ListActivity implements
 
         return super.onOptionsItemSelected(item);
     }
+
+
+
+    class PostTaskEmp extends AsyncTask<Object,String,String> {
+
+        private Exception exception;
+        private int error = 0;
+        private Context contexto;
+        String response = "No se conecto";
+        String URLGlobal;
+        int idEmpleado;
+        ArrayList<CuentasMesa> lista = new ArrayList<>();
+        public PostTaskEmp(String url,int idEmpleado)
+        {
+            this.URLGlobal = url;
+            this.idEmpleado = idEmpleado;
+        }
+        protected String doInBackground(Object... params){
+            try {
+
+
+                        HttpURLConnection urlConn1;
+                        StringBuilder result1 = new StringBuilder();
+                        URL url = new URL(URLGlobal + "mesas/obtenerTodasCuentasMozo/" + idEmpleado);
+
+                        urlConn1 = (HttpURLConnection)url.openConnection();
+
+                        InputStream in1 = new BufferedInputStream(urlConn1.getInputStream());
+
+                        BufferedReader reader1 = new BufferedReader(new InputStreamReader(in1));
+
+                        String line1;
+                        while ((line1 = reader1.readLine()) != null) {
+                            result1.append(line1);
+                        }
+
+
+                        try {
+                            JsonReader reader2 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result1.toString().getBytes(StandardCharsets.UTF_8))));
+
+                            try {
+                                response = "GET: ";
+
+                                reader2.beginArray();
+                                while(reader2.hasNext()) {
+                                    int idCliente = -1;
+                                    int nro_documento = -1;
+                                    String n_cliente = "";
+                                    int idEstadoCuenta = -1;
+                                    String mesas = "";
+                                    double montoPedido = 0;
+
+                                    reader2.beginObject();
+                                    while (reader2.hasNext()) {
+                                        String name = reader2.nextName();
+                                        switch (name) {
+                                            case "id_cliente":
+                                                idCliente = reader2.nextInt();
+                                                break;
+                                            case "mesas":
+                                                mesas = reader2.nextString();
+                                                break;
+                                            case "nro_documento":
+                                                nro_documento = reader2.nextInt();
+                                                break;
+                                            case "n_cliente":
+                                                n_cliente =  reader2.nextString();
+                                                break;
+                                            case "montoPedido":
+                                                montoPedido =  reader2.nextDouble();
+                                                break;
+                                            case "idEstadoCuenta":
+                                                idEstadoCuenta =  reader2.nextInt();
+                                                break;
+                                            default:
+                                                reader2.skipValue();
+                                                break;
+                                        }
+                                    }
+
+                                    CuentasMesa cm = new CuentasMesa();
+                                    cm.setIdCliente(idCliente);
+                                    cm.setNumeroMesa(mesas);
+                                    cm.setNumeroDocumento(nro_documento);
+                                    cm.setNombreCuenta(n_cliente);
+                                    cm.setMontoPedido(montoPedido);
+                                    cm.setIdEstado(idEstadoCuenta);
+
+                                    lista.add(cm);
+
+                                    // response += "\nMesa: " + id + " " + cantSillas + " " + idCuenta + " " + posicion + " " + numeroMesa + ".\n";
+                                    reader2.endObject();
+                                }
+
+
+
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                urlConn1.disconnect();
+                            }
+
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+
+
+
+                } catch (Exception e) {
+                e.printStackTrace();
+                error = 1;
+            }
+            return null;
+        }
+
+        protected void onPostExecute(String st) {
+            loadCuentasData(lista);
+        }
+    }
+
 
 }
 

@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.JsonReader;
 import android.util.JsonToken;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -54,11 +55,13 @@ public class MainActivity extends Activity {
 
         txtUsuario = (EditText) findViewById(R.id.txtUsuario);
         txtContraseña = (EditText) findViewById(R.id.txtContraseña);
-        lblContraseña = (TextView) findViewById(R.id.lblContraseña);
+//        lblContraseña = (TextView) findViewById(R.id.lblContraseña);
         btnIniciarSesion = (Button) findViewById(R.id.btnIniciarSesion);
         cmbTipoUsuario = (Spinner) findViewById(R.id.cmbTipoUsuario);
         loadSpinner();
 
+        txtUsuario.setGravity(Gravity.CENTER_HORIZONTAL);
+        txtContraseña.setGravity(Gravity.CENTER_HORIZONTAL);
         txtUsuario.setText("DAMIANCERRO");
         txtContraseña.setText("DCERRO1");
 //        txtUsuario.setText("SEBASTIANCARDOZO");
@@ -113,9 +116,9 @@ public class MainActivity extends Activity {
 
     private void loadSpinner() {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this, R.array.arrayTipoUsuario, android.R.layout.simple_spinner_item);
+                this, R.array.arrayTipoUsuario, /*android.R.layout.simple_spinner_item*/R.layout.element_list_usuario);
         // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(/*android.R.layout.simple_spinner_dropdown_item*/ R.layout.spinner_ddown_item);
         // Apply the adapter to the spinner
         this.cmbTipoUsuario.setAdapter(adapter);
 
@@ -128,13 +131,39 @@ public class MainActivity extends Activity {
                 String empleado = "EMPLEADO";
                 if (cliente.equals(text)) {
                     tipoUsr = 1;
-                    lblContraseña.setVisibility(View.INVISIBLE);
+//                    lblContraseña.setVisibility(View.INVISIBLE);
                     txtContraseña.setVisibility(View.INVISIBLE);
+
+
+
+
+                    /*
+
+                    <EditText android:id="@+id/txtContraseña"
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:textSize="25sp"
+        android:layout_margin="25dp"
+        android:layout_marginTop="40dp"
+        android:background="#476B85"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:hint="Ingrese su Usuario"
+        />
+
+                    */
+
+
+
+
                 }
                 if (empleado.equals(text)) {
                     tipoUsr = 2;
-                    lblContraseña.setVisibility(View.VISIBLE);
+//                    lblContraseña.setVisibility(View.VISIBLE);
                     txtContraseña.setVisibility(View.VISIBLE);
+
                 }
             }
 
@@ -600,6 +629,7 @@ public class MainActivity extends Activity {
                         intent.putExtras(b);
                         intent.putExtra("LISTA",lista);
                         intent.putExtra("URLGlobal", URLGlobal);
+                        intent.putExtra("IDEMPLEADO",b.getInt("IDEMPLEADO"));
                         startActivity(intent);
 
                     }
