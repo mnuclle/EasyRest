@@ -1,0 +1,63 @@
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#314550"
+    >
+
+    <TextView
+        android:id="@+id/textoMenusCliente"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Categoria:"
+        android:gravity="center"
+        android:layout_margin="10px"
+        android:background="#476B85"
+        android:textColor="#FFFFFF"
+        android:textSize="35sp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
+        android:textStyle="bold"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1">
+        <ListView
+            android:id="@android:id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:drawSelectorOnTop="false"
+            android:textColor="#000000"
+            android:textSize="25sp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="0dp"
+            android:bottomRightRadius="100dp"
+            android:bottomLeftRadius="100dp"
+            android:topLeftRadius="100dp"
+            android:topRightRadius="100dp"
+            android:background="#314550"
+            android:layout_weight="0.8"
+            android:divider="#476B85"
+            android:dividerHeight="3px"/>
+        <TextView
+            android:id="@android:id/empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="La categoria no contiene ningúm menú."
+            android:background="#476B85"
+            android:textColor="#FFFFFF"
+            android:textSize="35sp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
+            />
+    </FrameLayout>
+
+</LinearLayout>

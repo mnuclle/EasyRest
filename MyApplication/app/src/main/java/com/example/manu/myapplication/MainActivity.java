@@ -8,7 +8,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.JsonReader;
-import android.util.JsonToken;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.manu.myapplication.Cliente.ClientePedidoActivity;
 import com.example.manu.myapplication.Entidades.CuentasMesa;
 
 import org.json.JSONObject;
@@ -300,6 +300,9 @@ public class MainActivity extends Activity {
         private int error = 0;
         String response = "No se conecto";
         private String URLGlobal;
+        private int idUsuario;
+        private String nombre;
+        CuentasMesa cm = new CuentasMesa();
         public PostTask(Context context,String url)
         {
             this.URLGlobal = url;
@@ -352,54 +355,63 @@ public class MainActivity extends Activity {
                             response = "POST: ";
 
                                 reader1.beginObject();
-                                int idUsuario = -1;
-                                String nombreUsuario = "";
-                                int idRol = -1;
-                                String fechaAlta = "";
-                                String fechaBaja = "";
+
+                                int idCliente = -1;
+                                String numeroMesa = "";
+                                int numeroDocumento =0;
+                                String nombreCuenta = "";
+                                int idEstado = -1;
+                                Double montoPedido = 0.0;
 
                                 while (reader1.hasNext()) {
                                     String name = reader1.nextName();
                                     switch (name) {
-                                        case "idUsuario":
-                                            idUsuario = reader1.nextInt();
+                                        case "id_cliente" :
+                                            idCliente = reader1.nextInt();
                                             break;
-                                        case "nombreUsuario":
-                                            nombreUsuario = reader1.nextString();
+                                        case "mesas" :
+                                            numeroMesa = reader1.nextString();
                                             break;
-                                        case "fechaBaja":
-
-                                            if (reader1.peek() == JsonToken.NULL) {
-                                                fechaBaja = "";
-                                                reader1.skipValue();
-                                            }
-                                            else {
-                                                fechaBaja = reader1.nextString();
-                                            }
+                                        case "nro_documento" :
+                                            numeroDocumento = reader1.nextInt();
                                             break;
-                                        case "idRol":
-                                            idRol =  reader1.nextInt();
+                                        case "n_cliente":
+                                            nombreCuenta = reader1.nextString();
                                             break;
-                                        case "fechaAlta":
-                                            fechaAlta =  reader1.nextString();
+                                        case "idEstadoCuenta":
+                                            idEstado = reader1.nextInt();
+                                            break;
+                                        case "montoPedido":
+                                            montoPedido = reader1.nextDouble();
                                             break;
                                         default:
                                             reader1.skipValue();
                                             break;
                                     }
                                 }
-                                response += "\nCliente: " + idUsuario + " " + nombreUsuario + " " + idRol + " " + fechaAlta + " " + fechaBaja + ".";
-                                reader1.endObject();
+                        cm.setIdCliente(idCliente);
+                        cm.setIdEstado(idEstado);
+                        cm.setMontoPedido(montoPedido);
+                        cm.setNombreCuenta(nombreCuenta);
+                        cm.setNumeroDocumento(numeroDocumento);
+                        cm.setNumeroMesa(numeroMesa);
+                        reader1.endObject();
+
+
+
+
+
                     }
                     else
                     {
                         response = "Usuario y contraseña incorrectos.";
                     }
 
-                    Intent intent = new Intent(MainActivity.this, ListaCuentas.class);
+                    Intent intent = new Intent(MainActivity.this, ClientePedidoActivity.class);
                     Bundle b = new Bundle();
-                    b.putString("USUARIO", response);
+                    b.putInt("IDCLIENTE", cm.getIdCliente());
                     b.putString("URLGlobal", URLGlobal);
+                    b.putString("CUENTAPEDIDO","MESA: " + cm.getNumeroMesa() + " - CLIENTE: " + cm.getNumeroDocumento() + ", " + cm.getNombreCuenta());
 
                     intent.putExtras(b);
                     startActivity(intent);

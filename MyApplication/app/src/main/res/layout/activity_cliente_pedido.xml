@@ -1,0 +1,127 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#314550"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#476B85"
+        android:layout_margin="10px"
+        >
+        <TextView
+            android:id="@+id/cuentaPedidoCliente"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Pedido"
+            android:gravity="center"
+            android:layout_gravity="start|center"
+            android:background="#476B85"
+            android:textColor="#FFFFFF"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/montoTotalPedidoCliente"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:text="Pedido"
+            android:gravity="end"
+            android:layout_gravity="end|center"
+            android:background="#476B85"
+            android:textColor="#FFFFFF"
+            android:textSize="50sp"
+            android:textStyle="bold"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="0"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#314550"
+        >
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#314550"
+            android:layout_weight="1">
+            <ListView
+                android:id="@android:id/list"
+                android:background="#476B85"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.8"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="0dp"
+                android:bottomRightRadius="100dp"
+                android:bottomLeftRadius="100dp"
+                android:topLeftRadius="100dp"
+                android:topRightRadius="100dp"
+                android:divider="#476B85"
+                android:dividerHeight="3px"
+                android:drawSelectorOnTop="false"
+                />
+
+            <TextView
+                android:id="@android:id/empty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.05"
+                android:gravity ="center"
+                android:background="#476B85"
+                android:textColor="#FFFFFF"
+                android:textSize="35sp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:textStyle="bold"
+                android:text="No ha pedido nada aún." />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_weight="0">
+
+            <Button android:id="@+id/btnElegirPedidoCliente"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pedido"
+                android:textSize="25sp"
+                android:textColor="#FFFFFF"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_margin="25dp"
+                android:background="@drawable/botonformato"
+
+                />
+            <Button android:id="@+id/btnConfirmarPedidoCliente"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ConfirmarPedido"
+                android:textSize="25sp"
+                android:textColor="#FFFFFF"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_margin="25dp"
+                android:background="@drawable/botonformato"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
