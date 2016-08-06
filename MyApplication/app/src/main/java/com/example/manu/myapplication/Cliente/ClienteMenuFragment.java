@@ -1,4 +1,4 @@
-package com.example.manu.myapplication;
+package com.example.manu.myapplication.Cliente;
 
 import android.app.Activity;
 import android.app.ListFragment;
@@ -19,6 +19,8 @@ import android.widget.TextView;
 import com.example.manu.myapplication.Entidades.DetallePedido;
 import com.example.manu.myapplication.Entidades.Menus;
 import com.example.manu.myapplication.Entidades.TodasImages;
+import com.example.manu.myapplication.InterfazListadoMenus;
+import com.example.manu.myapplication.R;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -31,7 +33,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 
-public class MenusFragment extends ListFragment implements AdapterView.OnItemClickListener{
+public class ClienteMenuFragment extends ListFragment implements AdapterView.OnItemClickListener{
     private MenusAdapter adapter;
     private int categ = 0;
     private TextView menus;
@@ -40,8 +42,8 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
     private TextView cantidadMenus;
     private ArrayList<DetallePedido> listadoDetallePedido;
 
-    public static MenusFragment newInstance(int idCategoria, String url, ArrayList<DetallePedido> listadoDetallePedido) {
-        MenusFragment fragment = new MenusFragment();
+    public static ClienteMenuFragment newInstance(int idCategoria, String url, ArrayList<DetallePedido> listadoDetallePedido) {
+        ClienteMenuFragment fragment = new ClienteMenuFragment();
         Bundle args = new Bundle();
         args.putInt("idCategoria", idCategoria);
         args.putString("URLGlobal",url);
@@ -53,10 +55,10 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_menus, container, false);
+        View v = inflater.inflate(R.layout.fragment_cliente_menu, container, false);
         if (v != null) {
             //listaMenus = (ListView) v.findViewById(R.id.list);
-            menus = (TextView) v.findViewById(R.id.textoMenus);
+            menus = (TextView) v.findViewById(R.id.textoMenusCliente);
             cantidadMenus = (TextView) v.findViewById(R.id.cantidadDeMenus);
         }
         return v;
@@ -123,7 +125,7 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
 
         /* Toast.makeText(getActivity(), "Ha pulsado menu " + position + " " + adapter.listaMenus.get(position).getNombreMenu(),
                 Toast.LENGTH_SHORT).show();*/
-         if(listener!=null)
+        if(listener!=null)
         {
             listener.onMenuSelect(adapter.listaMenus.get(position));
             Menus menu = adapter.listaMenus.get(position);
@@ -136,22 +138,22 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
         ArrayList<Menus> listadoMenus = adapter.listaMenus;
         adapter.clear();
         for (Menus men: listadoMenus
-             ) {
-                if (men.getNombreMenu().equals(menu.getNombreMenu()))
-                {
-                    int cantidad = men.getCantidad() + 1;
-                    men.setCantidad(cantidad);
-                }
-             adapter.addMenus(men);
+                ) {
+            if (men.getNombreMenu().equals(menu.getNombreMenu()))
+            {
+                int cantidad = men.getCantidad() + 1;
+                men.setCantidad(cantidad);
+            }
+            adapter.addMenus(men);
         }
         adapter.notifyDataSetChanged();
     }
     private void loadMenus(ArrayList<Menus> listaMenus, ArrayList<DetallePedido> listadoDetallePedido)
     {
         for (Menus m : listaMenus
-             ) {
+                ) {
             for (DetallePedido det : listadoDetallePedido
-                 ) {
+                    ) {
                 if (m.getNombreMenu().equals(det.getNombreMenu()))
                 {
                     m.setCantidad(det.getCantidad());
@@ -224,16 +226,15 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
             private TextView txtPrecio;
             private ImageView imageMenus;
             private TextView cantidad;
-            private TextView txtDescripcion;
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup arg2) {
 
-            Holder holder;
+            MenusAdapter.Holder holder;
             if (convertView == null) {
                 convertView = inflater.inflate(R.layout.elemento_lista_menus, null);
-                holder = new Holder();
+                holder = new MenusAdapter.Holder();
                 holder.imageMenus = (ImageView) convertView
                         .findViewById(R.id.imagenMenus);
                 holder.txtNombreMenu = (TextView) convertView
@@ -242,12 +243,10 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
                         .findViewById(R.id.precioMenus);
                 holder.cantidad = (TextView) convertView
                         .findViewById(R.id.cantidadDeMenus);
-                holder.txtDescripcion = (TextView) convertView
-                        .findViewById(R.id.observacionesMenu);
 
                 convertView.setTag(holder);
             } else {
-                holder = (Holder) convertView.getTag();
+                holder = (MenusAdapter.Holder) convertView.getTag();
             }
 
             Menus info = (Menus) getItem(position);
@@ -270,7 +269,6 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
             holder.imageMenus.setImageResource(R.drawable.agua);
             holder.txtNombreMenu.setText(info.getNombreMenu());
             holder.txtPrecio.setText("$" + info.getPrecio());
-            holder.txtDescripcion.setText(info.getDescripcion());
 
             return convertView;
         }
@@ -291,97 +289,92 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
             listadoDetallePedido = (ArrayList<DetallePedido>) params[2];
             try {
                 String response = "No se conecto";
-                    HttpURLConnection urlConn;
-                    StringBuilder result = new StringBuilder();
-                    URL url = new URL(URLGlobal+"menu/menusXCateg/" + (((int) params[0])+1)); //obtengo los menus de las categorias por params[0]
+                HttpURLConnection urlConn;
+                StringBuilder result = new StringBuilder();
+                URL url = new URL(URLGlobal+"menu/menusXCateg/" + (((int) params[0])+1)); //obtengo los menus de las categorias por params[0]
 
-                    urlConn = (HttpURLConnection) url.openConnection();
+                urlConn = (HttpURLConnection) url.openConnection();
 
-                    InputStream in = new BufferedInputStream(urlConn.getInputStream());
+                InputStream in = new BufferedInputStream(urlConn.getInputStream());
 
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        result.append(line);
-                    }
-                    try {
-                        JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(StandardCharsets.UTF_8))));
-                        response = "GET: ";
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    result.append(line);
+                }
+                try {
+                    JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(StandardCharsets.UTF_8))));
+                    response = "GET: ";
 
-                        reader1.beginArray();
+                    reader1.beginArray();
+                    while (reader1.hasNext()) {
+                        int idMenu = -1;
+                        int idInsumo = -1;
+                        int idCategoria = -1;
+                        String nombre = "";
+                        boolean esMenu = false;
+                        double precio = 0;
+                        reader1.beginObject();
                         while (reader1.hasNext()) {
-                            int idMenu = -1;
-                            int idInsumo = -1;
-                            int idCategoria = -1;
-                            String nombre = "";
-                            boolean esMenu = false;
-                            double precio = 0;
-                            String descripcion ="";
-                            reader1.beginObject();
-                            while (reader1.hasNext()) {
-                                String name = reader1.nextName();
-                                switch (name) {
-                                    case "idMenu":
-                                        if (reader1.peek() == JsonToken.NULL)
-                                        {
-                                            reader1.skipValue();
-                                        } else {
-                                            idMenu = reader1.nextInt();
-                                        }
-                                        break;
-                                    case "idInsumo":
-                                        if (reader1.peek() == JsonToken.NULL)
-                                        {
-                                            reader1.skipValue();
-                                        } else {
-                                            idInsumo = reader1.nextInt();
-                                        }
-                                        break;
-                                    case "nombre":
-                                        nombre = reader1.nextString();
-                                        break;
-                                    case "idCategoria":
-                                        idCategoria = reader1.nextInt();
-                                        break;
-                                    case "esMenu":
-                                        String esMenuAux = "S";
-                                        if (reader1.nextString() == esMenuAux)
-                                            esMenu = true;
-                                        break;
-                                    case "precio":
-                                        precio = reader1.nextDouble();
-                                        break;
-                                    case "descripcion":
-                                        descripcion = reader1.nextString();
-                                        break;
-                                    default:
+                            String name = reader1.nextName();
+                            switch (name) {
+                                case "idMenu":
+                                    if (reader1.peek() == JsonToken.NULL)
+                                    {
                                         reader1.skipValue();
-                                        break;
-                                }
+                                    } else {
+                                        idMenu = reader1.nextInt();
+                                    }
+                                    break;
+                                case "idInsumo":
+                                    if (reader1.peek() == JsonToken.NULL)
+                                    {
+                                        reader1.skipValue();
+                                    } else {
+                                        idInsumo = reader1.nextInt();
+                                    }
+                                    break;
+                                case "nombre":
+                                    nombre = reader1.nextString();
+                                    break;
+                                case "idCategoria":
+                                    idCategoria = reader1.nextInt();
+                                    break;
+                                case "esMenu":
+                                    String esMenuAux = "S";
+                                    if (reader1.nextString() == esMenuAux)
+                                        esMenu = true;
+                                    break;
+                                case "precio":
+                                    precio = reader1.nextDouble();
+                                    break;
+                                default:
+                                    reader1.skipValue();
+                                    break;
                             }
-                            reader1.endObject();
-                            menus = new Menus();
-                            if (idInsumo == -1)
-                                menus.setIdMenu(idMenu);
-                            else
-                                menus.setIdInsumo(idInsumo);
-                            menus.setEsMenu(esMenu);
-                            menus.setPrecio(precio);
-                            menus.setNombreMenu(nombre);
-                            menus.setIdCategoria(idCategoria);
-                            menus.setDescripcion(descripcion);
-                            listaMenus.add(menus);
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    } finally {
-                        urlConn.disconnect();
+                        reader1.endObject();
+                        menus = new Menus();
+                        if (idInsumo == -1)
+                            menus.setIdMenu(idMenu);
+                        else
+                            menus.setIdInsumo(idInsumo);
+                        menus.setEsMenu(esMenu);
+                        menus.setPrecio(precio);
+                        menus.setNombreMenu(nombre);
+                        menus.setIdCategoria(idCategoria);
+                        listaMenus.add(menus);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                } finally {
+                    urlConn.disconnect();
                 }
-                {}
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            {}
             return null;
         }
 

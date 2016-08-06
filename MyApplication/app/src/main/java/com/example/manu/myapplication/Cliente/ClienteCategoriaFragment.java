@@ -1,4 +1,4 @@
-package com.example.manu.myapplication;
+package com.example.manu.myapplication.Cliente;
 
 import android.app.Activity;
 import android.app.ListFragment;
@@ -10,7 +10,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
-public class CategoriaFragment extends ListFragment implements AdapterView.OnItemClickListener{
+import com.example.manu.myapplication.InterfazCategorias;
+import com.example.manu.myapplication.R;
+
+
+public class ClienteCategoriaFragment extends ListFragment implements AdapterView.OnItemClickListener{
 
     private InterfazCategorias listener;
 
@@ -19,7 +23,7 @@ public class CategoriaFragment extends ListFragment implements AdapterView.OnIte
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_categoria, container, false);
+        return inflater.inflate(R.layout.fragment_cliente_categoria, container, false);
     }
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

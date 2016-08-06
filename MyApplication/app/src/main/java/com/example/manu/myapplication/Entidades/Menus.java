@@ -1,7 +1,5 @@
 package com.example.manu.myapplication.Entidades;
 
-import android.os.Parcelable;
-
 import java.io.Serializable;
 
 /**
@@ -14,7 +12,25 @@ public class Menus implements Serializable{
     private boolean esMenu;
     private String nombreMenu;
     private double precio;
-private int idCategoria;
+    private int idCategoria;
+    private int cantidad;
+    private String descripcion;
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
 
     public int getIdCategoria() {
         return idCategoria;

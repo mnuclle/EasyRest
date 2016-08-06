@@ -8,7 +8,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.JsonReader;
-import android.util.JsonToken;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.manu.myapplication.Cliente.ClientePedidoActivity;
 import com.example.manu.myapplication.Entidades.CuentasMesa;
 
 import org.json.JSONObject;
@@ -54,11 +55,13 @@ public class MainActivity extends Activity {
 
         txtUsuario = (EditText) findViewById(R.id.txtUsuario);
         txtContraseña = (EditText) findViewById(R.id.txtContraseña);
-        lblContraseña = (TextView) findViewById(R.id.lblContraseña);
+//        lblContraseña = (TextView) findViewById(R.id.lblContraseña);
         btnIniciarSesion = (Button) findViewById(R.id.btnIniciarSesion);
         cmbTipoUsuario = (Spinner) findViewById(R.id.cmbTipoUsuario);
         loadSpinner();
 
+        txtUsuario.setGravity(Gravity.CENTER_HORIZONTAL);
+        txtContraseña.setGravity(Gravity.CENTER_HORIZONTAL);
         txtUsuario.setText("DAMIANCERRO");
         txtContraseña.setText("DCERRO1");
 //        txtUsuario.setText("SEBASTIANCARDOZO");
@@ -113,9 +116,9 @@ public class MainActivity extends Activity {
 
     private void loadSpinner() {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this, R.array.arrayTipoUsuario, android.R.layout.simple_spinner_item);
+                this, R.array.arrayTipoUsuario, /*android.R.layout.simple_spinner_item*/R.layout.element_list_usuario);
         // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(/*android.R.layout.simple_spinner_dropdown_item*/ R.layout.spinner_ddown_item);
         // Apply the adapter to the spinner
         this.cmbTipoUsuario.setAdapter(adapter);
 
@@ -128,13 +131,39 @@ public class MainActivity extends Activity {
                 String empleado = "EMPLEADO";
                 if (cliente.equals(text)) {
                     tipoUsr = 1;
-                    lblContraseña.setVisibility(View.INVISIBLE);
+//                    lblContraseña.setVisibility(View.INVISIBLE);
                     txtContraseña.setVisibility(View.INVISIBLE);
+
+
+
+
+                    /*
+
+                    <EditText android:id="@+id/txtContraseña"
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:textSize="25sp"
+        android:layout_margin="25dp"
+        android:layout_marginTop="40dp"
+        android:background="#476B85"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:hint="Ingrese su Usuario"
+        />
+
+                    */
+
+
+
+
                 }
                 if (empleado.equals(text)) {
                     tipoUsr = 2;
-                    lblContraseña.setVisibility(View.VISIBLE);
+//                    lblContraseña.setVisibility(View.VISIBLE);
                     txtContraseña.setVisibility(View.VISIBLE);
+
                 }
             }
 
@@ -271,6 +300,9 @@ public class MainActivity extends Activity {
         private int error = 0;
         String response = "No se conecto";
         private String URLGlobal;
+        private int idUsuario;
+        private String nombre;
+        CuentasMesa cm = new CuentasMesa();
         public PostTask(Context context,String url)
         {
             this.URLGlobal = url;
@@ -323,54 +355,63 @@ public class MainActivity extends Activity {
                             response = "POST: ";
 
                                 reader1.beginObject();
-                                int idUsuario = -1;
-                                String nombreUsuario = "";
-                                int idRol = -1;
-                                String fechaAlta = "";
-                                String fechaBaja = "";
+
+                                int idCliente = -1;
+                                String numeroMesa = "";
+                                int numeroDocumento =0;
+                                String nombreCuenta = "";
+                                int idEstado = -1;
+                                Double montoPedido = 0.0;
 
                                 while (reader1.hasNext()) {
                                     String name = reader1.nextName();
                                     switch (name) {
-                                        case "idUsuario":
-                                            idUsuario = reader1.nextInt();
+                                        case "id_cliente" :
+                                            idCliente = reader1.nextInt();
                                             break;
-                                        case "nombreUsuario":
-                                            nombreUsuario = reader1.nextString();
+                                        case "mesas" :
+                                            numeroMesa = reader1.nextString();
                                             break;
-                                        case "fechaBaja":
-
-                                            if (reader1.peek() == JsonToken.NULL) {
-                                                fechaBaja = "";
-                                                reader1.skipValue();
-                                            }
-                                            else {
-                                                fechaBaja = reader1.nextString();
-                                            }
+                                        case "nro_documento" :
+                                            numeroDocumento = reader1.nextInt();
                                             break;
-                                        case "idRol":
-                                            idRol =  reader1.nextInt();
+                                        case "n_cliente":
+                                            nombreCuenta = reader1.nextString();
                                             break;
-                                        case "fechaAlta":
-                                            fechaAlta =  reader1.nextString();
+                                        case "idEstadoCuenta":
+                                            idEstado = reader1.nextInt();
+                                            break;
+                                        case "montoPedido":
+                                            montoPedido = reader1.nextDouble();
                                             break;
                                         default:
                                             reader1.skipValue();
                                             break;
                                     }
                                 }
-                                response += "\nCliente: " + idUsuario + " " + nombreUsuario + " " + idRol + " " + fechaAlta + " " + fechaBaja + ".";
-                                reader1.endObject();
+                        cm.setIdCliente(idCliente);
+                        cm.setIdEstado(idEstado);
+                        cm.setMontoPedido(montoPedido);
+                        cm.setNombreCuenta(nombreCuenta);
+                        cm.setNumeroDocumento(numeroDocumento);
+                        cm.setNumeroMesa(numeroMesa);
+                        reader1.endObject();
+
+
+
+
+
                     }
                     else
                     {
                         response = "Usuario y contraseña incorrectos.";
                     }
 
-                    Intent intent = new Intent(MainActivity.this, ListaCuentas.class);
+                    Intent intent = new Intent(MainActivity.this, ClientePedidoActivity.class);
                     Bundle b = new Bundle();
-                    b.putString("USUARIO", response);
+                    b.putInt("IDCLIENTE", cm.getIdCliente());
                     b.putString("URLGlobal", URLGlobal);
+                    b.putString("CUENTAPEDIDO","MESA: " + cm.getNumeroMesa() + " - CLIENTE: " + cm.getNumeroDocumento() + ", " + cm.getNombreCuenta());
 
                     intent.putExtras(b);
                     startActivity(intent);
@@ -600,6 +641,7 @@ public class MainActivity extends Activity {
                         intent.putExtras(b);
                         intent.putExtra("LISTA",lista);
                         intent.putExtra("URLGlobal", URLGlobal);
+                        intent.putExtra("IDEMPLEADO",b.getInt("IDEMPLEADO"));
                         startActivity(intent);
 
                     }

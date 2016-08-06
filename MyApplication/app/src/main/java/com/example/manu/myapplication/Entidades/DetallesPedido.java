@@ -17,7 +17,15 @@ public class DetallesPedido implements Serializable {
     public double totalDetalle;
     public int idInsumo;
     public String nombreInsumo;
+    public String observacion;
 
+    public String getObservacion() {
+        return observacion;
+    }
+
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
+    }
 
     public int getIdDetallePedido() {
         return idDetallePedido;

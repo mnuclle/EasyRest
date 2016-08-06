@@ -1,4 +1,4 @@
-package com.example.manu.myapplication;
+package com.example.manu.myapplication.Cliente;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -27,10 +27,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.manu.myapplication.DialogObservaciones;
 import com.example.manu.myapplication.Entidades.DetallePedido;
 import com.example.manu.myapplication.Entidades.DetallesPedido;
 import com.example.manu.myapplication.Entidades.Pedidos;
 import com.example.manu.myapplication.Entidades.TodasImages;
+import com.example.manu.myapplication.R;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
@@ -51,8 +53,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-
-public class PedidosActivity extends ListActivity implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, DialogObservaciones.NoticeDialogListener {
+public class ClientePedidoActivity extends ListActivity implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, DialogObservaciones.NoticeDialogListener {
     private Button btnElegirPedido, btnConfirmarPedido;
     private int NroCliente;
     private int NroOpcion = -1;
@@ -72,7 +73,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pedidos);
+        setContentView(R.layout.activity_cliente_pedido);
 
         /*Se agrega esto*/
 
@@ -81,12 +82,12 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
         URLGlobal = intent.getExtras().get("URLGlobal").toString();
 
 
-        cuentaPedido = (TextView) findViewById(R.id.cuentaPedido);
+        cuentaPedido = (TextView) findViewById(R.id.cuentaPedidoCliente);
         cuentaPedido.setText(intent.getExtras().get("CUENTAPEDIDO").toString());
-        montoTotalPedido = (TextView) findViewById(R.id.montoTotalPedido);
-        btnElegirPedido = (Button) findViewById(R.id.btnElegirPedido);
+        montoTotalPedido = (TextView) findViewById(R.id.montoTotalPedidoCliente);
+        btnElegirPedido = (Button) findViewById(R.id.btnElegirPedidoCliente);
 
-        btnConfirmarPedido = (Button) findViewById(R.id.btnConfirmarPedido);
+        btnConfirmarPedido = (Button) findViewById(R.id.btnConfirmarPedidoCliente);
 
         btnElegirPedido.setOnClickListener(new View.OnClickListener() {
             @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -120,11 +121,19 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
         getListView().setOnItemClickListener(this);
         getListView().setOnItemLongClickListener(this);
 
-        loadPedidosData();
-
+        //loadPedidosData();
+        cargarAdapter();
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+    }
+
+    private void cargarAdapter() {
+        Object[] obj = new Object[3];
+        obj[0] = NroCliente;
+        obj[1] = new ArrayList<>();
+        obj[2] = URLGlobal;
+        new GetTask().execute(obj);
     }
 
     /**
@@ -278,7 +287,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
     }
 
     private void startActivityCategoria() {
-        Intent intent = new Intent(this, CategoriaMenuActivity.class);
+        Intent intent = new Intent(this, ClienteCategoriaMenuActivity.class);
         intent.putExtra("IDCLIENTE", NroCliente);
         intent.putExtra("URLGlobal",URLGlobal);
         listaMenusAConfirmar = new ArrayList<>();
@@ -291,7 +300,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
 
 
         Bundle bundle = new Bundle();
-        bundle.putSerializable("LISTAACONDFIRMAR",listaMenusAConfirmar);
+        bundle.putSerializable("LISTAACONFIRMAR",listaMenusAConfirmar);
         intent.putExtras(bundle);
         startActivityForResult(intent, 1);
     }
@@ -315,7 +324,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                     listadoMenus = new ArrayList<>();
                     obj[1] = listadoMenus;
                 }
-                    obj[2] = URLGlobal;
+                obj[2] = URLGlobal;
                 new GetTask().execute(obj);
             }
             if (resultCode == Activity.RESULT_CANCELED) {
@@ -536,7 +545,6 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                                             String nombre = "";
                                             double precio = -1;
                                             int idCategoria = -1;
-                                            String descripcion ="";
                                             reader1.beginObject();
                                             while (reader1.hasNext()) {
                                                 String name = reader1.nextName();
@@ -553,9 +561,6 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                                                     case "idCategoria":
                                                         idCategoria = reader1.nextInt();
                                                         break;
-                                                    case "descripcion":
-                                                        descripcion = reader1.nextString();
-                                                        break;
                                                     default:
                                                         reader1.skipValue();
                                                         break;
@@ -565,7 +570,6 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                                             reader1.endObject();
                                             det.setNombreMenu(nombre);
                                             det.setPrecio(precio);
-                                            det.setDescripcion(descripcion);
                                             det.setIdCategoria(idCategoria);
                                         }
                                     } catch (Exception e) {
@@ -633,7 +637,6 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                                             reader1.endObject();
                                             det.setNombreMenu(nombre);
                                             det.setPrecio(precio);
-                                            det.setDescripcion(descripcion);
                                             det.setIdCategoria(idCategoria);
                                         }
                                     } catch (Exception e) {
@@ -756,7 +759,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
 
             listaDetallesPedidos = new ArrayList<>();
 
-            inflater = LayoutInflater.from(PedidosActivity.this);
+            inflater = LayoutInflater.from(ClientePedidoActivity.this);
             ti = new TodasImages();
         }
 
@@ -807,17 +810,15 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
             private ImageView imageMenu;
             private TextView txtObservaciones;
             private TextView txtEstadoMenu;
-            private TextView txtDescripcion;
-            private TextView txtCategoria;
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup arg2) {
 
-            Holder holder;
+            PedidosAdapter.Holder holder;
             if (convertView == null) {
                 convertView = inflater.inflate(R.layout.elemento_lista_pedido, null);
-                holder = new Holder();
+                holder = new PedidosAdapter.Holder();
                 holder.imageMenu = (ImageView) convertView
                         .findViewById(R.id.imagenMenu);
                 holder.txtNombreMenu = (TextView) convertView
@@ -830,14 +831,9 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                         .findViewById(R.id.estadoDetalle);
                 holder.txtObservaciones = (TextView) convertView
                         .findViewById(R.id.observaciones);
-                holder.txtDescripcion = (TextView) convertView
-                        .findViewById(R.id.descripciones);
-                holder.txtCategoria = (TextView) convertView
-                        .findViewById(R.id.categoriaNombre);
                 convertView.setTag(holder);
-
             } else {
-                holder = (Holder) convertView.getTag();
+                holder = (PedidosAdapter.Holder) convertView.getTag();
             }
 
 
@@ -849,37 +845,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                 holder.imageMenu.setImageResource((ti.obtenerImagen(info.getIdInsumo(), false)).getIdImagen());
             }
 
-            String categoria = "";
-            switch (info.getIdCategoria()){
-                case 1 :
-                    categoria = "MINUTAS";
-                    break;
-                case 2 :
-                    categoria = "LOMITOS";
-                    break;
-                case 3 :
-                    categoria = "PASTAS";
-                    break;
-                case 4 :
-                    categoria = "TABLAS";
-                    break;
-                case 5 :
-                    categoria = "BEBIDAS";
-                    break;
-                case 6 :
-                    categoria = "PIZZAS";
-                    break;
-                case 7 :
-                    categoria = "POSTRES";
-                    break;
-                case 8 :
-                    categoria = "DESAYUNO";
-                    break;
-
-            }
-            holder.txtCategoria.setText(categoria);
             holder.txtNombreMenu.setText(info.getNombreMenu());
-            holder.txtDescripcion.setText("(" + info.getDescripcion()+ ")");
             String cantidad = "" + info.getCantidad();
             holder.txtCantidad.setText(cantidad);
             holder.txtMontoDetalle.setText("$" + info.getTotalDetalle());
@@ -903,7 +869,6 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
             if (info.getIdEstado() == 25)
                 estado = "COBRO PARCIAL";
             holder.txtEstadoMenu.setText(estado);
-
             int color;
             if (info.getIdEstado() == 0) {
                 color = Color.parseColor("#F38129");
@@ -920,8 +885,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
             holder.txtMontoDetalle.setTextColor(color);
             holder.txtObservaciones.setTextColor(color);
             holder.txtEstadoMenu.setTextColor(color);
-            holder.txtDescripcion.setTextColor(color);
-            holder.txtCategoria.setTextColor(color);
+
 
             String observ = info.getObservacion();
             if (info.getIdEstado() == 0) {
@@ -996,8 +960,8 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
 
 
 
-       // adapter.remove(position);
-      //  adapter.notifyDataSetChanged();
+        // adapter.remove(position);
+        //  adapter.notifyDataSetChanged();
 
 
     }
@@ -1076,7 +1040,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                     {
                         anularMenuPedido(position);
                     } else {
-                       ;
+                        ;
                     }
                 }
             });
@@ -1177,7 +1141,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
 
                 }
 
-                } catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
 
             }
