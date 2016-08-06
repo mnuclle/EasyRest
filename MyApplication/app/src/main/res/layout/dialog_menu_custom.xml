@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/layout_linear_dialog">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/linearLPedidos"
+        android:background="@drawable/layout_linear_dialog">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:background="@drawable/layout_borde_titulo"
+            android:id="@+id/linearLTitulo"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+
+            >
+            <TextView
+                android:id="@+id/txtTituloPedidos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#476B85"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:layout_marginLeft="20px"
+                android:layout_marginTop="20px"
+                android:layout_marginBottom="20px"
+                android:text="Seleccione un estado"
+                />
+    </LinearLayout>
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:showDividers="middle"
+            android:divider="#e4e4e7"
+            android:dividerPadding="10px">
+            <TableRow android:showDividers="middle">
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.8">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="En Preparación"
+                        android:textSize="25sp"/>
+                </LinearLayout>
+            </TableRow>
+            <TableRow android:showDividers="middle">
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.8">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cancelar"
+                        android:textSize="25sp"/>
+                </LinearLayout>
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
+</LinearLayout>

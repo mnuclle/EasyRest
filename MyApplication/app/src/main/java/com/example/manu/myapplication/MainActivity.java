@@ -45,7 +45,7 @@ public class MainActivity extends Activity {
     private int tipoUsr = 0; /*si es 1 es cliente si es 2 es Empleado*/
     private Usuario us;
     private String URLGlobal = "http://172.16.0.2:8082/api/";
-//    private String URLGlobal = "http://192.168.1.3:8082/api/"; //ACA PONE TU URL DANI - creo que es esa que puse.
+    //private String URLGlobal = "http://192.168.1.3:8082/api/"; //ACA PONE TU URL DANI - creo que es esa que puse.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

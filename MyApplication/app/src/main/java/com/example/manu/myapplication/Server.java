@@ -1,13 +1,17 @@
 package com.example.manu.myapplication;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ListActivity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,16 +20,20 @@ import android.support.v4.os.ResultReceiver;
 import android.util.JsonReader;
 import android.util.JsonToken;
 import android.view.ContextMenu;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -179,6 +187,9 @@ public class Server extends ListActivity implements OnItemClickListener,OnClickL
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         final DetallePedido detalle =(DetallePedido) detallePedidoAdapter.getItem(info.position);
+        //mostrar dialog prueba
+        //showDialog(2);
+        createCustomDialog();
         switch (item.getItemId()) {
             //en preparacion
             case R.id.pedidoEnPreparacion:
@@ -243,6 +254,8 @@ public class Server extends ListActivity implements OnItemClickListener,OnClickL
             default:
                 return super.onContextItemSelected(item);
         }
+
+
     }
 
     public void actualizarEstadoDetallePedido(DetallePedido detalle)
@@ -293,6 +306,10 @@ public class Server extends ListActivity implements OnItemClickListener,OnClickL
     @Override
     public void onItemClick(AdapterView<?> arg0, View convertView, int position, long arg3) {
 
+        if(convertView.getId() == R.id.listaMenuDialog)
+        {
+            Toast.makeText(this,"Hizo click",3);
+        }
         final DetallePedido detalle;
         detalle = (DetallePedido)detallePedidoAdapter.getItem(position);
 
@@ -948,4 +965,82 @@ public class Server extends ListActivity implements OnItemClickListener,OnClickL
     }
 
 
+    //INTENTO DIALOG CUSTOM CON LISTA
+
+    private Dialog createCustomDialog() {
+//        Dialog dialog = new Dialog(this);
+//        dialog.setContentView(R.layout.dialog_menu);
+//        dialog.setTitle("DIALOG PRUEBA");
+//
+//        TextView text = (TextView) dialog.findViewById(R.id.text);
+//        text.setText("DIALOG PROBANDO EL MSJE");
+//        ListView lista = (ListView) dialog.findViewById(R.id.listaMenuDialog);
+
+//        DialogMenuListAdapter adapterMenu = new DialogMenuListAdapter();
+//        lista.setAdapter(adapterMenu);
+//        lista.setOnItemClickListener(this);
+//        adapterMenu.notifyDataSetChanged();
+
+        AlertDialog.Builder builderSingle = new AlertDialog.Builder(Server.this);
+//        builderSingle.setIcon(R.drawable.logo);
+//        builderSingle.setTitle("Elija un estado");
+        LayoutInflater inflater = (LayoutInflater)this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.dialog_menu_custom, (ViewGroup)findViewById(R.id.layout_root));
+
+         AlertDialog dialogAlerta = builderSingle.create();
+         dialogAlerta.setView(layout,0,0,0,0);
+         dialogAlerta.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        //builderSingle.show();
+         dialogAlerta.show();
+
+//        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+//                Server.this,
+//                R.layout.elemento_lista_dialog_select);
+//        arrayAdapter.add("En Preparacion");
+//        arrayAdapter.add("Cancelar");
+//        builderSingle.setNegativeButton(
+//                "cancel",
+//                new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.dismiss();
+//                    }
+//                });
+//
+//        builderSingle.setAdapter(
+//                arrayAdapter,
+//                new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        String strName = arrayAdapter.getItem(which);
+//                        AlertDialog.Builder builderInner = new AlertDialog.Builder(
+//                                Server.this);
+//                        builderInner.setMessage(strName);
+//                        builderInner.setTitle("Elegiste:");
+//                        builderInner.setPositiveButton(
+//                                "Ok",
+//                                new DialogInterface.OnClickListener() {
+//                                    @Override
+//                                    public void onClick(
+//                                            DialogInterface dialog,
+//                                            int which) {
+//                                        dialog.dismiss();
+//                                    }
+//                                });
+//                        builderInner.show();
+//                    }
+//                });
+
+       // builderSingle.show();
+
+        return dialogAlerta;
+    }
+
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        Dialog dialog = null;
+        dialog = createCustomDialog();
+        return dialog;
+    }
 }
