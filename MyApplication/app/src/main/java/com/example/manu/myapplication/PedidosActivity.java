@@ -536,6 +536,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                                             String nombre = "";
                                             double precio = -1;
                                             int idCategoria = -1;
+                                            String descripcion ="";
                                             reader1.beginObject();
                                             while (reader1.hasNext()) {
                                                 String name = reader1.nextName();
@@ -552,6 +553,9 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                                                     case "idCategoria":
                                                         idCategoria = reader1.nextInt();
                                                         break;
+                                                    case "descripcion":
+                                                        descripcion = reader1.nextString();
+                                                        break;
                                                     default:
                                                         reader1.skipValue();
                                                         break;
@@ -561,6 +565,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                                             reader1.endObject();
                                             det.setNombreMenu(nombre);
                                             det.setPrecio(precio);
+                                            det.setDescripcion(descripcion);
                                             det.setIdCategoria(idCategoria);
                                         }
                                     } catch (Exception e) {
@@ -628,6 +633,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                                             reader1.endObject();
                                             det.setNombreMenu(nombre);
                                             det.setPrecio(precio);
+                                            det.setDescripcion(descripcion);
                                             det.setIdCategoria(idCategoria);
                                         }
                                     } catch (Exception e) {
@@ -801,6 +807,8 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
             private ImageView imageMenu;
             private TextView txtObservaciones;
             private TextView txtEstadoMenu;
+            private TextView txtDescripcion;
+            private TextView txtCategoria;
         }
 
         @Override
@@ -822,7 +830,12 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                         .findViewById(R.id.estadoDetalle);
                 holder.txtObservaciones = (TextView) convertView
                         .findViewById(R.id.observaciones);
+                holder.txtDescripcion = (TextView) convertView
+                        .findViewById(R.id.descripciones);
+                holder.txtCategoria = (TextView) convertView
+                        .findViewById(R.id.categoriaNombre);
                 convertView.setTag(holder);
+
             } else {
                 holder = (Holder) convertView.getTag();
             }
@@ -836,7 +849,37 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                 holder.imageMenu.setImageResource((ti.obtenerImagen(info.getIdInsumo(), false)).getIdImagen());
             }
 
+            String categoria = "";
+            switch (info.getIdCategoria()){
+                case 1 :
+                    categoria = "MINUTAS";
+                    break;
+                case 2 :
+                    categoria = "LOMITOS";
+                    break;
+                case 3 :
+                    categoria = "PASTAS";
+                    break;
+                case 4 :
+                    categoria = "TABLAS";
+                    break;
+                case 5 :
+                    categoria = "BEBIDAS";
+                    break;
+                case 6 :
+                    categoria = "PIZZAS";
+                    break;
+                case 7 :
+                    categoria = "POSTRES";
+                    break;
+                case 8 :
+                    categoria = "DESAYUNO";
+                    break;
+
+            }
+            holder.txtCategoria.setText(categoria);
             holder.txtNombreMenu.setText(info.getNombreMenu());
+            holder.txtDescripcion.setText("(" + info.getDescripcion()+ ")");
             String cantidad = "" + info.getCantidad();
             holder.txtCantidad.setText(cantidad);
             holder.txtMontoDetalle.setText("$" + info.getTotalDetalle());
@@ -860,10 +903,11 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
             if (info.getIdEstado() == 25)
                 estado = "COBRO PARCIAL";
             holder.txtEstadoMenu.setText(estado);
+
             int color;
             if (info.getIdEstado() == 0) {
                 color = Color.parseColor("#F38129");
-        }
+            }
             else
             {
                 if (info.getIdEstado() == 14 || info.getIdEstado() == 13)
@@ -876,7 +920,8 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
             holder.txtMontoDetalle.setTextColor(color);
             holder.txtObservaciones.setTextColor(color);
             holder.txtEstadoMenu.setTextColor(color);
-
+            holder.txtDescripcion.setTextColor(color);
+            holder.txtCategoria.setTextColor(color);
 
             String observ = info.getObservacion();
             if (info.getIdEstado() == 0) {

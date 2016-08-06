@@ -15,9 +15,18 @@ public class DetallePedido implements Serializable {
     private String nombreMenu;
     private double totalDetalle;
     private int idInsumo;
-     private double precio;
+    private double precio;
     private int idCategoria;
     private String observacion;
+    private String descripcion;
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
 
     public String getNombreEstado() {
         return nombreEstado;

@@ -395,6 +395,7 @@ public class ListaCuentas extends ListActivity implements
                                             int idMenu = -1;
                                             String nombre = "";
                                             double precio = -1;
+                                            String descripcion = "";
                                             int idCategoria = -1;
                                             reader1.beginObject();
                                             while (reader1.hasNext()) {
@@ -412,6 +413,8 @@ public class ListaCuentas extends ListActivity implements
                                                     case "idCategoria":
                                                         idCategoria = reader1.nextInt();
                                                         break;
+                                                    case "descripcion":
+                                                        descripcion = reader1.nextString();
                                                     default:
                                                         reader1.skipValue();
                                                         break;
@@ -421,6 +424,7 @@ public class ListaCuentas extends ListActivity implements
                                             reader1.endObject();
                                             det.setNombreMenu(nombre);
                                             det.setPrecio(precio);
+                                            det.setDescripcion(descripcion);
                                             det.setIdCategoria(idCategoria);
                                         }
                                     } catch (Exception e) {
@@ -490,6 +494,7 @@ public class ListaCuentas extends ListActivity implements
                                             reader1.endObject();
                                             det.setNombreMenu(nombre);
                                             det.setPrecio(precio);
+                                            det.setDescripcion(descripcion);
                                             det.setIdCategoria(idCategoria);
                                         }
                                     } catch (Exception e) {

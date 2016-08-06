@@ -224,6 +224,7 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
             private TextView txtPrecio;
             private ImageView imageMenus;
             private TextView cantidad;
+            private TextView txtDescripcion;
         }
 
         @Override
@@ -241,6 +242,8 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
                         .findViewById(R.id.precioMenus);
                 holder.cantidad = (TextView) convertView
                         .findViewById(R.id.cantidadDeMenus);
+                holder.txtDescripcion = (TextView) convertView
+                        .findViewById(R.id.observacionesMenu);
 
                 convertView.setTag(holder);
             } else {
@@ -267,6 +270,7 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
             holder.imageMenus.setImageResource(R.drawable.agua);
             holder.txtNombreMenu.setText(info.getNombreMenu());
             holder.txtPrecio.setText("$" + info.getPrecio());
+            holder.txtDescripcion.setText(info.getDescripcion());
 
             return convertView;
         }
@@ -313,6 +317,7 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
                             String nombre = "";
                             boolean esMenu = false;
                             double precio = 0;
+                            String descripcion ="";
                             reader1.beginObject();
                             while (reader1.hasNext()) {
                                 String name = reader1.nextName();
@@ -347,6 +352,9 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
                                     case "precio":
                                         precio = reader1.nextDouble();
                                         break;
+                                    case "descripcion":
+                                        descripcion = reader1.nextString();
+                                        break;
                                     default:
                                         reader1.skipValue();
                                         break;
@@ -362,6 +370,7 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
                             menus.setPrecio(precio);
                             menus.setNombreMenu(nombre);
                             menus.setIdCategoria(idCategoria);
+                            menus.setDescripcion(descripcion);
                             listaMenus.add(menus);
                         }
                     } catch (Exception e) {

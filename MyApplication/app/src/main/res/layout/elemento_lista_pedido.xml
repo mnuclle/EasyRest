@@ -50,34 +50,70 @@
                 android:id="@+id/layoutNombreMenu"
                 >
                 <TextView
-                    android:id="@+id/nombreMenu"
-                    android:layout_width="fill_parent"
+                    android:id="@+id/categoriaNombre"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="10dp"
                     android:background="#314550"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="italic"
+                    android:padding="1dp"
+                    />
+                <TextView
+                    android:id="@+id/nombreMenu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="#314550"
+                    android:layout_toRightOf="@+id/categoriaNombre"
                     android:textColor="@color/white"
                     android:textSize="25sp"
                     android:textStyle="bold"
-                    android:padding="5dp"/>
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_below="@+id/layoutNombreMenu"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                >
+                    android:padding="1dp"/>
                 <TextView
-                    android:id="@+id/observaciones"
-                    android:layout_width="fill_parent"
+                    android:id="@+id/descripciones"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_marginLeft="25dp"
                     android:background="#314550"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:padding="5dp"
+                    android:layout_below="@+id/nombreMenu"
+
                     />
             </RelativeLayout>
+            <!--<RelativeLayout-->
+                <!--android:id="@+id/layoutDescripcion"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_below="@+id/layoutNombreMenu"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--&gt;-->
+                <!---->
+            <!--</RelativeLayout>-->
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_below="@+id/layoutNombreMenu"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    >
+                    <TextView
+                        android:id="@+id/observaciones"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:background="#314550"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:padding="5dp"
+                        />
+                </RelativeLayout>
             </RelativeLayout>
             <View
                 android:layout_width="1dp"

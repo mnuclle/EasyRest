@@ -103,6 +103,7 @@ public class CategoriaMenuActivity extends FragmentActivity implements InterfazC
                         detalleAAgregar.setNombreMenu(menu.getNombreMenu());
                         detalleAAgregar.setPrecio(menu.getPrecio());
                         detalleAAgregar.setTotalDetalle(total);
+                        detalleAAgregar.setDescripcion(menu.getDescripcion());
                         listadoMenusFinal.add(detalleAAgregar);
                         agrego = true;
                         break;
@@ -119,6 +120,7 @@ public class CategoriaMenuActivity extends FragmentActivity implements InterfazC
                     detalleAAgregar.setNombreMenu(menu.getNombreMenu());
                     detalleAAgregar.setPrecio(menu.getPrecio());
                     detalleAAgregar.setTotalDetalle(menu.getPrecio());
+                    detalleAAgregar.setDescripcion(menu.getDescripcion());
 
                     listadoMenusFinal.add(detalleAAgregar);
                 }
@@ -135,6 +137,7 @@ public class CategoriaMenuActivity extends FragmentActivity implements InterfazC
                 detalleAAgregar.setNombreMenu(menu.getNombreMenu());
                 detalleAAgregar.setPrecio(menu.getPrecio());
                 detalleAAgregar.setTotalDetalle(menu.getPrecio());
+                detalleAAgregar.setDescripcion(menu.getDescripcion());
                 listadoMenusFinal.add(detalleAAgregar);
             }
         }
