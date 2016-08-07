@@ -88,7 +88,7 @@ public class ServicioListenerPedidos extends IntentService {
 
 
                 Intent in = new Intent();
-                String mesas = obtenerMesas();
+                String mesas = "Prueba";
                 Bundle b = new Bundle();
                 b.putString("mesas",mesas);
                 rec.send(0,b);
@@ -97,6 +97,7 @@ public class ServicioListenerPedidos extends IntentService {
                         .sendBroadcast(in);
 
                 notifMan.notify(R.string.app_name,notification);
+
 
             }
 
