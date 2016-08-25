@@ -11,10 +11,12 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.manu.myapplication.CategoriaFragment;
 import com.example.manu.myapplication.Entidades.DetallePedido;
 import com.example.manu.myapplication.Entidades.Menus;
 import com.example.manu.myapplication.InterfazCategorias;
 import com.example.manu.myapplication.InterfazListadoMenus;
+import com.example.manu.myapplication.MenusFragment;
 import com.example.manu.myapplication.R;
 
 import java.util.ArrayList;
@@ -35,7 +37,7 @@ public class ClienteCategoriaMenuActivity extends FragmentActivity implements In
         NroCliente=(int) intent.getExtras().get("IDCLIENTE");
         URLGlobal = intent.getExtras().get("URLGlobal").toString();
         Bundle bundle = intent.getExtras();
-        listadoDetalleAConfirmar = (ArrayList<DetallePedido>) bundle.getSerializable("LISTAACONFIRMAR");
+        listadoDetalleAConfirmar = (ArrayList<DetallePedido>) bundle.getSerializable("LISTAACONDFIRMAR");
 
         btnAceptar.setOnClickListener(new View.OnClickListener() {
             @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -65,8 +67,8 @@ public class ClienteCategoriaMenuActivity extends FragmentActivity implements In
         FragmentTransaction fragmentTransaction = fragmentManager
                 .beginTransaction();
 
-        ClienteCategoriaFragment fragment1 = new ClienteCategoriaFragment();
-        ClienteMenuFragment fragment2 = ClienteMenuFragment.newInstance(1,URLGlobal,listadoDetalleAConfirmar);
+        CategoriaFragment fragment1 = new CategoriaFragment();
+        MenusFragment fragment2 = MenusFragment.newInstance(1,URLGlobal,listadoDetalleAConfirmar);
 
         fragmentTransaction.add(R.id.FragmentContainer1Cliente, fragment1);
         fragmentTransaction.add(R.id.FragmentContainer2Cliente, fragment2);
@@ -106,6 +108,7 @@ public class ClienteCategoriaMenuActivity extends FragmentActivity implements In
                         detalleAAgregar.setNombreMenu(menu.getNombreMenu());
                         detalleAAgregar.setPrecio(menu.getPrecio());
                         detalleAAgregar.setTotalDetalle(total);
+                        detalleAAgregar.setDescripcion(menu.getDescripcion());
                         listadoMenusFinal.add(detalleAAgregar);
                         agrego = true;
                         break;
@@ -122,6 +125,7 @@ public class ClienteCategoriaMenuActivity extends FragmentActivity implements In
                     detalleAAgregar.setNombreMenu(menu.getNombreMenu());
                     detalleAAgregar.setPrecio(menu.getPrecio());
                     detalleAAgregar.setTotalDetalle(menu.getPrecio());
+                    detalleAAgregar.setDescripcion(menu.getDescripcion());
 
                     listadoMenusFinal.add(detalleAAgregar);
                 }
@@ -138,6 +142,7 @@ public class ClienteCategoriaMenuActivity extends FragmentActivity implements In
                 detalleAAgregar.setNombreMenu(menu.getNombreMenu());
                 detalleAAgregar.setPrecio(menu.getPrecio());
                 detalleAAgregar.setTotalDetalle(menu.getPrecio());
+                detalleAAgregar.setDescripcion(menu.getDescripcion());
                 listadoMenusFinal.add(detalleAAgregar);
             }
         }
@@ -150,7 +155,7 @@ public class ClienteCategoriaMenuActivity extends FragmentActivity implements In
     public void onCategoriaSelect(int idCategoria) {
 
 
-        ClienteMenuFragment frag2 = ClienteMenuFragment.newInstance(idCategoria,URLGlobal,listadoDetalleAConfirmar);
+        MenusFragment frag2 = MenusFragment.newInstance(idCategoria,URLGlobal,listadoDetalleAConfirmar);
 
         FragmentManager fm = getFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
@@ -166,5 +171,6 @@ public class ClienteCategoriaMenuActivity extends FragmentActivity implements In
     public void onMenuSelect(Menus menu) {
         listadoMenus.add(menu);
     }
+
 
 }

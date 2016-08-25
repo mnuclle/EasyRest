@@ -4,45 +4,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#314550">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="10px"
-        android:background="#476B85"
-        >
+
         <TextView
+            android:id="@+id/resumenCuenta"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Clientes"
+            android:text="RESUMEN DE CUENTA"
             android:layout_gravity="center_horizontal|center_vertical"
             android:gravity="center"
             android:background="#476B85"
             android:textColor="#FFFFFF"
             android:textSize="50sp"
             android:textStyle="bold"
-            android:layout_weight="1"/>
-        <CheckBox android:id="@+id/checkbox_ver_todos"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ver todos"
-            android:onClick="onCheckboxClicked"
-            android:layout_weight="0"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:background="#476B85"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            />
-
-
-        </LinearLayout>
+            android:layout_weight="0"/>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
+        android:layout_weight="1"
         >
         <!--android:background="#314550"-->
         <!--android:layout_weight="1"-->
@@ -63,7 +42,7 @@
             android:layout_weight="0.8"
             android:divider="#476B85"
             android:dividerHeight="3px"
-           />
+            />
 
         <TextView
             android:id="@android:id/empty"
@@ -79,6 +58,50 @@
             android:layout_marginTop="0dp"
             android:layout_marginBottom="0dp"
             android:textStyle="bold"
-            android:text="NO HAY CLIENTES." />
+            android:text="NO POSEE MENUS PEDIDOS." />
     </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#F38129"
+        >
+        <TextView
+            android:id="@+id/totalResumenCuentatxt"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="SUBTOTAL"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:gravity="left"
+            android:background="#F38129"
+            android:textColor="#FFFFFF"
+            android:textSize="50sp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            />
+
+        <TextView
+            android:id="@+id/totalResumenCuenta"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="25dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="$"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:gravity="right"
+            android:background="#F38129"
+            android:textColor="#FFFFFF"
+            android:textSize="50sp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            />
+
+    </LinearLayout>
+
+
 </LinearLayout>

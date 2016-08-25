@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.manu.myapplication.Entidades.DetallePedido;
 import com.example.manu.myapplication.Entidades.Menus;
@@ -125,9 +126,17 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
                 Toast.LENGTH_SHORT).show();*/
          if(listener!=null)
         {
-            listener.onMenuSelect(adapter.listaMenus.get(position));
+
             Menus menu = adapter.listaMenus.get(position);
-            loadMenusSumarCantidad(menu);
+            if (menu.getCantidad() == menu.getStock())
+            {
+                Toast.makeText(getActivity(), "No hay mas menú en stock.",
+                        Toast.LENGTH_SHORT).show();
+            }
+            else {
+                listener.onMenuSelect(adapter.listaMenus.get(position));
+                loadMenusSumarCantidad(menu);
+            }
         }
     }
 
@@ -267,9 +276,21 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
                 holder.cantidad.setText("0");
             else
                 holder.cantidad.setText(""+info.getCantidad());
+
+            if (info.getCantidad() == info.getStock())
+                color = Color.GRAY;
+            else
+                color = Color.WHITE;
+
+
+            holder.txtNombreMenu.setTextColor(color);
+            holder.txtPrecio.setTextColor(color);
+            holder.txtDescripcion.setTextColor(color);
+
             holder.imageMenus.setImageResource(R.drawable.agua);
-            holder.txtNombreMenu.setText(info.getNombreMenu());
-            holder.txtPrecio.setText("$" + info.getPrecio());
+            int stock = info.getStock() - info.getCantidad();
+            holder.txtNombreMenu.setText(info.getNombreMenu() + " (Stock: " + stock + ")" );
+            holder.txtPrecio.setText("$" + String.format("%.2f",info.getPrecio()));
             holder.txtDescripcion.setText(info.getDescripcion());
 
             return convertView;
@@ -318,6 +339,7 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
                             boolean esMenu = false;
                             double precio = 0;
                             String descripcion ="";
+                            int stock = 0;
                             reader1.beginObject();
                             while (reader1.hasNext()) {
                                 String name = reader1.nextName();
@@ -355,6 +377,9 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
                                     case "descripcion":
                                         descripcion = reader1.nextString();
                                         break;
+                                    case "stock":
+                                        stock = reader1.nextInt();
+                                        break;
                                     default:
                                         reader1.skipValue();
                                         break;
@@ -371,6 +396,7 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
                             menus.setNombreMenu(nombre);
                             menus.setIdCategoria(idCategoria);
                             menus.setDescripcion(descripcion);
+                            menus.setStock(stock);
                             listaMenus.add(menus);
                         }
                     } catch (Exception e) {

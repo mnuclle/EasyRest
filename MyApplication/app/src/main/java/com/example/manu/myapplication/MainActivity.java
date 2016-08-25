@@ -20,7 +20,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.manu.myapplication.Cliente.ClientePedidoActivity;
+import com.example.manu.myapplication.Cliente.ClienteOpcionesActivity;
 import com.example.manu.myapplication.Entidades.CuentasMesa;
 
 import org.json.JSONObject;
@@ -407,7 +407,7 @@ public class MainActivity extends Activity {
                         response = "Usuario y contraseña incorrectos.";
                     }
 
-                    Intent intent = new Intent(MainActivity.this, ClientePedidoActivity.class);
+                    Intent intent = new Intent(MainActivity.this, ClienteOpcionesActivity.class);
                     Bundle b = new Bundle();
                     b.putInt("IDCLIENTE", cm.getIdCliente());
                     b.putString("URLGlobal", URLGlobal);

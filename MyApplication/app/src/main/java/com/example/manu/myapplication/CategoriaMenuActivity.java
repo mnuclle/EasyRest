@@ -1,6 +1,5 @@
 package com.example.manu.myapplication;
 
-
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.FragmentManager;

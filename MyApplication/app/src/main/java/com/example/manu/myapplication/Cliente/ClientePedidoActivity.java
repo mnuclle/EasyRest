@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.manu.myapplication.CategoriaMenuActivity;
 import com.example.manu.myapplication.DialogObservaciones;
 import com.example.manu.myapplication.Entidades.DetallePedido;
 import com.example.manu.myapplication.Entidades.DetallesPedido;
@@ -52,6 +53,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
+
 
 public class ClientePedidoActivity extends ListActivity implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, DialogObservaciones.NoticeDialogListener {
     private Button btnElegirPedido, btnConfirmarPedido;
@@ -121,19 +123,11 @@ public class ClientePedidoActivity extends ListActivity implements AdapterView.O
         getListView().setOnItemClickListener(this);
         getListView().setOnItemLongClickListener(this);
 
-        //loadPedidosData();
-        cargarAdapter();
+        loadPedidosData();
+
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-    }
-
-    private void cargarAdapter() {
-        Object[] obj = new Object[3];
-        obj[0] = NroCliente;
-        obj[1] = new ArrayList<>();
-        obj[2] = URLGlobal;
-        new GetTask().execute(obj);
     }
 
     /**
@@ -287,7 +281,7 @@ public class ClientePedidoActivity extends ListActivity implements AdapterView.O
     }
 
     private void startActivityCategoria() {
-        Intent intent = new Intent(this, ClienteCategoriaMenuActivity.class);
+        Intent intent = new Intent(this, CategoriaMenuActivity.class);
         intent.putExtra("IDCLIENTE", NroCliente);
         intent.putExtra("URLGlobal",URLGlobal);
         listaMenusAConfirmar = new ArrayList<>();
@@ -300,7 +294,7 @@ public class ClientePedidoActivity extends ListActivity implements AdapterView.O
 
 
         Bundle bundle = new Bundle();
-        bundle.putSerializable("LISTAACONFIRMAR",listaMenusAConfirmar);
+        bundle.putSerializable("LISTAACONDFIRMAR",listaMenusAConfirmar);
         intent.putExtras(bundle);
         startActivityForResult(intent, 1);
     }
@@ -545,6 +539,7 @@ public class ClientePedidoActivity extends ListActivity implements AdapterView.O
                                             String nombre = "";
                                             double precio = -1;
                                             int idCategoria = -1;
+                                            String descripcion ="";
                                             reader1.beginObject();
                                             while (reader1.hasNext()) {
                                                 String name = reader1.nextName();
@@ -561,6 +556,9 @@ public class ClientePedidoActivity extends ListActivity implements AdapterView.O
                                                     case "idCategoria":
                                                         idCategoria = reader1.nextInt();
                                                         break;
+                                                    case "descripcion":
+                                                        descripcion = reader1.nextString();
+                                                        break;
                                                     default:
                                                         reader1.skipValue();
                                                         break;
@@ -570,6 +568,7 @@ public class ClientePedidoActivity extends ListActivity implements AdapterView.O
                                             reader1.endObject();
                                             det.setNombreMenu(nombre);
                                             det.setPrecio(precio);
+                                            det.setDescripcion(descripcion);
                                             det.setIdCategoria(idCategoria);
                                         }
                                     } catch (Exception e) {
@@ -637,6 +636,7 @@ public class ClientePedidoActivity extends ListActivity implements AdapterView.O
                                             reader1.endObject();
                                             det.setNombreMenu(nombre);
                                             det.setPrecio(precio);
+                                            det.setDescripcion(descripcion);
                                             det.setIdCategoria(idCategoria);
                                         }
                                     } catch (Exception e) {
@@ -678,11 +678,11 @@ public class ClientePedidoActivity extends ListActivity implements AdapterView.O
         for (DetallePedido cm : listaDetalle
                 ) {
             info = cm;
-            if (cm.getIdEstado() == 11 || cm.getIdEstado() == 12 || cm.getIdEstado() == 13 || cm.getIdEstado() == 16 )
+            if (cm.getIdEstado() == 11 || cm.getIdEstado() == 12 || cm.getIdEstado() == 13 || cm.getIdEstado() == 16  || cm.getIdEstado() == 15)
                 montoDetalles = montoDetalles + cm.getTotalDetalle();
             adapter.addDetallesInfo(info);
         }
-        montoTotalPedido.setText("$" + montoDetalles);
+        montoTotalPedido.setText("$" + String.format("%.2f",montoDetalles));
         adapter.notifyDataSetChanged();
 
     }
@@ -694,7 +694,7 @@ public class ClientePedidoActivity extends ListActivity implements AdapterView.O
         for (DetallePedido cm : listaDetalle
                 ) {
             info = cm;
-            if (cm.getIdEstado() == 11 || cm.getIdEstado() == 12 || cm.getIdEstado() == 13 || cm.getIdEstado() == 16 )
+            if (cm.getIdEstado() == 11 || cm.getIdEstado() == 12 || cm.getIdEstado() == 13 || cm.getIdEstado() == 16 || cm.getIdEstado() == 15)
                 montoDetalles = montoDetalles + cm.getTotalDetalle();
             adapter.addDetallesInfo(info);
         }
@@ -702,11 +702,11 @@ public class ClientePedidoActivity extends ListActivity implements AdapterView.O
         for (DetallePedido cm : listaMenus
                 ) {
             info = cm;
-            if (cm.getIdEstado() == 11 || cm.getIdEstado() == 12 || cm.getIdEstado() == 13 || cm.getIdEstado() == 16 )
+            if (cm.getIdEstado() == 11 || cm.getIdEstado() == 12 || cm.getIdEstado() == 13 || cm.getIdEstado() == 16 || cm.getIdEstado() == 15)
                 montoDetalles = montoDetalles + cm.getTotalDetalle();
             adapter.addDetallesInfo(info);
         }
-        montoTotalPedido.setText("$" + montoDetalles);
+        montoTotalPedido.setText("$" + String.format("%.2f",montoDetalles));
         adapter.notifyDataSetChanged();
 
     }
@@ -746,6 +746,25 @@ public class ClientePedidoActivity extends ListActivity implements AdapterView.O
         new GetTask().execute(obj);
 
         Toast.makeText(this, "Menú anulado.", Toast.LENGTH_SHORT).show();
+
+    }
+
+    private void loadPedidosDataActEstado(ArrayList<DetallePedido> listaDetalle, int idDetallePedido) {
+
+        ArrayList<DetallePedido> listadoMenus = new ArrayList<DetallePedido>();
+        Object[] obj = new Object[3];
+        obj[0] = NroCliente;
+        if (listadoMenus.size() > 0)
+            obj[1] = listadoMenus;
+        else {
+            listadoMenus = new ArrayList<>();
+            obj[1] = listadoMenus;
+        }
+        obj[2] = URLGlobal;
+
+        new GetTask().execute(obj);
+
+        Toast.makeText(this, "Pedido entregado.", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -810,6 +829,8 @@ public class ClientePedidoActivity extends ListActivity implements AdapterView.O
             private ImageView imageMenu;
             private TextView txtObservaciones;
             private TextView txtEstadoMenu;
+            private TextView txtDescripcion;
+            private TextView txtCategoria;
         }
 
         @Override
@@ -831,7 +852,12 @@ public class ClientePedidoActivity extends ListActivity implements AdapterView.O
                         .findViewById(R.id.estadoDetalle);
                 holder.txtObservaciones = (TextView) convertView
                         .findViewById(R.id.observaciones);
+                holder.txtDescripcion = (TextView) convertView
+                        .findViewById(R.id.descripciones);
+                holder.txtCategoria = (TextView) convertView
+                        .findViewById(R.id.categoriaNombre);
                 convertView.setTag(holder);
+
             } else {
                 holder = (PedidosAdapter.Holder) convertView.getTag();
             }
@@ -845,10 +871,40 @@ public class ClientePedidoActivity extends ListActivity implements AdapterView.O
                 holder.imageMenu.setImageResource((ti.obtenerImagen(info.getIdInsumo(), false)).getIdImagen());
             }
 
+            String categoria = "";
+            switch (info.getIdCategoria()){
+                case 1 :
+                    categoria = "MINUTAS";
+                    break;
+                case 2 :
+                    categoria = "LOMITOS";
+                    break;
+                case 3 :
+                    categoria = "PASTAS";
+                    break;
+                case 4 :
+                    categoria = "TABLAS";
+                    break;
+                case 5 :
+                    categoria = "BEBIDAS";
+                    break;
+                case 6 :
+                    categoria = "PIZZAS";
+                    break;
+                case 7 :
+                    categoria = "POSTRES";
+                    break;
+                case 8 :
+                    categoria = "DESAYUNO";
+                    break;
+
+            }
+            holder.txtCategoria.setText(categoria);
             holder.txtNombreMenu.setText(info.getNombreMenu());
+            holder.txtDescripcion.setText("(" + info.getDescripcion()+ ")");
             String cantidad = "" + info.getCantidad();
             holder.txtCantidad.setText(cantidad);
-            holder.txtMontoDetalle.setText("$" + info.getTotalDetalle());
+            holder.txtMontoDetalle.setText("$" + String.format("%.2f",info.getTotalDetalle()));
             String estado = "";
             if (info.getIdEstado() == 0)
                 estado = "PENDIENTE DE CONFIRMACION";
@@ -869,6 +925,7 @@ public class ClientePedidoActivity extends ListActivity implements AdapterView.O
             if (info.getIdEstado() == 25)
                 estado = "COBRO PARCIAL";
             holder.txtEstadoMenu.setText(estado);
+
             int color;
             if (info.getIdEstado() == 0) {
                 color = Color.parseColor("#F38129");
@@ -885,7 +942,8 @@ public class ClientePedidoActivity extends ListActivity implements AdapterView.O
             holder.txtMontoDetalle.setTextColor(color);
             holder.txtObservaciones.setTextColor(color);
             holder.txtEstadoMenu.setTextColor(color);
-
+            holder.txtDescripcion.setTextColor(color);
+            holder.txtCategoria.setTextColor(color);
 
             String observ = info.getObservacion();
             if (info.getIdEstado() == 0) {
@@ -966,6 +1024,18 @@ public class ClientePedidoActivity extends ListActivity implements AdapterView.O
 
     }
 
+    private void actualizarMenu(int position)
+    {
+        Object[] obj = new Object[3];
+        obj[1] = URLGlobal;
+        DetallePedido detalle = (DetallePedido) adapter.getItem(position);
+
+        obj[0] = detalle.getIdDetallePedido();
+        obj[2] = adapter.getList();
+
+        new ActualizarMenuTask().execute(obj);
+    }
+
     private void removePedidosData(int position) {
 
         adapter.remove(position);
@@ -999,7 +1069,7 @@ public class ClientePedidoActivity extends ListActivity implements AdapterView.O
         if(detalle.getIdEstado() == 0) {
 
             final CharSequence[] items = {
-                    "Eliminar todos", "Eliminar uno","Cancelar"
+                    "ELIMINAR TODOS", "ELIMINAR UNO"
             };
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -1025,31 +1095,8 @@ public class ClientePedidoActivity extends ListActivity implements AdapterView.O
             alert.show();
         }
         else
-        if (!(detalle.getIdEstado() == 14 || detalle.getIdEstado() == 13 || detalle.getIdEstado() == 16 || detalle.getIdEstado() == 25))
         {
-            final CharSequence[] items = {
-                    "Anular Menu Pedido", "Cancelar"
-            };
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("ACCIONES");
-            builder.setItems(items, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int item) {
-                    // Do something with the selection
-                    if (item == 0) // Anular Menu Pedido
-                    {
-                        anularMenuPedido(position);
-                    } else {
-                        ;
-                    }
-                }
-            });
-            AlertDialog alert = builder.create();
-            alert.show();
-        }
-        else
-        {
-            Toast.makeText(this, "Sin acciones para menu anulado, cancelado o cobrado.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Sin acciones para menú.", Toast.LENGTH_SHORT).show();
         }
         return true;
     }
@@ -1155,5 +1202,85 @@ public class ClientePedidoActivity extends ListActivity implements AdapterView.O
     }
 
 
+
+
+    class ActualizarMenuTask extends AsyncTask<Object, String, String> {
+
+        private String URLGlobal;
+        private int idDetallePedido;
+        ArrayList<DetallePedido> listaDetalle;
+        protected String doInBackground(Object... params) {
+            URLGlobal = params[1].toString();
+            listaDetalle = (ArrayList<DetallePedido>)(params[2]);
+            idDetallePedido = (int) params[0];
+            try {
+                String response = "No se conecto";
+
+                try {
+                    HttpURLConnection urlConn;
+                    StringBuilder result = new StringBuilder();
+                    URL url = new URL(URLGlobal + "pedido/actualizarDetallePedido");
+                    urlConn = (HttpURLConnection) url.openConnection();
+                    try {
+
+                        urlConn.setChunkedStreamingMode(0);
+                        urlConn.setDoOutput(true);
+                        urlConn.setDoInput(true);
+                        urlConn.setRequestProperty("Content-Type", "application/json");
+                        urlConn.setRequestMethod("POST");
+                        urlConn.connect();
+                        //Create JSONObject here
+                        JSONObject jsonParam = new JSONObject();
+                        jsonParam.put("idDetallePedido",  + ((int) params[0]));
+                        jsonParam.put("idEstado",  "15" ) ;
+                        jsonParam.put("nombreEstado",  "ENTREGADO" ) ;
+
+
+                        PrintWriter ow = new PrintWriter(urlConn.getOutputStream());
+
+                        ow.print(jsonParam.toString());
+                        // ow.flush();
+                        ow.close();
+
+
+                        int reqcoda = urlConn.getResponseCode();
+
+                        InputStream in = new BufferedInputStream(urlConn.getInputStream());
+
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+
+
+                        String line;
+                        boolean leyo = false;
+                        while ((line = reader.readLine()) != null) {
+                            result.append(line);
+                            leyo = true;
+                        }
+
+
+                    }
+                    catch (Exception e ) {
+                        e.printStackTrace();
+                    }
+                    finally {
+                        urlConn.disconnect();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+
+            }
+
+            return null;
+        }
+
+        protected void onPostExecute(String st) {
+            loadPedidosDataActEstado(listaDetalle,idDetallePedido);
+        }
+    }
 
 }

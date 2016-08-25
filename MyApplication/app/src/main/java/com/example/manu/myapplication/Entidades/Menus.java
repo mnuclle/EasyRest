@@ -15,6 +15,15 @@ public class Menus implements Serializable{
     private int idCategoria;
     private int cantidad;
     private String descripcion;
+    private int stock;
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
 
     public String getDescripcion() {
         return descripcion;

@@ -15,11 +15,13 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.manu.myapplication.Entidades.DetallePedido;
 import com.example.manu.myapplication.Entidades.Menus;
 import com.example.manu.myapplication.Entidades.TodasImages;
 import com.example.manu.myapplication.InterfazListadoMenus;
+import com.example.manu.myapplication.MenusFragment;
 import com.example.manu.myapplication.R;
 
 import java.io.BufferedInputStream;
@@ -42,8 +44,8 @@ public class ClienteMenuFragment extends ListFragment implements AdapterView.OnI
     private TextView cantidadMenus;
     private ArrayList<DetallePedido> listadoDetallePedido;
 
-    public static ClienteMenuFragment newInstance(int idCategoria, String url, ArrayList<DetallePedido> listadoDetallePedido) {
-        ClienteMenuFragment fragment = new ClienteMenuFragment();
+    public static MenusFragment newInstance(int idCategoria, String url, ArrayList<DetallePedido> listadoDetallePedido) {
+        MenusFragment fragment = new MenusFragment();
         Bundle args = new Bundle();
         args.putInt("idCategoria", idCategoria);
         args.putString("URLGlobal",url);
@@ -127,9 +129,17 @@ public class ClienteMenuFragment extends ListFragment implements AdapterView.OnI
                 Toast.LENGTH_SHORT).show();*/
         if(listener!=null)
         {
-            listener.onMenuSelect(adapter.listaMenus.get(position));
+
             Menus menu = adapter.listaMenus.get(position);
-            loadMenusSumarCantidad(menu);
+            if (menu.getCantidad() == menu.getStock())
+            {
+                Toast.makeText(getActivity(), "No hay mas menú en stock.",
+                        Toast.LENGTH_SHORT).show();
+            }
+            else {
+                listener.onMenuSelect(adapter.listaMenus.get(position));
+                loadMenusSumarCantidad(menu);
+            }
         }
     }
 
@@ -226,6 +236,7 @@ public class ClienteMenuFragment extends ListFragment implements AdapterView.OnI
             private TextView txtPrecio;
             private ImageView imageMenus;
             private TextView cantidad;
+            private TextView txtDescripcion;
         }
 
         @Override
@@ -243,6 +254,8 @@ public class ClienteMenuFragment extends ListFragment implements AdapterView.OnI
                         .findViewById(R.id.precioMenus);
                 holder.cantidad = (TextView) convertView
                         .findViewById(R.id.cantidadDeMenus);
+                holder.txtDescripcion = (TextView) convertView
+                        .findViewById(R.id.observacionesMenu);
 
                 convertView.setTag(holder);
             } else {
@@ -266,9 +279,22 @@ public class ClienteMenuFragment extends ListFragment implements AdapterView.OnI
                 holder.cantidad.setText("0");
             else
                 holder.cantidad.setText(""+info.getCantidad());
+
+            if (info.getCantidad() == info.getStock())
+                color = Color.GRAY;
+            else
+                color = Color.WHITE;
+
+
+            holder.txtNombreMenu.setTextColor(color);
+            holder.txtPrecio.setTextColor(color);
+            holder.txtDescripcion.setTextColor(color);
+
             holder.imageMenus.setImageResource(R.drawable.agua);
-            holder.txtNombreMenu.setText(info.getNombreMenu());
-            holder.txtPrecio.setText("$" + info.getPrecio());
+            int stock = info.getStock() - info.getCantidad();
+            holder.txtNombreMenu.setText(info.getNombreMenu() + " (Stock: " + stock + ")" );
+            holder.txtPrecio.setText("$" + String.format("%.2f",info.getPrecio()));
+            holder.txtDescripcion.setText(info.getDescripcion());
 
             return convertView;
         }
@@ -315,6 +341,8 @@ public class ClienteMenuFragment extends ListFragment implements AdapterView.OnI
                         String nombre = "";
                         boolean esMenu = false;
                         double precio = 0;
+                        String descripcion ="";
+                        int stock = 0;
                         reader1.beginObject();
                         while (reader1.hasNext()) {
                             String name = reader1.nextName();
@@ -349,6 +377,12 @@ public class ClienteMenuFragment extends ListFragment implements AdapterView.OnI
                                 case "precio":
                                     precio = reader1.nextDouble();
                                     break;
+                                case "descripcion":
+                                    descripcion = reader1.nextString();
+                                    break;
+                                case "stock":
+                                    stock = reader1.nextInt();
+                                    break;
                                 default:
                                     reader1.skipValue();
                                     break;
@@ -364,6 +398,8 @@ public class ClienteMenuFragment extends ListFragment implements AdapterView.OnI
                         menus.setPrecio(precio);
                         menus.setNombreMenu(nombre);
                         menus.setIdCategoria(idCategoria);
+                        menus.setDescripcion(descripcion);
+                        menus.setStock(stock);
                         listaMenus.add(menus);
                     }
                 } catch (Exception e) {

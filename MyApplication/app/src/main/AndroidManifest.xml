@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.manu.myapplication" >
+    package="com.example.manu.myapplication">
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <permission android:name="android.permission.INTERNET" />
 
@@ -12,44 +12,48 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
-
-
+        android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".CategoriaMenuActivity"
-            android:label="@string/title_activity_categoria_menu" >
-
-        </activity>
+            android:label="@string/title_activity_categoria_menu" />
         <activity
             android:name=".ListaCuentas"
-            android:label="@string/title_activity_lista_cuentas" >
-        </activity>
+            android:label="@string/title_activity_lista_cuentas" />
         <activity
             android:name=".PedidosActivity"
-            android:label="@string/title_activity_pedidos" >
-        </activity>
+            android:label="@string/title_activity_pedidos" />
+        <activity
+            android:name=".Cliente.ClientePedidoActivity"
+            android:label="@string/title_activity_cliente_pedidos" />
+        <activity
+            android:name=".Cliente.ClienteCategoriaMenuActivity"
+            android:label="@string/title_activity_cliente_categoria_menu" />
         <activity
             android:name=".Server"
-            android:launchMode="singleInstance"
-            android:label="EasyRest">
-        </activity>
-        <service android:name=".ServicioListenerPedidos"></service>
+            android:label="EasyRest"
+            android:launchMode="singleInstance" />
 
-        <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <service android:name=".ServicioListenerPedidos" />
+
+        <!--
+     ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <activity android:name=".Cliente.ClienteOpcionesActivity" />
+        <activity android:name=".Cliente.ClienteVerCuentaActivity"></activity>
     </application>
 
 </manifest>

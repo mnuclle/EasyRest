@@ -675,11 +675,11 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
         for (DetallePedido cm : listaDetalle
                 ) {
             info = cm;
-            if (cm.getIdEstado() == 11 || cm.getIdEstado() == 12 || cm.getIdEstado() == 13 || cm.getIdEstado() == 16 )
+            if (cm.getIdEstado() == 11 || cm.getIdEstado() == 12 || cm.getIdEstado() == 13 || cm.getIdEstado() == 16  || cm.getIdEstado() == 15)
                 montoDetalles = montoDetalles + cm.getTotalDetalle();
             adapter.addDetallesInfo(info);
         }
-        montoTotalPedido.setText("$" + montoDetalles);
+        montoTotalPedido.setText("$" + String.format("%.2f",montoDetalles));
         adapter.notifyDataSetChanged();
 
     }
@@ -691,7 +691,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
         for (DetallePedido cm : listaDetalle
                 ) {
             info = cm;
-            if (cm.getIdEstado() == 11 || cm.getIdEstado() == 12 || cm.getIdEstado() == 13 || cm.getIdEstado() == 16 )
+            if (cm.getIdEstado() == 11 || cm.getIdEstado() == 12 || cm.getIdEstado() == 13 || cm.getIdEstado() == 16 || cm.getIdEstado() == 15)
                 montoDetalles = montoDetalles + cm.getTotalDetalle();
             adapter.addDetallesInfo(info);
         }
@@ -699,11 +699,11 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
         for (DetallePedido cm : listaMenus
                 ) {
             info = cm;
-            if (cm.getIdEstado() == 11 || cm.getIdEstado() == 12 || cm.getIdEstado() == 13 || cm.getIdEstado() == 16 )
+            if (cm.getIdEstado() == 11 || cm.getIdEstado() == 12 || cm.getIdEstado() == 13 || cm.getIdEstado() == 16 || cm.getIdEstado() == 15)
                 montoDetalles = montoDetalles + cm.getTotalDetalle();
             adapter.addDetallesInfo(info);
         }
-        montoTotalPedido.setText("$" + montoDetalles);
+        montoTotalPedido.setText("$" + String.format("%.2f",montoDetalles));
         adapter.notifyDataSetChanged();
 
     }
@@ -743,6 +743,25 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
         new GetTask().execute(obj);
 
         Toast.makeText(this, "Menú anulado.", Toast.LENGTH_SHORT).show();
+
+    }
+
+    private void loadPedidosDataActEstado(ArrayList<DetallePedido> listaDetalle, int idDetallePedido) {
+
+        ArrayList<DetallePedido> listadoMenus = new ArrayList<DetallePedido>();
+        Object[] obj = new Object[3];
+        obj[0] = NroCliente;
+        if (listadoMenus.size() > 0)
+            obj[1] = listadoMenus;
+        else {
+            listadoMenus = new ArrayList<>();
+            obj[1] = listadoMenus;
+        }
+        obj[2] = URLGlobal;
+
+        new GetTask().execute(obj);
+
+        Toast.makeText(this, "Pedido entregado.", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -882,7 +901,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
             holder.txtDescripcion.setText("(" + info.getDescripcion()+ ")");
             String cantidad = "" + info.getCantidad();
             holder.txtCantidad.setText(cantidad);
-            holder.txtMontoDetalle.setText("$" + info.getTotalDetalle());
+            holder.txtMontoDetalle.setText("$" + String.format("%.2f",info.getTotalDetalle()));
             String estado = "";
             if (info.getIdEstado() == 0)
                 estado = "PENDIENTE DE CONFIRMACION";
@@ -1002,6 +1021,18 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
 
     }
 
+    private void actualizarMenu(int position)
+    {
+        Object[] obj = new Object[3];
+        obj[1] = URLGlobal;
+        DetallePedido detalle = (DetallePedido) adapter.getItem(position);
+
+        obj[0] = detalle.getIdDetallePedido();
+        obj[2] = adapter.getList();
+
+        new ActualizarMenuTask().execute(obj);
+    }
+
     private void removePedidosData(int position) {
 
         adapter.remove(position);
@@ -1035,7 +1066,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
         if(detalle.getIdEstado() == 0) {
 
             final CharSequence[] items = {
-                    "Eliminar todos", "Eliminar uno","Cancelar"
+                    "ELIMINAR TODOS", "ELIMINAR UNO"
             };
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -1063,9 +1094,21 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
         else
         if (!(detalle.getIdEstado() == 14 || detalle.getIdEstado() == 13 || detalle.getIdEstado() == 16 || detalle.getIdEstado() == 25))
         {
-            final CharSequence[] items = {
-                    "Anular Menu Pedido", "Cancelar"
-            };
+            final CharSequence[] items;
+            if (detalle.getIdInsumo() == 0 || (detalle.getIdInsumo() != 0 && detalle.getIdEstado() == 15)) {
+                items = new CharSequence[1];
+                items[0] = "ANULAR MENU";
+            }
+            else
+            {
+                items = new CharSequence[2];
+                items[0] = "ANULAR MENU";
+                items[1] = "ENTREGAR MENU";
+            }
+
+
+
+
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("ACCIONES");
@@ -1076,7 +1119,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                     {
                         anularMenuPedido(position);
                     } else {
-                       ;
+                       actualizarMenu(position);
                     }
                 }
             });
@@ -1190,6 +1233,87 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
         }
     }
 
+
+
+
+    class ActualizarMenuTask extends AsyncTask<Object, String, String> {
+
+        private String URLGlobal;
+        private int idDetallePedido;
+        ArrayList<DetallePedido> listaDetalle;
+        protected String doInBackground(Object... params) {
+            URLGlobal = params[1].toString();
+            listaDetalle = (ArrayList<DetallePedido>)(params[2]);
+            idDetallePedido = (int) params[0];
+            try {
+                String response = "No se conecto";
+
+                try {
+                    HttpURLConnection urlConn;
+                    StringBuilder result = new StringBuilder();
+                    URL url = new URL(URLGlobal + "pedido/actualizarDetallePedido");
+                    urlConn = (HttpURLConnection) url.openConnection();
+                    try {
+
+                        urlConn.setChunkedStreamingMode(0);
+                        urlConn.setDoOutput(true);
+                        urlConn.setDoInput(true);
+                        urlConn.setRequestProperty("Content-Type", "application/json");
+                        urlConn.setRequestMethod("POST");
+                        urlConn.connect();
+                        //Create JSONObject here
+                        JSONObject jsonParam = new JSONObject();
+                        jsonParam.put("idDetallePedido",  + ((int) params[0]));
+                        jsonParam.put("idEstado",  "15" ) ;
+                        jsonParam.put("nombreEstado",  "ENTREGADO" ) ;
+
+
+                        PrintWriter ow = new PrintWriter(urlConn.getOutputStream());
+
+                        ow.print(jsonParam.toString());
+                        // ow.flush();
+                        ow.close();
+
+
+                        int reqcoda = urlConn.getResponseCode();
+
+                        InputStream in = new BufferedInputStream(urlConn.getInputStream());
+
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+
+
+                        String line;
+                        boolean leyo = false;
+                        while ((line = reader.readLine()) != null) {
+                            result.append(line);
+                            leyo = true;
+                        }
+
+
+                    }
+                    catch (Exception e ) {
+                        e.printStackTrace();
+                    }
+                    finally {
+                        urlConn.disconnect();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+
+            }
+
+            return null;
+        }
+
+        protected void onPostExecute(String st) {
+            loadPedidosDataActEstado(listaDetalle,idDetallePedido);
+        }
+    }
 
 
 }
