@@ -2,11 +2,10 @@ package com.example.manu.myapplication;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.ListActivity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -1065,70 +1064,100 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
 
         if(detalle.getIdEstado() == 0) {
 
-            final CharSequence[] items = {
-                    "ELIMINAR TODOS", "ELIMINAR UNO"
-            };
+            /*
+            * DANI DESDE ACA SE MANEJA LO DEL MENU DE OPCIONES.
+            *
+            * FIJATE QUE TUVE QUE CREAR EL LAYOUT dialog_eliminar_uno_todos
+            * CON LOS BOTONES QUE ME HACIAN FALTA QUE SERIAN LAS OPCIONES.
+            *
+            * FIJATE QUE EN EL "ELSE" CREÉ OTRO DIALOG DISTINTO CON OTRO LAYOUT
+            * QUE TAMBIEN TUVE QUE CREAR.
+            *
+            */
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("ACCIONES");
-            builder.setItems(items, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int item) {
-                    // Do something with the selection
-                    if (item == 0) // Eliminar todos
-                    {
-                        removePedidosData(position);
-                    } else {
-                        if (item == 1) // Eliminar uno
-                        {
-                            restarUno(position);
-                        } else//item == 2 // Cancelar
-                        {
-                            ;
-                        }
-                    }
+            final Dialog dialog = new Dialog(view.getContext());
+            dialog.setContentView(R.layout.dialog_eliminar_uno_todos);
+            Button dialogButtonEliminarUno = (Button) dialog.findViewById(R.id.dialogButtonEliminarUno);
+            Button dialogButtonEliminarTodos = (Button) dialog.findViewById(R.id.dialogButtonEliminarTodos);
+            dialog.setTitle("ACCIONES");
+
+            // if button is clicked, close the custom dialog
+            dialogButtonEliminarUno.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    restarUno(position);
+                    dialog.cancel();
                 }
             });
-            AlertDialog alert = builder.create();
-            alert.show();
+            dialogButtonEliminarTodos.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    removePedidosData(position);
+                    dialog.cancel();
+                }
+            });
+
+            dialog.show();
+
+            /*
+            *
+            * HASTA ACA
+            *
+            */
         }
         else
         if (!(detalle.getIdEstado() == 14 || detalle.getIdEstado() == 13 || detalle.getIdEstado() == 16 || detalle.getIdEstado() == 25))
         {
             final CharSequence[] items;
             if (detalle.getIdInsumo() == 0 || (detalle.getIdInsumo() != 0 && detalle.getIdEstado() == 15)) {
-                items = new CharSequence[1];
-                items[0] = "ANULAR MENU";
+
+                final Dialog dialog = new Dialog(view.getContext());
+                dialog.setContentView(R.layout.dialog_anular);
+                Button dialogButtonAnular = (Button) dialog.findViewById(R.id.dialogButtonAnular);
+                dialog.setTitle("ACCIONES");
+
+                // if button is clicked, close the custom dialog
+                dialogButtonAnular.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        anularMenuPedido(position);
+                        dialog.cancel();
+                    }
+                });
+
+                dialog.show();
+
             }
             else
             {
-                items = new CharSequence[2];
-                items[0] = "ANULAR MENU";
-                items[1] = "ENTREGAR MENU";
-            }
+                final Dialog dialog = new Dialog(view.getContext());
+                dialog.setContentView(R.layout.dialog_anular_entregar);
+                Button dialogButtonAnularMenu = (Button) dialog.findViewById(R.id.dialogButtonAnularMenu);
+                Button dialogButtonEntregarMenu = (Button) dialog.findViewById(R.id.dialogButtonEntregarMenu);
+                dialog.setTitle("ACCIONES");
 
-
-
-
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("ACCIONES");
-            builder.setItems(items, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int item) {
-                    // Do something with the selection
-                    if (item == 0) // Anular Menu Pedido
-                    {
+                // if button is clicked, close the custom dialog
+                dialogButtonAnularMenu.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
                         anularMenuPedido(position);
-                    } else {
-                       actualizarMenu(position);
+                        dialog.cancel();
                     }
-                }
-            });
-            AlertDialog alert = builder.create();
-            alert.show();
+                });
+                dialogButtonEntregarMenu.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        actualizarMenu(position);
+                        dialog.cancel();
+                    }
+                });
+
+                dialog.show();
+            }
         }
         else
         {
-            Toast.makeText(this, "Sin acciones para menu anulado, cancelado o cobrado.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "SIN ACCIONES A REALIZAR.", Toast.LENGTH_SHORT).show();
         }
         return true;
     }

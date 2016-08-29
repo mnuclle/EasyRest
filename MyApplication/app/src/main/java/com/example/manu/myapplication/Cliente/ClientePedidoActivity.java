@@ -2,11 +2,10 @@ package com.example.manu.myapplication.Cliente;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.ListActivity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -1068,31 +1067,29 @@ public class ClientePedidoActivity extends ListActivity implements AdapterView.O
 
         if(detalle.getIdEstado() == 0) {
 
-            final CharSequence[] items = {
-                    "ELIMINAR TODOS", "ELIMINAR UNO"
-            };
+            final Dialog dialog = new Dialog(view.getContext());
+            dialog.setContentView(R.layout.dialog_eliminar_uno_todos);
+            Button dialogButtonEliminarUno = (Button) dialog.findViewById(R.id.dialogButtonEliminarUno);
+            Button dialogButtonEliminarTodos = (Button) dialog.findViewById(R.id.dialogButtonEliminarTodos);
+            dialog.setTitle("ACCIONES");
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("ACCIONES");
-            builder.setItems(items, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int item) {
-                    // Do something with the selection
-                    if (item == 0) // Eliminar todos
-                    {
-                        removePedidosData(position);
-                    } else {
-                        if (item == 1) // Eliminar uno
-                        {
-                            restarUno(position);
-                        } else//item == 2 // Cancelar
-                        {
-                            ;
-                        }
-                    }
+            // if button is clicked, close the custom dialog
+            dialogButtonEliminarUno.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    restarUno(position);
+                    dialog.cancel();
                 }
             });
-            AlertDialog alert = builder.create();
-            alert.show();
+            dialogButtonEliminarTodos.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    removePedidosData(position);
+                    dialog.cancel();
+                }
+            });
+
+            dialog.show();
         }
         else
         {

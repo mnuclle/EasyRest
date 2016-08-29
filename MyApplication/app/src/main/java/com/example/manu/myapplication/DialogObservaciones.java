@@ -4,10 +4,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 /**
@@ -40,27 +40,19 @@ public class DialogObservaciones extends DialogFragment {
         txtObservaciones = (EditText) myView.findViewById(R.id.txtObservacionesDetalle);
         txtObservaciones.setText(item.getObservacion());
 
-        builder
-                // Add action buttons
-                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
+        Button dialogObservacionesButtonAceptar = (Button) myView.findViewById(R.id.dialogObservacionesButtonAceptar);
 
+        builder.setTitle("OBSERVACIONES");
 
-                        item.setObservacion(txtObservaciones.getText().toString());
-                        mListener.onDialogPositiveClick(DialogObservaciones.this);
-                    }
-                })
-                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-
-                        mListener.onDialogNegativeClick(DialogObservaciones.this);
-                        DialogObservaciones.this.getDialog().cancel();
-                    }
-                }
-                )
-                .setTitle("Observaciones");
-
+        // if button is clicked, close the custom dialog
+        dialogObservacionesButtonAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                item.setObservacion(txtObservaciones.getText().toString());
+                mListener.onDialogPositiveClick(DialogObservaciones.this);
+                DialogObservaciones.this.getDialog().cancel();
+            }
+        });
 
 
         return builder.create();
@@ -86,4 +78,6 @@ public class DialogObservaciones extends DialogFragment {
                     + " must implement NoticeDialogListener");
         }
     }
+
+
 }
