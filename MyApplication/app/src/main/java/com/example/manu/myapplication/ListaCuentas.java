@@ -533,6 +533,7 @@ public class ListaCuentas extends ListActivity implements
                         intent.putExtra("IDCLIENTE",((int) params[0]));
                         intent.putExtra("URLGlobal", URLGlobal);
                         intent.putExtra("CUENTAPEDIDO",params[2].toString());
+                        intent.putExtra("IDEMPLEADO",idEmpleado);
                         startActivity(intent);
                     }
                 }

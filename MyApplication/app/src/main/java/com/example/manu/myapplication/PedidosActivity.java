@@ -54,8 +54,7 @@ import java.util.Iterator;
 public class PedidosActivity extends ListActivity implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, DialogObservaciones.NoticeDialogListener {
     private Button btnElegirPedido, btnConfirmarPedido;
     private int NroCliente;
-    private int NroOpcion = -1;
-    private int positionLista;
+    private int idEmpleado;
     private PedidosAdapter adapter;
     private String URLGlobal;
     private ArrayList<DetallePedido> listaMenusAConfirmar;
@@ -76,6 +75,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
         /*Se agrega esto*/
 
         Intent intent = getIntent();
+        idEmpleado = (int) intent.getExtras().get("IDEMPLEADO");
         NroCliente = (int) intent.getExtras().get("IDCLIENTE");
         URLGlobal = intent.getExtras().get("URLGlobal").toString();
 
@@ -100,9 +100,10 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
             @TargetApi(Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
-                Object[] obj = new Object[2];
+                Object[] obj = new Object[3];
                 obj[0] = adapter.getList();
                 obj[1] = URLGlobal;
+                obj[2] = idEmpleado;
 
                 new PostTask(v.getContext()).execute(obj);
             }
