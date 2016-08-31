@@ -93,7 +93,7 @@ public class ClienteCategoriaMenuActivity extends FragmentActivity implements In
             if(listadoMenusFinal.size() > 0 ) {
                 for (Iterator<DetallePedido> it2 = listadoMenusFinal.iterator(); it2.hasNext(); ) {
                     DetallePedido auxMenu = it2.next();
-                    if(auxMenu.getNombreMenu().trim().equals(menu.getNombreMenu().trim()))
+                    if(auxMenu.getNombreMenu().trim().equals(menu.getNombreMenu().trim()) && menu.getCantidad() > 0)
                     {
                         it2.remove();
                         int cantidad = auxMenu.getCantidad();
@@ -146,7 +146,7 @@ public class ClienteCategoriaMenuActivity extends FragmentActivity implements In
                 listadoMenusFinal.add(detalleAAgregar);
             }
         }
-
+        listadoMenus.clear();
         return  listadoMenusFinal;
     }
 
@@ -154,7 +154,7 @@ public class ClienteCategoriaMenuActivity extends FragmentActivity implements In
     @Override
     public void onCategoriaSelect(int idCategoria) {
 
-
+        listadoDetalleAConfirmar = loadListadoMenus(listadoMenus);
         MenusFragment frag2 = MenusFragment.newInstance(idCategoria,URLGlobal,listadoDetalleAConfirmar);
 
         FragmentManager fm = getFragmentManager();
