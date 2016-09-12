@@ -1,3 +1,10 @@
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -20,7 +27,7 @@
         <ImageView
             android:id="@+id/imageView1"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="350dp"
             android:layout_gravity="center_horizontal|center_vertical"
             android:gravity="center"
             android:background="#314550"
@@ -30,72 +37,104 @@
             />
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:layout_weight="1">
-        <Button android:id="@+id/btnVerPedido"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textSize="25sp"
-            android:text="Ver Pedido"
-            android:textColor="@color/white"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:layout_margin="25dp"
-            android:background="@drawable/botonformato"
-            android:layout_weight="1"
-            />
-        <Button android:id="@+id/btnVerCuenta"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textSize="25sp"
-            android:text="Ver Resumen de Cuenta"
-            android:textColor="@color/white"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:layout_margin="25dp"
-            android:background="@drawable/botonformato"
-            android:layout_weight="1"
-            />
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_weight="1">-->
+        <!--<Button android:id="@+id/btnVerPedido"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="120dp"-->
+            <!--android:textSize="25sp"-->
+            <!--android:text="Ver Pedido"-->
+            <!--android:textColor="@color/white"-->
+            <!--android:layout_gravity="center_horizontal|center_vertical"-->
+            <!--android:gravity="center"-->
+            <!--android:textStyle="bold"-->
+            <!--android:layout_margin="25dp"-->
+            <!--android:background="@drawable/botonformato"-->
+            <!--android:layout_weight="1"-->
+            <!--/>-->
+        <!--<Button android:id="@+id/btnVerCuenta"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="120dp"-->
+            <!--android:textSize="25sp"-->
+            <!--android:text="Ver Resumen de Cuenta"-->
+            <!--android:textColor="@color/white"-->
+            <!--android:layout_gravity="center_horizontal|center_vertical"-->
+            <!--android:gravity="center"-->
+            <!--android:textStyle="bold"-->
+            <!--android:layout_margin="25dp"-->
+            <!--android:background="@drawable/botonformato"-->
+            <!--android:layout_weight="1"-->
+            <!--/>-->
 
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:layout_weight="1">
-        <Button android:id="@+id/btnLlamarMozo"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textSize="25sp"
-            android:text="LLamar al Mozo"
-            android:textColor="@color/white"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:layout_margin="25dp"
-            android:background="@drawable/botonformato"
-            android:layout_weight="1"
-            />
+    <!--</LinearLayout>-->
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_weight="1">-->
+        <!--<Button android:id="@+id/btnLlamarMozo"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="120dp"-->
+            <!--android:textSize="25sp"-->
+            <!--android:text="LLamar al Mozo"-->
+            <!--android:textColor="@color/white"-->
+            <!--android:layout_gravity="center_horizontal|center_vertical"-->
+            <!--android:gravity="center"-->
+            <!--android:textStyle="bold"-->
+            <!--android:layout_margin="25dp"-->
+            <!--android:background="@drawable/botonformato"-->
+            <!--android:layout_weight="1"-->
+            <!--/>-->
 
-        <Button android:id="@+id/btnSalir"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textSize="25sp"
-            android:text="Salir"
-            android:textColor="@color/white"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:layout_margin="25dp"
-            android:background="@drawable/botonformato"
-            android:layout_weight="1"
-            />
-    </LinearLayout>
+        <!--<Button android:id="@+id/btnSalir"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="120dp"-->
+            <!--android:textSize="25sp"-->
+            <!--android:text="Salir"-->
+            <!--android:textColor="@color/white"-->
+            <!--android:layout_gravity="center_horizontal|center_vertical"-->
+            <!--android:gravity="center"-->
+            <!--android:textStyle="bold"-->
+            <!--android:layout_margin="25dp"-->
+            <!--android:background="@drawable/botonformato"-->
+            <!--android:layout_weight="1"-->
+            <!--/>-->
+    <!--</LinearLayout>-->
 
 
 </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btnVerPedido"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_margin="150dp"
+        app:backgroundTint="#F38129"
+        app:fabSize="normal"
+        android:clickable="true"
+        android:src="@drawable/plus"
+        android:layout_gravity="bottom|start"/>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btnVerCuenta"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_margin="60dp"
+        app:backgroundTint="#F38129"
+        app:fabSize="normal"
+        android:clickable="true"
+        android:src="@drawable/receipt"
+        android:layout_gravity="bottom|center"/>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btnLlamarMozo"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_margin="150dp"
+        app:backgroundTint="#F38129"
+        app:fabSize="normal"
+        android:clickable="true"
+        android:src="@drawable/wedding_reception"
+        android:layout_gravity="bottom|end"/>
+    </android.support.design.widget.CoordinatorLayout>

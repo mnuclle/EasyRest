@@ -7,12 +7,13 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
-import android.widget.Button;
 
 import com.example.manu.myapplication.Entidades.DetallePedido;
 import com.example.manu.myapplication.Entidades.Menus;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -20,13 +21,13 @@ public class CategoriaMenuActivity extends FragmentActivity implements InterfazC
     private int NroCliente;
     private ArrayList<Menus> listadoMenus = new ArrayList<Menus>();
     private ArrayList<DetallePedido> listadoDetalleAConfirmar;
-    private Button btnAceptar;
+    private FloatingActionButton btnAceptar;
     private String URLGlobal;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categoria_menu);
-        btnAceptar = (Button) findViewById(R.id.btnAceptarPedido);
+        btnAceptar = (FloatingActionButton) findViewById(R.id.btnAceptarPedido);
         final Intent intent = getIntent();
         NroCliente=(int) intent.getExtras().get("IDCLIENTE");
         URLGlobal = intent.getExtras().get("URLGlobal").toString();

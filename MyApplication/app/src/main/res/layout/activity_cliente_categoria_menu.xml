@@ -1,3 +1,9 @@
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -17,17 +23,17 @@
             android:orientation="vertical"
             android:background="#314550"
             android:layout_weight="1">
-            <Button android:id="@+id/btnAceptarPedidoCliente"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:textColor="#FFFFFF"
-                android:text="@string/AceptarPedido"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:layout_margin="25dp"
-                android:background="@drawable/botonformato"
-                android:layout_gravity="center_horizontal"/>
+            <!--<Button android:id="@+id/btnAceptarPedidoCliente"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textSize="20sp"-->
+                <!--android:textColor="#FFFFFF"-->
+                <!--android:text="@string/AceptarPedido"-->
+                <!--android:gravity="center"-->
+                <!--android:textStyle="bold"-->
+                <!--android:layout_margin="25dp"-->
+                <!--android:background="@drawable/botonformato"-->
+                <!--android:layout_gravity="center_horizontal"/>-->
             <RelativeLayout
                 android:id="@+id/FragmentContainer1Cliente"
                 android:layout_width="wrap_content"
@@ -51,3 +57,14 @@
 
 
 </LinearLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btnAceptarPedidoCliente"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="60dp"
+        app:backgroundTint="#F38129"
+        app:fabSize="normal"
+        android:clickable="true"
+        android:src="@drawable/check"
+        android:layout_gravity="bottom|right|end"/>
+</android.support.design.widget.CoordinatorLayout>

@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.util.JsonReader;
 import android.util.JsonToken;
 import android.view.LayoutInflater;
@@ -52,7 +53,7 @@ import java.util.Iterator;
 
 
 public class PedidosActivity extends ListActivity implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, DialogObservaciones.NoticeDialogListener {
-    private Button btnElegirPedido, btnConfirmarPedido;
+    private FloatingActionButton btnElegirPedido, btnConfirmarPedido;
     private int NroCliente;
     private int idEmpleado;
     private PedidosAdapter adapter;
@@ -83,9 +84,9 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
         cuentaPedido = (TextView) findViewById(R.id.cuentaPedido);
         cuentaPedido.setText(intent.getExtras().get("CUENTAPEDIDO").toString());
         montoTotalPedido = (TextView) findViewById(R.id.montoTotalPedido);
-        btnElegirPedido = (Button) findViewById(R.id.btnElegirPedido);
+        btnElegirPedido = (FloatingActionButton) findViewById(R.id.btnElegirPedido);
 
-        btnConfirmarPedido = (Button) findViewById(R.id.btnConfirmarPedido);
+        btnConfirmarPedido = (FloatingActionButton) findViewById(R.id.btnConfirmarPedido);
 
         btnElegirPedido.setOnClickListener(new View.OnClickListener() {
             @TargetApi(Build.VERSION_CODES.KITKAT)
