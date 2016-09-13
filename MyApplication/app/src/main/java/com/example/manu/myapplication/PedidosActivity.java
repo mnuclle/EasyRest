@@ -1260,7 +1260,14 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
         }
 
         protected void onPostExecute(String st) {
-            loadPedidosData(listaDetalle,idDetallePedido);
+            for (DetallePedido det: listaDetalle
+                 ) {
+                if(det.getIdDetallePedido() == idDetallePedido ) {
+                    det.setIdEstado(14);
+                    break;
+                }
+            }
+            loadPedidosData(listaDetalle,new ArrayList<DetallePedido>());
         }
     }
 
@@ -1342,7 +1349,14 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
         }
 
         protected void onPostExecute(String st) {
-            loadPedidosDataActEstado(listaDetalle,idDetallePedido);
+            for (DetallePedido det: listaDetalle
+                    ) {
+                if(det.getIdDetallePedido() == idDetallePedido ) {
+                    det.setIdEstado(15);
+                    break;
+                }
+            }
+            loadPedidosData(listaDetalle,new ArrayList<DetallePedido>());
         }
     }
 
