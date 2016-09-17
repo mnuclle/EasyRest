@@ -50,6 +50,7 @@
             android:screenOrientation="landscape" />
 
         <service android:name=".ServicioListenerPedidos" />
+        <service android:name=".ServicioListenerMozo" />
 
         <!--
      ATTENTION: This was auto-generated to add Google Play services to your project for

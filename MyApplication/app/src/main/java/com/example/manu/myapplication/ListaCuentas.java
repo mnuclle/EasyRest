@@ -1,10 +1,14 @@
 package com.example.manu.myapplication;
 
+import android.annotation.SuppressLint;
 import android.app.ListActivity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.os.ResultReceiver;
 import android.util.JsonReader;
 import android.util.JsonToken;
 import android.view.LayoutInflater;
@@ -41,6 +45,9 @@ public class ListaCuentas extends ListActivity implements
     private int idEmpleado;
     private boolean primerIngreso = true;
     boolean checkTodasCuentas = true;
+    MyResultReceiver mReceiver;
+    Thread thPedidos;
+    Thread threadListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +57,24 @@ public class ListaCuentas extends ListActivity implements
         adapter = new CuentasAdapter();
 
         setListAdapter(adapter);
+
+        //si usamos un servicio
+        mReceiver = new MyResultReceiver(new Handler());
+        final Intent i =new Intent(this, ServicioListenerMozo.class);
+
+        i.putExtra("URLGlobal",URLGlobal);
+        i.putExtra("receiverTag", mReceiver);
+
+        threadListener = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Context c = getApplicationContext();
+                c.startService(i);
+            }
+        });
+        threadListener.start();
+
+        /**/
 
         getListView().setOnItemClickListener(this);
 
@@ -705,6 +730,31 @@ public class ListaCuentas extends ListActivity implements
         }
     }
 
+
+
+    @SuppressLint("ParcelCreator")
+    public class MyResultReceiver extends ResultReceiver {
+
+        public MyResultReceiver(Handler handler) {
+            super(handler);
+            // TODO Auto-generated constructor stub
+        }
+
+
+        @Override
+        protected void onReceiveResult(int resultCode, Bundle resultData) {
+            //asi funciono pero me parece que esto a la larga consume mucha memoria porque
+            // podria estar abriendo muchos hilos por cada actualizacion de pedidos
+
+            String data = resultData.toString();
+        }
+
+    }
+    private BroadcastReceiver onEvent=new BroadcastReceiver() {
+        public void onReceive(Context ctxt, Intent i) {
+
+        }
+    };
 
 }
 

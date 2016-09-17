@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#476B85">
+
+    <Button
+        android:id="@+id/dialogButtonListo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="LISTO"
+        android:layout_margin="5dp"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:textSize="35dp"
+        android:background="#314550"
+        />
+    <Button
+        android:id="@+id/dialogButtonCancelar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="CANCELAR"
+        android:layout_margin="5dp"
+        android:textSize="35dp"
+        android:layout_below="@+id/dialogButtonListo"
+        android:background="#314550"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        />
+
+</RelativeLayout>

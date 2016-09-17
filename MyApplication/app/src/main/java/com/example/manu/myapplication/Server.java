@@ -59,7 +59,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
-public class Server extends ListActivity implements OnItemClickListener,OnClickListener {
+public class Server extends ListActivity implements AdapterView.OnItemClickListener,AdapterView.OnClickListener,AdapterView.OnItemLongClickListener {
 
     private String URLGlobal;
     private TextView txtNotificaciones;
@@ -103,7 +103,7 @@ public class Server extends ListActivity implements OnItemClickListener,OnClickL
         txtIdPedido = (TextView) findViewById(R.id.txtIdPedido);
         btnEnviarIdPedido = (Button) findViewById(R.id.btnEnviarPedido);
 
-        this.registerForContextMenu(getListView());
+      //  this.registerForContextMenu(getListView());
 
         detallePedidoAdapter = new DetallePedidoAdapter(Server.this);
         //cargar detalles en el adapter consultando la web api.
@@ -142,6 +142,7 @@ public class Server extends ListActivity implements OnItemClickListener,OnClickL
         threadListener.start();
 
         getListView().setOnItemClickListener(this);
+        getListView().setOnItemLongClickListener(this);
 
 
         //si no usamos un servicio
@@ -160,26 +161,125 @@ public class Server extends ListActivity implements OnItemClickListener,OnClickL
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
+
+
+
+
         super.onCreateContextMenu(menu, v, menuInfo);
 
-        if (v == getListView()) {
-            ListView listaDetalles = (ListView) v;
-            AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) menuInfo;
-            DetallePedido detalle = (DetallePedido) listaDetalles.getItemAtPosition(acmi.position);
+
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
+        if (v.getParent() == getListView()) {
+           // ListView listaDetalles = (ListView) v;
+            //AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) menuInfo;
+            final DetallePedido detalle = (DetallePedido)detallePedidoAdapter.getItem(position);
             int idEstado = detalle.getIdEstado();
 
             //registrado? si es registrado mostrar cancelar o en preparacion
             if(idEstado == 12)
             {
+                final Dialog dialog = new Dialog(v.getContext());
+                dialog.setContentView(R.layout.dialog_cambiar_estado_detallepedido);
+                Button enPreparacion = (Button) dialog.findViewById(R.id.dialogButtonEnPreparacion);
+                Button cancelar = (Button) dialog.findViewById(R.id.dialogButtonCancelar);
+                dialog.setTitle("ACCIONES");
+
+                // if button is clicked, close the custom dialog
+                enPreparacion.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        detalle.setNombreEstado(nombreEstadoDetallePedidoEnPreparacion);
+                        detalle.setIdEstado(idEstadoDetallePedidoEnPreparacion);
+                        Thread thPedidos = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                actualizarEstadoDetallePedido(detalle);
+                                obtenerDetallesPedidos();
+                            }
+                        });
+                        thPedidos.start();
+                        dialog.cancel();
+                    }
+                });
+                cancelar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        detalle.setNombreEstado(nombreEstadoDetallePedidoCancelado);
+                        detalle.setIdEstado(idEstadoDetallePedidoCancelado);
+                        Thread thPedidos = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                actualizarEstadoDetallePedido(detalle);
+                                obtenerDetallesPedidos();
+                            }
+                        });
+                        thPedidos.start();
+
+                        dialog.cancel();
+                    }
+                });
+
+                dialog.show();
+                /*
                 MenuInflater inflater = getMenuInflater();
                 inflater.inflate(R.menu.menu_opciones_actualizar_pedido, menu);
+                */
+
             }
             else
             {   //en preparacion mostrar cancelar o listo
+                /*
                 MenuInflater inflater = getMenuInflater();
                 inflater.inflate(R.menu.menu_opciones_actualizar_pedido2, menu);
+                */
+                final Dialog dialog = new Dialog(v.getContext());
+                dialog.setContentView(R.layout.dialog_cambiar_estado_detallepedido2);
+                Button listo = (Button) dialog.findViewById(R.id.dialogButtonListo);
+                Button cancelar = (Button) dialog.findViewById(R.id.dialogButtonCancelar);
+                dialog.setTitle("ACCIONES");
+
+                // if button is clicked, close the custom dialog
+                listo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        detalle.setNombreEstado(nombreEstadoDetallePedidoListo);
+                        detalle.setIdEstado(idEstadoDetallePedidoCocinado);
+                        Thread thPedidos = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                actualizarEstadoDetallePedido(detalle);
+                                obtenerDetallesPedidos();
+                            }
+                        });
+                        thPedidos.start();
+                        dialog.cancel();
+                    }
+                });
+                cancelar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        detalle.setNombreEstado(nombreEstadoDetallePedidoCancelado);
+                        detalle.setIdEstado(idEstadoDetallePedidoCancelado);
+                        Thread thPedidos = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                actualizarEstadoDetallePedido(detalle);
+                                obtenerDetallesPedidos();
+                            }
+                        });
+                        thPedidos.start();
+
+                        dialog.cancel();
+                    }
+                });
+
+                dialog.show();
             }
         }
+        return false;
     }
 
 
@@ -308,7 +408,7 @@ public class Server extends ListActivity implements OnItemClickListener,OnClickL
 
         if(convertView.getId() == R.id.listaMenuDialog)
         {
-            Toast.makeText(this,"Hizo click",3);
+            Toast.makeText(this,"Hizo click",Toast.LENGTH_LONG);
         }
         final DetallePedido detalle;
         detalle = (DetallePedido)detallePedidoAdapter.getItem(position);
@@ -804,6 +904,7 @@ public class Server extends ListActivity implements OnItemClickListener,OnClickL
         }
     }
 
+
     private class actualizarEstadoPedido extends AsyncTask<JSONObject, Void, Void> {
 
         @Override
@@ -981,17 +1082,20 @@ public class Server extends ListActivity implements OnItemClickListener,OnClickL
 //        lista.setOnItemClickListener(this);
 //        adapterMenu.notifyDataSetChanged();
 
+
+
+
+/*
         AlertDialog.Builder builderSingle = new AlertDialog.Builder(Server.this);
-//        builderSingle.setIcon(R.drawable.logo);
-//        builderSingle.setTitle("Elija un estado");
         LayoutInflater inflater = (LayoutInflater)this.getSystemService(LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.dialog_menu_custom, (ViewGroup)findViewById(R.id.layout_root));
 
          AlertDialog dialogAlerta = builderSingle.create();
          dialogAlerta.setView(layout,0,0,0,0);
          dialogAlerta.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-        //builderSingle.show();
-         dialogAlerta.show();
+         dialogAlerta.show();*/
+
+
 
 //        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
 //                Server.this,
@@ -1033,7 +1137,8 @@ public class Server extends ListActivity implements OnItemClickListener,OnClickL
 
        // builderSingle.show();
 
-        return dialogAlerta;
+
+        return null;
     }
 
 
