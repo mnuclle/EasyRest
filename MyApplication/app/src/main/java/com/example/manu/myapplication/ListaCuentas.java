@@ -97,6 +97,12 @@ public class ListaCuentas extends ListActivity implements
 
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+    }
+
     private void loadCuentasData(ArrayList<CuentasMesa> arrayList) {
 
         Intent intent = getIntent();

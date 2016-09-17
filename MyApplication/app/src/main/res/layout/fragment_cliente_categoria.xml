@@ -4,7 +4,25 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="#314550">
-
+    <TextView
+        android:id="@+id/textoMenus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="CATEGORÍAS"
+        android:gravity="center"
+        android:layout_margin="10px"
+        android:background="#476B85"
+        android:textColor="#FFFFFF"
+        android:textSize="45sp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
+        android:textStyle="bold"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1">
     <ListView
         android:id="@android:id/list"
         android:layout_width="wrap_content"
@@ -38,4 +56,5 @@
         android:layout_marginTop="0dp"
         android:layout_marginBottom="0dp"
         android:textStyle="bold"/>
+    </FrameLayout>
 </LinearLayout>

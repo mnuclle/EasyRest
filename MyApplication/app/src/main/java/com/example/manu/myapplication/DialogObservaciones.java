@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import com.example.manu.myapplication.Entidades.DetallePedido;
 
 /**
  * Created by Manu on 20/06/2016.
@@ -16,13 +17,13 @@ import android.widget.EditText;
 
 public class DialogObservaciones extends DialogFragment {
     private EditText txtObservaciones;
-    private com.example.manu.myapplication.Entidades.DetallePedido item;
+    private DetallePedido item;
 
-    public com.example.manu.myapplication.Entidades.DetallePedido getItem() {
+    public DetallePedido getItem() {
         return item;
     }
 
-    public void setItem(com.example.manu.myapplication.Entidades.DetallePedido item) {
+    public void setItem(DetallePedido item) {
         this.item = item;
     }
 

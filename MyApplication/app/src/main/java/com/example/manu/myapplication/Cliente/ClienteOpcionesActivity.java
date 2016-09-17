@@ -5,10 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.util.JsonReader;
 import android.util.JsonToken;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.manu.myapplication.Entidades.DetallePedido;
@@ -32,7 +32,7 @@ public class ClienteOpcionesActivity extends Activity {
 
     private int NroCliente;
     private String URLGlobal;
-    private Button btnVerCuenta, btnLlamarMozo,btnVerPedido,btnSalir;
+    private FloatingActionButton btnVerCuenta, btnLlamarMozo,btnVerPedido;
     private String cuentaPedido;
 
     @Override
@@ -45,10 +45,10 @@ public class ClienteOpcionesActivity extends Activity {
         URLGlobal = intent.getExtras().get("URLGlobal").toString();
         cuentaPedido = intent.getExtras().get("CUENTAPEDIDO").toString();
 
-        btnVerCuenta = (Button) findViewById(R.id.btnVerCuenta);
-        btnLlamarMozo = (Button) findViewById(R.id.btnLlamarMozo);
-        btnVerPedido = (Button) findViewById(R.id.btnVerPedido);
-        btnSalir = (Button) findViewById(R.id.btnSalir);
+        btnVerCuenta = (FloatingActionButton) findViewById(R.id.btnVerCuenta);
+        btnLlamarMozo = (FloatingActionButton) findViewById(R.id.btnLlamarMozo);
+        btnVerPedido = (FloatingActionButton) findViewById(R.id.btnVerPedido);
+
 
         btnVerPedido.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -75,12 +75,6 @@ public class ClienteOpcionesActivity extends Activity {
 
         });
 
-        btnSalir.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
 
         btnLlamarMozo.setOnClickListener(new View.OnClickListener() {
             @Override
