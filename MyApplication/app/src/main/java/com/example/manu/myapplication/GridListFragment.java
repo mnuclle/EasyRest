@@ -260,11 +260,11 @@ public class GridListFragment extends ListFragment implements AdapterView.OnItem
             }
 
             Menus info = (Menus) getItem(position);
-           /* if (info.isEsMenu()) {
+            if (info.isEsMenu()) {
                 holder.imageMenus.setImageResource((ti.obtenerImagen(info.getIdMenu(), true)).getIdImagen());
             } else {
                 holder.imageMenus.setImageResource((ti.obtenerImagen(info.getIdInsumo(), false)).getIdImagen());
-            }*/
+            }
             int color;
             if (info.getCantidad() == 0)
                 color = Color.WHITE;
@@ -287,7 +287,7 @@ public class GridListFragment extends ListFragment implements AdapterView.OnItem
             holder.txtPrecio.setTextColor(color);
             holder.txtDescripcion.setTextColor(color);
 
-            holder.imageMenus.setImageResource(R.drawable.agua);
+            //holder.imageMenus.setImageResource(R.drawable.agua);
             int stock = info.getStock() - info.getCantidad();
             holder.txtNombreMenu.setText(info.getNombreMenu() + " (Stock: " + stock + ")" );
             holder.txtPrecio.setText("$" + String.format("%.2f",info.getPrecio()));

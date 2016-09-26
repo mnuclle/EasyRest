@@ -115,7 +115,7 @@
         app:backgroundTint="#F38129"
         app:fabSize="normal"
         android:clickable="true"
-        android:src="@drawable/plus"
+        android:src="@drawable/cart"
         android:layout_gravity="bottom|start"/>
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/btnVerCuenta"

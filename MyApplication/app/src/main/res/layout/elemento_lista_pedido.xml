@@ -12,7 +12,7 @@
         >
         <TextView
             android:id="@+id/cantidadMenu"
-            android:layout_width="100dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="cantidad"
@@ -80,8 +80,7 @@
                     android:layout_marginLeft="25dp"
                     android:background="#314550"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
+                    android:textSize="15sp"
                     android:layout_below="@+id/nombreMenu"
 
                     />

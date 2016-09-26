@@ -48,7 +48,6 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:singleLine="false"
                     android:text="nombreMenus"
                     android:layout_gravity="center_vertical"
                     android:background="#314550"
@@ -60,12 +59,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:singleLine="false"
-                    android:text="nombreMenus"
                     android:layout_gravity="center_vertical"
                     android:background="#314550"
                     android:textColor="#FFFFFF"
-                    android:textSize="25sp"
+                    android:textSize="15sp"
                     android:padding="5dp"/>
 
             </LinearLayout>

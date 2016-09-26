@@ -131,7 +131,7 @@ public class ClienteMenuFragment extends ListFragment implements AdapterView.OnI
         {
 
             Menus menu = adapter.listaMenus.get(position);
-            if (menu.getCantidad() == menu.getStock())
+            if (menu.getCantidad() == menu.getStock() && !menu.isEsMenu())
             {
                 Toast.makeText(getActivity(), "No hay mas menú en stock.",
                         Toast.LENGTH_SHORT).show();
@@ -263,11 +263,12 @@ public class ClienteMenuFragment extends ListFragment implements AdapterView.OnI
             }
 
             Menus info = (Menus) getItem(position);
-           /* if (info.isEsMenu()) {
+            ti = new TodasImages();
+            if (info.isEsMenu()) {
                 holder.imageMenus.setImageResource((ti.obtenerImagen(info.getIdMenu(), true)).getIdImagen());
             } else {
                 holder.imageMenus.setImageResource((ti.obtenerImagen(info.getIdInsumo(), false)).getIdImagen());
-            }*/
+            }
             int color;
             if (info.getCantidad() == 0)
                 color = Color.WHITE;
@@ -280,7 +281,7 @@ public class ClienteMenuFragment extends ListFragment implements AdapterView.OnI
             else
                 holder.cantidad.setText(""+info.getCantidad());
 
-            if (info.getCantidad() == info.getStock())
+            if (info.getCantidad() == info.getStock() && !info.isEsMenu())
                 color = Color.GRAY;
             else
                 color = Color.WHITE;
@@ -290,9 +291,14 @@ public class ClienteMenuFragment extends ListFragment implements AdapterView.OnI
             holder.txtPrecio.setTextColor(color);
             holder.txtDescripcion.setTextColor(color);
 
-            holder.imageMenus.setImageResource(R.drawable.agua);
+            //holder.imageMenus.setImageResource(R.drawable.agua);
             int stock = info.getStock() - info.getCantidad();
-            holder.txtNombreMenu.setText(info.getNombreMenu() + " (Stock: " + stock + ")" );
+
+            if (info.isEsMenu())
+                holder.txtNombreMenu.setText(info.getNombreMenu());
+            else
+                holder.txtNombreMenu.setText(info.getNombreMenu() + " (Stock: " + stock + ")" );
+
             holder.txtPrecio.setText("$" + String.format("%.2f",info.getPrecio()));
             holder.txtDescripcion.setText(info.getDescripcion());
 
@@ -371,7 +377,8 @@ public class ClienteMenuFragment extends ListFragment implements AdapterView.OnI
                                     break;
                                 case "esMenu":
                                     String esMenuAux = "S";
-                                    if (reader1.nextString() == esMenuAux)
+                                    String esmenu = reader1.nextString();
+                                    if (esmenu.toString().equals(esMenuAux.toString()))
                                         esMenu = true;
                                     break;
                                 case "precio":
@@ -381,7 +388,14 @@ public class ClienteMenuFragment extends ListFragment implements AdapterView.OnI
                                     descripcion = reader1.nextString();
                                     break;
                                 case "stock":
-                                    stock = reader1.nextInt();
+                                    if (reader1.peek() == JsonToken.NULL)
+                                    {
+                                        stock = 0;
+                                    }
+                                    else
+                                    {
+                                        stock = reader1.nextInt();
+                                    }
                                     break;
                                 default:
                                     reader1.skipValue();
