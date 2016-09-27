@@ -1,6 +1,7 @@
 package com.example.manu.myapplication;
 
 import android.annotation.SuppressLint;
+import android.app.DialogFragment;
 import android.app.ListActivity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -38,7 +39,7 @@ import java.util.ArrayList;
 
 
 public class ListaCuentas extends ListActivity implements
-        AdapterView.OnItemClickListener
+        AdapterView.OnItemClickListener, DialogSalir.NoticeDialogListener
 {
     private CuentasAdapter adapter;
     private String URLGlobal;
@@ -762,5 +763,22 @@ public class ListaCuentas extends ListActivity implements
         }
     };
 
+    @Override
+    public void onBackPressed() {
+        DialogSalir dialog = new DialogSalir();
+        dialog.show(getFragmentManager(), "DialogSalir");
+    }
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+        ;
+
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        // User touched the dialog's negative button
+
+    }
 }
 

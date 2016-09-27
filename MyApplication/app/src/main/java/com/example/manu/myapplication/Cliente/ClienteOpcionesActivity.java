@@ -1,6 +1,7 @@
 package com.example.manu.myapplication.Cliente;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -11,6 +12,7 @@ import android.util.JsonToken;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.manu.myapplication.DialogSalir;
 import com.example.manu.myapplication.Entidades.DetallePedido;
 import com.example.manu.myapplication.Entidades.Pedidos;
 import com.example.manu.myapplication.R;
@@ -28,7 +30,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
-public class ClienteOpcionesActivity extends Activity {
+public class ClienteOpcionesActivity extends Activity implements DialogSalir.NoticeDialogListener{
 
     private int NroCliente;
     private String URLGlobal;
@@ -625,5 +627,21 @@ public class ClienteOpcionesActivity extends Activity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        DialogSalir dialog = new DialogSalir();
+        dialog.show(getFragmentManager(), "DialogObservaciones");
+    }
 
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+        ;
+
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        // User touched the dialog's negative button
+
+    }
 }
