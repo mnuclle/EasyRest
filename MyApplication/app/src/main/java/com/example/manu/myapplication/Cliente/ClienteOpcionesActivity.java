@@ -408,6 +408,7 @@ public class ClienteOpcionesActivity extends Activity implements DialogSalir.Not
                                                         break;
                                                     case "descripcion":
                                                         descripcion = reader1.nextString();
+                                                        break;
                                                     default:
                                                         reader1.skipValue();
                                                         break;

@@ -448,6 +448,7 @@ public class ListaCuentas extends ListActivity implements
                                             double precio = -1;
                                             String descripcion = "";
                                             int idCategoria = -1;
+                                            int stock = 0;
                                             reader1.beginObject();
                                             while (reader1.hasNext()) {
                                                 String name = reader1.nextName();
@@ -466,6 +467,7 @@ public class ListaCuentas extends ListActivity implements
                                                         break;
                                                     case "descripcion":
                                                         descripcion = reader1.nextString();
+                                                        break;
                                                     default:
                                                         reader1.skipValue();
                                                         break;
