@@ -83,7 +83,7 @@ public class ServicioListenerPedidos extends IntentService {
                         .setContentIntent(contentIntent)  // The intent to send when the entry is clicked
                         .build();
 
-                notification.flags |= Notification.FLAG_ONGOING_EVENT |Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
+                notification.flags |= Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
 
 
 

@@ -491,6 +491,10 @@ public class Server extends ListActivity implements AdapterView.OnItemClickListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        threadListener.interrupt();
+        threadListener = null;
+        Context c = getApplicationContext();
+        c.stopService(i);
     }
 
 
