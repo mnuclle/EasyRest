@@ -172,8 +172,9 @@ public class Server extends ListActivity implements AdapterView.OnItemClickListe
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
+
         if (v.getParent() == getListView()) {
-           // ListView listaDetalles = (ListView) v;
+            // ListView listaDetalles = (ListView) v;
             //AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) menuInfo;
             final DetallePedido detalle = (DetallePedido)detallePedidoAdapter.getItem(position);
             int idEstado = detalle.getIdEstado();
@@ -281,6 +282,9 @@ public class Server extends ListActivity implements AdapterView.OnItemClickListe
         }
         return false;
     }
+
+
+
 
 
     @Override
@@ -405,7 +409,7 @@ public class Server extends ListActivity implements AdapterView.OnItemClickListe
 
     @Override
     public void onItemClick(AdapterView<?> arg0, View convertView, int position, long arg3) {
-
+/*
         if(convertView.getId() == R.id.listaMenuDialog)
         {
             Toast.makeText(this,"Hizo click",Toast.LENGTH_LONG);
@@ -423,7 +427,7 @@ public class Server extends ListActivity implements AdapterView.OnItemClickListe
                 }
             });
             thPedidos.start();
-        }
+        }*/
 
     }
 
