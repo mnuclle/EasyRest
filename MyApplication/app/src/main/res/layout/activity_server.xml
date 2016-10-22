@@ -51,7 +51,7 @@
         android:layout_height="fill_parent" >
                 <ListView
                     android:id="@android:id/list"
-                    android:background="#314550"
+                    android:background="#476B85"
                     android:layout_width="match_parent"
                     android:layout_height="500dp"
                     android:layout_weight="0.8"

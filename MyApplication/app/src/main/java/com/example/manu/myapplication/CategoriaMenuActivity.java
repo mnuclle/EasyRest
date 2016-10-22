@@ -20,6 +20,7 @@ import java.util.Iterator;
 public class CategoriaMenuActivity extends FragmentActivity implements InterfazCategorias,InterfazListadoMenus{
     private int NroCliente;
     private ArrayList<Menus> listadoMenus = new ArrayList<Menus>();
+    private ArrayList<Menus> listadoMenusABorrar = new ArrayList<Menus>();
     private ArrayList<DetallePedido> listadoDetalleAConfirmar;
     private FloatingActionButton btnAceptar;
     private String URLGlobal;
@@ -40,7 +41,7 @@ public class CategoriaMenuActivity extends FragmentActivity implements InterfazC
             public void onClick(View v) {
 
                 ArrayList<DetallePedido> listadoMenusFinal;
-                listadoMenusFinal = loadListadoMenus(listadoMenus);
+                listadoMenusFinal = loadListadoMenus(listadoMenus,listadoMenusABorrar);
                 Intent intent1 = new Intent();
                 intent1.putExtra("IDCLIENTE",NroCliente);
                 intent1.putExtra("URLGlobal",URLGlobal);
@@ -72,7 +73,7 @@ public class CategoriaMenuActivity extends FragmentActivity implements InterfazC
 
         }
 
-    private ArrayList<DetallePedido> loadListadoMenus(ArrayList<Menus> listado)
+    private ArrayList<DetallePedido> loadListadoMenus(ArrayList<Menus> listado, ArrayList<Menus> listadoABorrar)
     {
         ArrayList<DetallePedido> listadoMenusFinal;
 
@@ -142,6 +143,31 @@ public class CategoriaMenuActivity extends FragmentActivity implements InterfazC
             }
         }
         listadoMenus.clear();
+
+
+        for(Iterator<Menus> it = listadoABorrar.iterator(); it.hasNext();) {
+
+            Menus menu = it.next();
+            if(listadoMenusFinal.size() > 0 ) {
+                for (Iterator<DetallePedido> it2 = listadoMenusFinal.iterator(); it2.hasNext(); ) {
+                    DetallePedido auxMenu = it2.next();
+                    if (auxMenu.getNombreMenu().trim().equals(menu.getNombreMenu().trim()) ) {
+                        if(auxMenu.getCantidad() == 1)
+                        {
+                            listadoMenusFinal.remove(auxMenu);
+                            break;
+                        }
+                        else
+                        {
+                            int cantidad = auxMenu.getCantidad();
+                            auxMenu.setCantidad(cantidad-1);
+                            auxMenu.setTotalDetalle(auxMenu.getCantidad()*auxMenu.getPrecio());
+                        }
+                    }
+                }
+            }
+        }
+        listadoMenusABorrar.clear();
         return  listadoMenusFinal;
     }
 
@@ -149,7 +175,7 @@ public class CategoriaMenuActivity extends FragmentActivity implements InterfazC
     @Override
     public void onCategoriaSelect(int idCategoria) {
 
-        listadoDetalleAConfirmar = loadListadoMenus(listadoMenus);
+        listadoDetalleAConfirmar = loadListadoMenus(listadoMenus,listadoMenusABorrar);
         MenusFragment frag2 = MenusFragment.newInstance(idCategoria,URLGlobal,listadoDetalleAConfirmar);
 
         FragmentManager fm = getFragmentManager();
@@ -165,6 +191,11 @@ public class CategoriaMenuActivity extends FragmentActivity implements InterfazC
     @Override
     public void onMenuSelect(Menus menu) {
         listadoMenus.add(menu);
+    }
+
+    @Override
+    public void onMenuLongSelect(Menus menu) {
+        listadoMenusABorrar.add(menu);
     }
 
 }

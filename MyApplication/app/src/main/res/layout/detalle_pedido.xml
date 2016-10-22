@@ -59,7 +59,6 @@
         android:text="Preferencia Pedido:  "
         android:background="#314550"
         android:textColor="#FFFFFF"
-        android:textSize="25sp"
-        android:textStyle="bold"
+        android:textSize="20sp"
         android:includeFontPadding="false"/>
 </LinearLayout>

@@ -1,6 +1,7 @@
 package com.example.manu.myapplication.Cliente;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ListFragment;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,7 +37,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 
-public class ClienteMenuFragment extends ListFragment implements AdapterView.OnItemClickListener{
+public class ClienteMenuFragment extends ListFragment implements AdapterView.OnItemClickListener,AdapterView.OnItemLongClickListener{
     private MenusAdapter adapter;
     private int categ = 0;
     private TextView menus;
@@ -141,6 +143,97 @@ public class ClienteMenuFragment extends ListFragment implements AdapterView.OnI
                 loadMenusSumarCantidad(menu);
             }
         }
+    }
+
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+        if(listener!=null) {
+
+            Menus menu = (Menus) adapter.getItem(position);
+            if (menu.getCantidad() > 0) {
+                final Dialog dialog = new Dialog(view.getContext());
+                dialog.setContentView(R.layout.dialog_restar_ver);
+                Button dialogButtonVerMenu = (Button) dialog.findViewById(R.id.dialogButtonVerMenu);
+                Button dialogButtonRestarMenu = (Button) dialog.findViewById(R.id.dialogButtonRestarMenu);
+                dialog.setTitle("ACCIONES");
+
+                // if button is clicked, close the custom dialog
+                dialogButtonVerMenu.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        VerDetalle(position);
+                        dialog.cancel();
+                    }
+                });
+                dialogButtonRestarMenu.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        restarUno(position);
+                        dialog.cancel();
+                    }
+                });
+
+                dialog.show();
+            } else {
+                final Dialog dialog = new Dialog(view.getContext());
+                dialog.setContentView(R.layout.dialog_ver);
+                Button dialogButtonVer = (Button) dialog.findViewById(R.id.dialogButtonVer);
+                dialog.setTitle("ACCIONES");
+
+                // if button is clicked, close the custom dialog
+                dialogButtonVer.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        VerDetalle(position);
+                        dialog.cancel();
+                    }
+                });
+
+                dialog.show();
+            }
+        }
+        return true;
+    }
+
+
+    public void VerDetalle(int position)
+    {
+        TodasImages ti = new TodasImages();
+
+        Menus menu = (Menus) adapter.getItem(position);
+
+        final Dialog dialog = new Dialog(getView().getContext());
+        dialog.setContentView(R.layout.dialog_ver_descripcion_menu);
+
+        ImageView imagen = (ImageView) dialog.findViewById(R.id.imagenMenuDetalle);
+        TextView txtNombreMenu = (TextView) dialog.findViewById(R.id.txtNombreMenuDescripcion);
+        TextView txtDescripcionMenu = (TextView) dialog.findViewById(R.id.txtDescripcionMenu);
+
+        txtNombreMenu.setText(menu.getNombreMenu());
+        txtDescripcionMenu.setText(menu.getDescripcion());
+        if (menu.isEsMenu()) {
+            imagen.setImageResource((ti.obtenerImagen(menu.getIdMenu(), true)).getIdImagen());
+        } else {
+            imagen.setImageResource((ti.obtenerImagen(menu.getIdInsumo(), false)).getIdImagen());
+        }
+        dialog.setTitle("DESCRIPCIÓN");
+        dialog.show();
+    }
+
+    public void restarUno(int position)
+    {
+
+        Menus menu = (Menus) adapter.getItem(position);
+        int cantidad = menu.getCantidad();
+
+        menu.setCantidad(cantidad-1);
+        if (!menu.isEsMenu()) {
+            int stock = menu.getStock();
+            menu.setStock(stock+1);
+        }
+        listener.onMenuLongSelect(menu);
+        adapter.notifyDataSetChanged();
     }
 
     private void loadMenusSumarCantidad(Menus menu)

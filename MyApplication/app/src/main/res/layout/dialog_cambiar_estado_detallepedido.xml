@@ -19,7 +19,7 @@
         android:id="@+id/dialogButtonCancelar"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="CANCELAR"
+        android:text="CANCELAR MENÚ"
         android:layout_margin="5dp"
         android:textSize="35dp"
         android:layout_below="@+id/dialogButtonEnPreparacion"

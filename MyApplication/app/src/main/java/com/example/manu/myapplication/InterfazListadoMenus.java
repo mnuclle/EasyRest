@@ -9,4 +9,5 @@ import com.example.manu.myapplication.Entidades.Menus;
 public interface InterfazListadoMenus {
 
     public void onMenuSelect(Menus menu);
+    public void onMenuLongSelect(Menus menu);
 }

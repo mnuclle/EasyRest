@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="600dp"
+    android:layout_height="600dp"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:background="#314550">
+    <TextView android:id="@+id/txtNombreMenuDescripcion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:background="#314550"
+        android:textColor="#FFFFFF"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        android:includeFontPadding="false"
+        android:layout_weight="0"
+        android:layout_margin="15dp"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_weight="0"
+        android:background="#476B85"
+        />
+    <ImageView
+        android:id="@+id/imagenMenuDetalle"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:src="@drawable/contacto"
+        android:background="#314550"
+        android:layout_weight="1"
+        android:minHeight="400dp"
+        android:maxHeight="500dp"
+        android:minWidth="400dp"
+        android:maxWidth="500dp"
+        android:layout_margin="10dp"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_weight="0"
+        android:background="#476B85"
+        />
+        <TextView android:id="@+id/txtDescripcionMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:background="#314550"
+            android:textColor="#FFFFFF"
+            android:textSize="25sp"
+            android:includeFontPadding="false"
+            android:layout_weight="0"
+            android:layout_margin="15dp"
+            />
+
+</LinearLayout>
