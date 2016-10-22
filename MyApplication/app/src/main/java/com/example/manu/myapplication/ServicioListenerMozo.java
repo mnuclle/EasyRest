@@ -1,5 +1,6 @@
 package com.example.manu.myapplication;
 
+import android.app.ActivityManager;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -24,6 +25,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.List;
 
 /**
  * Created by Danielito on 02/09/2016.
@@ -41,6 +43,8 @@ public class ServicioListenerMozo  extends IntentService {
     public ServicioListenerMozo() {
         super("ServicioListenerMozo");
     }
+
+
     @Override
     protected void onHandleIntent(Intent intent) {
 
@@ -100,7 +104,7 @@ public class ServicioListenerMozo  extends IntentService {
                         .setContentIntent(contentIntent)  // The intent to send when the entry is clicked
                         .build();
 
-                notification.flags |= Notification.FLAG_ONGOING_EVENT |Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
+                notification.flags |=  Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
 
 
 
@@ -112,7 +116,10 @@ public class ServicioListenerMozo  extends IntentService {
                 in.putExtra("json",mesas);
                 LocalBroadcastManager.getInstance(this)
                         .sendBroadcast(in);
-
+                ActivityManager am = (ActivityManager) this.getSystemService(ACTIVITY_SERVICE);
+                List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
+                String nombreClase = taskInfo.get(0).topActivity.getClassName();
+                if(nombreClase.contains("ListaCuentas") || nombreClase.contains("PedidosActivity"))
                 notifMan.notify(R.string.app_name,notification);
 
 

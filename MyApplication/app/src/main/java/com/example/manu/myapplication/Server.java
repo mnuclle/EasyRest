@@ -67,7 +67,7 @@ public class Server extends ListActivity implements AdapterView.OnItemClickListe
     private Button btnEnviarIdPedido;
     Socket skCliente;
     private NotificationManager notifMan;
-    private int SocketServerPort = 47000;
+    private int SocketServerPort = 47001;
     private static final String REQUEST_CONNECT_CLIENT = "request-connect-client";
     private List<String> clientIPs;
     private String respuesta = "no hay";
@@ -495,10 +495,14 @@ public class Server extends ListActivity implements AdapterView.OnItemClickListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        threadListener.interrupt();
-        threadListener = null;
-        Context c = getApplicationContext();
-        c.stopService(i);
+        //LocalBroadcastManager.getInstance(this)
+        stopService(new Intent(getApplicationContext(), ServicioListenerPedidos.class));
+        //Context c = getApplicationContext();
+        //c.stopService(i);
+        //threadListener.interrupt();
+        //threadListener = null;
+
+
     }
 
 
@@ -1070,6 +1074,8 @@ public class Server extends ListActivity implements AdapterView.OnItemClickListe
             });
             thpedidos2.start();
         }
+
+
 
     }
 

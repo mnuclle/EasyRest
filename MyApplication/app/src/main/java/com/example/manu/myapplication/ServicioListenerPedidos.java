@@ -1,9 +1,11 @@
 package com.example.manu.myapplication;
 
+import android.app.ActivityManager;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
@@ -26,13 +28,14 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 /**
  * Created by Danielito on 12/05/2016.
  */
 public class ServicioListenerPedidos extends IntentService {
 
-    private int SocketServerPort = 47000;
+    private int SocketServerPort = 47001;
     Socket skCliente;
     String respuesta = "sin respuesta";
     ResultReceiver rec;
@@ -51,7 +54,7 @@ public class ServicioListenerPedidos extends IntentService {
         Socket socket = null;
         DataInputStream dataInputStream = null;
         DataOutputStream dataOutputStream = null;
-        ServerSocket serverSocket;
+        ServerSocket serverSocket = null;
 
         try {
             //Log.i(TAG, "Creating server socket");
@@ -91,11 +94,16 @@ public class ServicioListenerPedidos extends IntentService {
                 String mesas = "Prueba";
                 Bundle b = new Bundle();
                 b.putString("mesas",mesas);
+
                 rec.send(0,b);
                 in.putExtra("json",mesas);
+
                 LocalBroadcastManager.getInstance(this)
                         .sendBroadcast(in);
-
+                ActivityManager am = (ActivityManager) this.getSystemService(ACTIVITY_SERVICE);
+                List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
+                String nombreClase = taskInfo.get(0).topActivity.getClassName();
+                if(nombreClase.contains("Server"))
                 notifMan.notify(R.string.app_name,notification);
 
 
@@ -106,6 +114,7 @@ public class ServicioListenerPedidos extends IntentService {
         } finally {
             if (socket != null) {
                 try {
+                    serverSocket.close();
                     socket.close();
                 } catch (IOException e) {
                     e.printStackTrace();
