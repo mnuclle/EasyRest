@@ -55,7 +55,6 @@ public class MainActivity extends Activity {
 
         txtUsuario = (EditText) findViewById(R.id.txtUsuario);
         txtContraseña = (EditText) findViewById(R.id.txtContraseña);
-//        lblContraseña = (TextView) findViewById(R.id.lblContraseña);
         btnIniciarSesion = (Button) findViewById(R.id.btnIniciarSesion);
         cmbTipoUsuario = (Spinner) findViewById(R.id.cmbTipoUsuario);
         loadSpinner();
@@ -64,9 +63,6 @@ public class MainActivity extends Activity {
         txtContraseña.setGravity(Gravity.CENTER_HORIZONTAL);
         txtUsuario.setText("DAMIANCERRO");
         txtContraseña.setText("DCERRO1");
-//        txtUsuario.setText("SEBASTIANCARDOZO");
-//        txtContraseña.setText("SCARDOZO1");
-
 //        txtUsuario.setText("PEDROLOPEZ");
 //        txtContraseña.setText("PLOPEZ1");
 
@@ -102,16 +98,6 @@ public class MainActivity extends Activity {
         );
 
 
-
-
-                                           /************ POST *********
-                                            new PostTask().execute();
-                                            */
-
-
-
-
-
     }
 
     private void loadSpinner() {
@@ -131,168 +117,21 @@ public class MainActivity extends Activity {
                 String empleado = "EMPLEADO";
                 if (cliente.equals(text)) {
                     tipoUsr = 1;
-//                    lblContraseña.setVisibility(View.INVISIBLE);
                     txtContraseña.setVisibility(View.INVISIBLE);
-
-
-
-
-                    /*
-
-                    <EditText android:id="@+id/txtContraseña"
-        android:layout_width="500dp"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        android:textSize="25sp"
-        android:layout_margin="25dp"
-        android:layout_marginTop="40dp"
-        android:background="#476B85"
-        android:layout_gravity="center_horizontal|center_vertical"
-        android:hint="Ingrese su Usuario"
-        />
-
-                    */
-
-
-
-
                 }
                 if (empleado.equals(text)) {
                     tipoUsr = 2;
-//                    lblContraseña.setVisibility(View.VISIBLE);
                     txtContraseña.setVisibility(View.VISIBLE);
-
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
     }
 
 
-    /*
-    class GetTask extends AsyncTask<String,String,String> {
-
-        private Exception exception;
-
-        protected String doInBackground(String... urls) {
-            try {
-                String response = "No se conecto";
-                try {
-                    HttpURLConnection urlConn;
-                    StringBuilder result = new StringBuilder();
-                    URL url = new URL("http://172.16.0.2:8082/api/mesas");
-
-                    urlConn = (HttpURLConnection)url.openConnection();
-
-                    InputStream in = new BufferedInputStream(urlConn.getInputStream());
-
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        result.append(line);
-                    }
-
-
-                    try {
-                    JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(StandardCharsets.UTF_8))));
-
-        try {
-
-            response = "GET: ";
-
-            reader1.beginArray();
-            while(reader1.hasNext()) {
-                int id = -1;
-                int cantSillas = -1;
-                int idCuenta = -1;
-                int posicion = -1;
-                int numeroMesa = -1;
-                reader1.beginObject();
-                while (reader1.hasNext()) {
-                    String name = reader1.nextName();
-                    switch (name) {
-                        case "idMesa":
-                            id = reader1.nextInt();
-                            break;
-                        case "cantSillas":
-                            cantSillas = reader1.nextInt();
-                            break;
-                        case "idCuenta":
-
-                            if (reader1.peek() == JsonToken.NULL) {
-                                idCuenta = 0;
-                                reader1.skipValue();
-                            }
-                            else {
-                                idCuenta = reader1.nextInt();
-                            }
-                            break;
-                        case "posicion":
-                            posicion =  reader1.nextInt();
-                            break;
-                        case "numeroMesa":
-                            numeroMesa =  reader1.nextInt();
-                            break;
-                        default:
-                            reader1.skipValue();
-                            break;
-                    }
-                }
-                response += "\nMesa: " + id + " " + cantSillas + " " + idCuenta + " " + posicion + " " + numeroMesa + ".\n";
-                reader1.endObject();
-            }
-
-
-
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                    catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-
-                {
-
-                    Intent intent = new Intent(MainActivity.this, SaludarActivity.class);
-
-                    Bundle b = new Bundle();
-                    b.putString("USUARIO", response);
-
-                    intent.putExtras(b);
-                    startActivity(intent);
-
-                }
-
-            } catch (Exception e) {
-                this.exception = e;
-
-            }
-            return null;
-        }
-
-        protected void onPostExecute(String st) {
-            // TODO: check this.exception
-            // TODO: do something with the feed
-        }
-    }
-
-*/
     class PostTask extends AsyncTask<Usuario,String,String> {
 
         private Exception exception;
@@ -397,10 +236,6 @@ public class MainActivity extends Activity {
                         cm.setNumeroMesa(numeroMesa);
                         reader1.endObject();
 
-
-
-
-
                     }
                     else
                     {
@@ -478,7 +313,6 @@ public class MainActivity extends Activity {
                     PrintWriter ow = new PrintWriter(urlConn.getOutputStream());
 
                     ow.print(jsonParam.toString());
-                    // ow.flush();
                     ow.close();
 
 
