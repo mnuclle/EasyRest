@@ -8,6 +8,7 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -88,6 +89,10 @@ public class ClientePedidoActivity extends ListActivity implements AdapterView.O
         cuentaPedido.setText(intent.getExtras().get("CUENTAPEDIDO").toString());
         montoTotalPedido = (TextView) findViewById(R.id.montoTotalPedidoCliente);
         btnElegirPedido = (FloatingActionButton) findViewById(R.id.btnElegirPedidoCliente);
+
+        Typeface type = Typeface.createFromAsset(getAssets(),"segoeui.ttf");
+        cuentaPedido.setTypeface(type);
+        montoTotalPedido.setTypeface(type);
 
         btnConfirmarPedido = (FloatingActionButton) findViewById(R.id.btnConfirmarPedidoCliente);
 

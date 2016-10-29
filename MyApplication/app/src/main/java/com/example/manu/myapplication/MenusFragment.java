@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.ListFragment;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.JsonReader;
@@ -61,6 +62,10 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
             //listaMenus = (ListView) v.findViewById(R.id.list);
             menus = (TextView) v.findViewById(R.id.textoMenus);
             cantidadMenus = (TextView) v.findViewById(R.id.cantidadDeMenus);
+
+
+            Typeface type = Typeface.createFromAsset(getActivity().getAssets(),"segoeui.ttf");
+            menus.setTypeface(type);
         }
         return v;
     }
@@ -155,6 +160,10 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
                 Button dialogButtonRestarMenu = (Button) dialog.findViewById(R.id.dialogButtonRestarMenu);
                 dialog.setTitle("ACCIONES");
 
+                Typeface type = Typeface.createFromAsset(view.getContext().getAssets(),"segoeui.ttf");
+                dialogButtonVerMenu.setTypeface(type);
+                dialogButtonRestarMenu.setTypeface(type);
+
                 // if button is clicked, close the custom dialog
                 dialogButtonVerMenu.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -177,6 +186,10 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
                 dialog.setContentView(R.layout.dialog_ver);
                 Button dialogButtonVer = (Button) dialog.findViewById(R.id.dialogButtonVer);
                 dialog.setTitle("ACCIONES");
+
+
+                Typeface type = Typeface.createFromAsset(view.getContext().getAssets(),"segoeui.ttf");
+                dialogButtonVer.setTypeface(type);
 
                 // if button is clicked, close the custom dialog
                 dialogButtonVer.setOnClickListener(new View.OnClickListener() {
@@ -214,6 +227,12 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
         } else {
             imagen.setImageResource((ti.obtenerImagen(menu.getIdInsumo(), false)).getIdImagen());
         }
+
+        Typeface type = Typeface.createFromAsset(getView().getContext().getAssets(),"segoeui.ttf");
+        txtNombreMenu.setTypeface(type);
+        txtDescripcionMenu.setTypeface(type);
+
+
         dialog.setTitle("DESCRIPCIÓN");
         dialog.show();
     }
@@ -393,6 +412,11 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
             holder.txtPrecio.setText("$" + String.format("%.2f",info.getPrecio()));
             holder.txtDescripcion.setText(info.getDescripcion());
 
+            Typeface type = Typeface.createFromAsset(convertView.getContext().getAssets(),"segoeui.ttf");
+            holder.txtNombreMenu.setTypeface(type);
+            holder.txtPrecio.setTypeface(type);
+            holder.txtDescripcion.setTypeface(type);
+            holder.cantidad.setTypeface(type);
             return convertView;
         }
 

@@ -2,12 +2,14 @@ package com.example.manu.myapplication;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.ListActivity;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -41,7 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Server extends ListActivity implements AdapterView.OnItemClickListener,AdapterView.OnClickListener,AdapterView.OnItemLongClickListener {
+public class Server extends ListActivity implements AdapterView.OnItemClickListener,AdapterView.OnClickListener,AdapterView.OnItemLongClickListener,DialogSalir.NoticeDialogListener {
 
     private String URLGlobal;
     private TextView txtNotificaciones;
@@ -84,6 +86,11 @@ public class Server extends ListActivity implements AdapterView.OnItemClickListe
         txtNotificaciones = (TextView) findViewById(R.id.txtNotificaciones);
         txtIdPedido = (TextView) findViewById(R.id.txtIdPedido);
         btnEnviarIdPedido = (Button) findViewById(R.id.btnEnviarPedido);
+
+        Typeface type = Typeface.createFromAsset(getAssets(),"segoeui.ttf");
+        txtNotificaciones.setTypeface(type);
+        txtIdPedido.setTypeface(type);
+        btnEnviarIdPedido.setTypeface(type);
 
       //  this.registerForContextMenu(getListView());
 
@@ -495,8 +502,23 @@ public class Server extends ListActivity implements AdapterView.OnItemClickListe
 
 
     }
+    @Override
+    public void onBackPressed() {
+        DialogSalir dialog = new DialogSalir();
+        dialog.show(getFragmentManager(), "DialogSalir");
+    }
 
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+        ;
 
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        // User touched the dialog's negative button
+
+    }
     private void obtenerDetallesPedidos()
     {
         //cargo el adapter con los detalles

@@ -2,6 +2,7 @@ package com.example.manu.myapplication;
 
 import android.app.Activity;
 import android.app.ListFragment;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,11 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 public class CategoriaFragment extends ListFragment implements AdapterView.OnItemClickListener{
 
     private InterfazCategorias listener;
-
+    private TextView textoMenus;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -29,6 +31,12 @@ public class CategoriaFragment extends ListFragment implements AdapterView.OnIte
         ArrayAdapter adapter = ArrayAdapter.createFromResource(getActivity(), R.array.Categorias, R.layout.element_list_categoria);
         setListAdapter(adapter);
         getListView().setOnItemClickListener(this);
+
+        textoMenus = (TextView) getActivity().findViewById(R.id.textoMenus);
+
+        Typeface type = Typeface.createFromAsset(getActivity().getAssets(),"segoeui.ttf");
+        textoMenus.setTypeface(type);
+
 
     }
     @Override

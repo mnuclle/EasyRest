@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.util.JsonReader;
 import android.util.JsonToken;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.manu.myapplication.DialogSalir;
@@ -36,6 +38,7 @@ public class ClienteOpcionesActivity extends Activity implements DialogSalir.Not
     private String URLGlobal;
     private FloatingActionButton btnVerCuenta, btnLlamarMozo,btnVerPedido;
     private String cuentaPedido;
+    private TextView NombreApp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +53,10 @@ public class ClienteOpcionesActivity extends Activity implements DialogSalir.Not
         btnVerCuenta = (FloatingActionButton) findViewById(R.id.btnVerCuenta);
         btnLlamarMozo = (FloatingActionButton) findViewById(R.id.btnLlamarMozo);
         btnVerPedido = (FloatingActionButton) findViewById(R.id.btnVerPedido);
+        NombreApp = (TextView) findViewById(R.id.NombreApp);
 
+        Typeface type = Typeface.createFromAsset(getAssets(),"segoeui.ttf");
+        NombreApp.setTypeface(type);
 
         btnVerPedido.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

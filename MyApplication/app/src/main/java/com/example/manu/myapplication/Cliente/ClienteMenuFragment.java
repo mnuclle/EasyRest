@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.ListFragment;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.JsonReader;
@@ -43,7 +44,7 @@ public class ClienteMenuFragment extends ListFragment implements AdapterView.OnI
     private TextView menus;
     private InterfazListadoMenus listener;
     private String URLGlobal;
-    private TextView cantidadMenus;
+    private TextView cantidadMenus,textoMenus;
     private ArrayList<DetallePedido> listadoDetallePedido;
 
     public static MenusFragment newInstance(int idCategoria, String url, ArrayList<DetallePedido> listadoDetallePedido) {
@@ -64,6 +65,11 @@ public class ClienteMenuFragment extends ListFragment implements AdapterView.OnI
             //listaMenus = (ListView) v.findViewById(R.id.list);
             menus = (TextView) v.findViewById(R.id.textoMenusCliente);
             cantidadMenus = (TextView) v.findViewById(R.id.cantidadDeMenus);
+
+            textoMenus = (TextView) getActivity().findViewById(R.id.textoMenus);
+
+            Typeface type = Typeface.createFromAsset(getActivity().getAssets(),"segoeui.ttf");
+            textoMenus.setTypeface(type);
         }
         return v;
     }
@@ -158,6 +164,10 @@ public class ClienteMenuFragment extends ListFragment implements AdapterView.OnI
                 Button dialogButtonRestarMenu = (Button) dialog.findViewById(R.id.dialogButtonRestarMenu);
                 dialog.setTitle("ACCIONES");
 
+                Typeface type = Typeface.createFromAsset(view.getContext().getAssets(),"segoeui.ttf");
+                dialogButtonVerMenu.setTypeface(type);
+                dialogButtonRestarMenu.setTypeface(type);
+
                 // if button is clicked, close the custom dialog
                 dialogButtonVerMenu.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -179,6 +189,11 @@ public class ClienteMenuFragment extends ListFragment implements AdapterView.OnI
                 final Dialog dialog = new Dialog(view.getContext());
                 dialog.setContentView(R.layout.dialog_ver);
                 Button dialogButtonVer = (Button) dialog.findViewById(R.id.dialogButtonVer);
+
+                Typeface type = Typeface.createFromAsset(view.getContext().getAssets(),"segoeui.ttf");
+                dialogButtonVer.setTypeface(type);
+
+
                 dialog.setTitle("ACCIONES");
 
                 // if button is clicked, close the custom dialog
@@ -212,6 +227,11 @@ public class ClienteMenuFragment extends ListFragment implements AdapterView.OnI
 
         txtNombreMenu.setText(menu.getNombreMenu());
         txtDescripcionMenu.setText(menu.getDescripcion());
+
+        Typeface type = Typeface.createFromAsset(getView().getContext().getAssets(),"segoeui.ttf");
+        txtNombreMenu.setTypeface(type);
+        txtDescripcionMenu.setTypeface(type);
+
         if (menu.isEsMenu()) {
             imagen.setImageResource((ti.obtenerImagen(menu.getIdMenu(), true)).getIdImagen());
         } else {
@@ -395,6 +415,11 @@ public class ClienteMenuFragment extends ListFragment implements AdapterView.OnI
             holder.txtPrecio.setText("$" + String.format("%.2f",info.getPrecio()));
             holder.txtDescripcion.setText(info.getDescripcion());
 
+            Typeface type = Typeface.createFromAsset(convertView.getContext().getAssets(),"segoeui.ttf");
+            holder.txtNombreMenu.setTypeface(type);
+            holder.txtPrecio.setTypeface(type);
+            holder.cantidad.setTypeface(type);
+            holder.txtDescripcion.setTypeface(type);
             return convertView;
         }
 

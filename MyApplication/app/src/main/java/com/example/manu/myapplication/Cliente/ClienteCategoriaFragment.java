@@ -2,6 +2,7 @@ package com.example.manu.myapplication.Cliente;
 
 import android.app.Activity;
 import android.app.ListFragment;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import com.example.manu.myapplication.InterfazCategorias;
 import com.example.manu.myapplication.R;
@@ -17,7 +19,7 @@ import com.example.manu.myapplication.R;
 public class ClienteCategoriaFragment extends ListFragment implements AdapterView.OnItemClickListener{
 
     private InterfazCategorias listener;
-
+    private TextView textoMenus;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,6 +36,10 @@ public class ClienteCategoriaFragment extends ListFragment implements AdapterVie
         setListAdapter(adapter);
         getListView().setOnItemClickListener(this);
 
+        textoMenus = (TextView) getActivity().findViewById(R.id.textoMenus);
+
+        Typeface type = Typeface.createFromAsset(getActivity().getAssets(),"segoeui.ttf");
+        textoMenus.setTypeface(type);
     }
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

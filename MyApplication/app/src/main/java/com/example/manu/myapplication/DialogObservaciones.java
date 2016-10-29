@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,9 +41,10 @@ public class DialogObservaciones extends DialogFragment {
         builder.setView(myView);
         txtObservaciones = (EditText) myView.findViewById(R.id.txtObservacionesDetalle);
         txtObservaciones.setText(item.getObservacion());
-
+        Typeface type = Typeface.createFromAsset(getActivity().getAssets(),"segoeui.ttf");
+        txtObservaciones.setTypeface(type);
         Button dialogObservacionesButtonAceptar = (Button) myView.findViewById(R.id.dialogObservacionesButtonAceptar);
-
+        dialogObservacionesButtonAceptar.setTypeface(type);
         builder.setTitle("OBSERVACIONES");
 
         // if button is clicked, close the custom dialog

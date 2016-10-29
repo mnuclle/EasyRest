@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -41,7 +42,7 @@ public class MainActivity extends Activity {
     private EditText txtUsuario;
     private EditText txtContraseña;
     private Button btnIniciarSesion;
-    private TextView lblContraseña;
+    private TextView NombreApp;
     private Spinner cmbTipoUsuario;
     private int tipoUsr = 0; /*si es 1 es cliente si es 2 es Empleado*/
     private Usuario us;
@@ -57,6 +58,7 @@ public class MainActivity extends Activity {
         txtContraseña = (EditText) findViewById(R.id.txtContraseña);
         btnIniciarSesion = (Button) findViewById(R.id.btnIniciarSesion);
         cmbTipoUsuario = (Spinner) findViewById(R.id.cmbTipoUsuario);
+        NombreApp = (TextView) findViewById(R.id.NombreApp);
         loadSpinner();
 
         txtUsuario.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -66,6 +68,11 @@ public class MainActivity extends Activity {
 //        txtUsuario.setText("PEDROLOPEZ");
 //        txtContraseña.setText("PLOPEZ1");
 
+        Typeface type = Typeface.createFromAsset(getAssets(),"segoeui.ttf");
+        txtUsuario.setTypeface(type);
+        txtContraseña.setTypeface(type);
+        btnIniciarSesion.setTypeface(type);
+        NombreApp.setTypeface(type);
 
         btnIniciarSesion.setOnClickListener(new View.OnClickListener() {
             @TargetApi(Build.VERSION_CODES.KITKAT)
