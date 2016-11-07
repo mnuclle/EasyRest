@@ -9,17 +9,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.manu.myapplication.InterfazCategorias;
 import com.example.manu.myapplication.R;
+
+import java.util.ArrayList;
 
 
 public class ClienteCategoriaFragment extends ListFragment implements AdapterView.OnItemClickListener{
 
     private InterfazCategorias listener;
     private TextView textoMenus;
+    private CategoriasAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -27,20 +30,21 @@ public class ClienteCategoriaFragment extends ListFragment implements AdapterVie
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_cliente_categoria, container, false);
     }
+
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-
-        ArrayAdapter adapter = ArrayAdapter.createFromResource(getActivity(), R.array.Categorias, R.layout.element_list_categoria);
-        setListAdapter(adapter);
-        getListView().setOnItemClickListener(this);
-
-        textoMenus = (TextView) getActivity().findViewById(R.id.textoMenus);
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        textoMenus = (TextView) getActivity().findViewById(R.id.textoMenusCliente);
 
         Typeface type = Typeface.createFromAsset(getActivity().getAssets(),"segoeui.ttf");
         textoMenus.setTypeface(type);
+
+        adapter = new CategoriasAdapter();
+        setListAdapter(adapter);
+        getListView().setOnItemClickListener(this);
     }
+
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if(listener!=null)
@@ -59,5 +63,77 @@ public class ClienteCategoriaFragment extends ListFragment implements AdapterVie
         }
     }
 
+    class CategoriasAdapter extends BaseAdapter {
+        private ArrayList<String> listaCategorias;
+        private LayoutInflater inflater;
 
+        public CategoriasAdapter() {
+            listaCategorias = new ArrayList<>();
+            inflater = LayoutInflater.from(getActivity());
+
+
+            listaCategorias.add("MINUTAS");
+            listaCategorias.add("LOMITOS");
+            listaCategorias.add("PASTAS");
+            listaCategorias.add("TABLAS");
+            listaCategorias.add("BEBIDAS");
+            listaCategorias.add("PIZZAS");
+            listaCategorias.add("POSTRES");
+            listaCategorias.add("DESAYUNO");
+
+        }
+
+        public void addCategorias(String info) {
+            if (info != null) {
+                listaCategorias.add(info);
+            }
+        }
+
+        public void clear() {
+            listaCategorias = new ArrayList<>();
+        }
+        @Override
+        public int getCount() {
+            return listaCategorias.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return listaCategorias.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        class Holder {
+            private TextView txtNombreCategoria;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup arg2) {
+
+            Holder holder;
+            if (convertView == null) {
+                convertView = inflater.inflate(R.layout.element_list_categoria, null);
+                holder = new Holder();
+                holder.txtNombreCategoria = (TextView) convertView
+                        .findViewById(R.id.text1);
+
+                convertView.setTag(holder);
+            } else {
+                holder = (Holder) convertView.getTag();
+            }
+
+            String info = (String) getItem(position);
+
+            holder.txtNombreCategoria.setText(info);
+
+            Typeface type = Typeface.createFromAsset(convertView.getContext().getAssets(),"segoeui.ttf");
+            holder.txtNombreCategoria.setTypeface(type);
+            return convertView;
+        }
+
+    }
 }

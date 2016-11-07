@@ -21,6 +21,7 @@ import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
@@ -46,7 +47,7 @@ import java.util.List;
 public class Server extends ListActivity implements AdapterView.OnItemClickListener,AdapterView.OnClickListener,AdapterView.OnItemLongClickListener,DialogSalir.NoticeDialogListener {
 
     private String URLGlobal;
-    private TextView txtNotificaciones;
+    private TextView txtNotificaciones,txtTituloPedidos;
     private TextView txtIdPedido;
     private Button btnEnviarIdPedido;
     Socket skCliente;
@@ -82,7 +83,7 @@ public class Server extends ListActivity implements AdapterView.OnItemClickListe
 
         URLGlobal = getIntent().getExtras().get("URLGlobal").toString();//CON ESTA LINEA SETEAS LA URLGLOBAL DESPUES USALA DONDE TE SIRVA
 
-
+        txtTituloPedidos = (TextView) findViewById(R.id.txtTituloPedidos);
         txtNotificaciones = (TextView) findViewById(R.id.txtNotificaciones);
         txtIdPedido = (TextView) findViewById(R.id.txtIdPedido);
         btnEnviarIdPedido = (Button) findViewById(R.id.btnEnviarPedido);
@@ -91,6 +92,7 @@ public class Server extends ListActivity implements AdapterView.OnItemClickListe
         txtNotificaciones.setTypeface(type);
         txtIdPedido.setTypeface(type);
         btnEnviarIdPedido.setTypeface(type);
+        txtTituloPedidos.setTypeface(type);
 
       //  this.registerForContextMenu(getListView());
 
@@ -172,11 +174,17 @@ public class Server extends ListActivity implements AdapterView.OnItemClickListe
             if(idEstado == 12)
             {
                 final Dialog dialog = new Dialog(v.getContext());
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.dialog_cambiar_estado_detallepedido);
                 Button enPreparacion = (Button) dialog.findViewById(R.id.dialogButtonEnPreparacion);
                 Button cancelar = (Button) dialog.findViewById(R.id.dialogButtonCancelar);
+                TextView txtTituloDialog = (TextView) dialog.findViewById(R.id.txtTituloDialog) ;
                 dialog.setTitle("ACCIONES");
 
+                Typeface type = Typeface.createFromAsset(getAssets(),"segoeui.ttf");
+                enPreparacion.setTypeface(type);
+                cancelar.setTypeface(type);
+                txtTituloDialog.setTypeface(type);
                 // if button is clicked, close the custom dialog
                 enPreparacion.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -226,10 +234,17 @@ public class Server extends ListActivity implements AdapterView.OnItemClickListe
                 inflater.inflate(R.menu.menu_opciones_actualizar_pedido2, menu);
                 */
                 final Dialog dialog = new Dialog(v.getContext());
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.dialog_cambiar_estado_detallepedido2);
                 Button listo = (Button) dialog.findViewById(R.id.dialogButtonListo);
                 Button cancelar = (Button) dialog.findViewById(R.id.dialogButtonCancelar);
+                TextView txtTituloDialog = (TextView) dialog.findViewById(R.id.txtTituloDialog) ;
                 dialog.setTitle("ACCIONES");
+
+                Typeface type = Typeface.createFromAsset(getAssets(),"segoeui.ttf");
+                listo.setTypeface(type);
+                cancelar.setTypeface(type);
+                txtTituloDialog.setTypeface(type);
 
                 // if button is clicked, close the custom dialog
                 listo.setOnClickListener(new View.OnClickListener() {

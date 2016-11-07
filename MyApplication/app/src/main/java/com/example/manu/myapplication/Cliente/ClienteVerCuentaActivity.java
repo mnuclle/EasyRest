@@ -22,7 +22,7 @@ public class ClienteVerCuentaActivity extends ListActivity {
     private VerCuentaAdapter adapter;
     private String URLGlobal;
     private ArrayList<DetallePedido> listaMenusAConfirmar;
-    private TextView totalResumenCuenta;
+    private TextView totalResumenCuenta, resumenCuenta, totalResumenCuentatxt;
 
 
     @Override
@@ -34,6 +34,8 @@ public class ClienteVerCuentaActivity extends ListActivity {
         NroCliente = (int) intent.getExtras().get("IDCLIENTE");
         URLGlobal = intent.getExtras().get("URLGlobal").toString();
         totalResumenCuenta = (TextView) findViewById(R.id.totalResumenCuenta);
+        resumenCuenta = (TextView) findViewById(R.id.resumenCuenta);
+        totalResumenCuentatxt = (TextView) findViewById(R.id.totalResumenCuentatxt);
 
 
         /**/
@@ -45,6 +47,8 @@ public class ClienteVerCuentaActivity extends ListActivity {
 
         Typeface type = Typeface.createFromAsset(getAssets(),"segoeui.ttf");
         totalResumenCuenta.setTypeface(type);
+        resumenCuenta.setTypeface(type);
+        totalResumenCuentatxt.setTypeface(type);
 
     }
 

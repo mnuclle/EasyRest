@@ -3,7 +3,21 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#476B85">
-
+    <TextView android:id="@+id/txtTituloDialog"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:background="#F38129"
+        android:textColor="#FFFFFF"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:includeFontPadding="false"
+        android:layout_weight="0"
+        android:text="ATENCIÓN"
+        android:paddingStart="10dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        />
     <Button
         android:id="@+id/dialogButtonVer"
         android:layout_width="fill_parent"
@@ -14,5 +28,6 @@
         android:textStyle="bold"
         android:textSize="35dp"
         android:background="#314550"
+        android:layout_below="@+id/txtTituloDialog"
         />
 </RelativeLayout>

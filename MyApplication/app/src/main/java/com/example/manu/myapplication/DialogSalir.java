@@ -32,11 +32,13 @@ public class DialogSalir extends DialogFragment {
 
         Button dialogSalirButtonAceptar = (Button) myView.findViewById(R.id.dialogSalirButtonAceptar);
         Button dialogSalirButtonCancelar = (Button) myView.findViewById(R.id.dialogSalirButtonCancelar);
-        builder.setTitle("ATENCIÓN");
+        TextView txtTituloDialog = (TextView) myView.findViewById(R.id.txtTituloDialog) ;
+        //builder.setTitle("ATENCIÓN");
 
         Typeface type = Typeface.createFromAsset(getActivity().getAssets(),"segoeui.ttf");
         dialogSalirButtonAceptar.setTypeface(type);
         dialogSalirButtonCancelar.setTypeface(type);
+        txtTituloDialog.setTypeface(type);
 
         txtEstaSeguro = (TextView) myView.findViewById(R.id.txtEstaSeguro);
         txtEstaSeguro.setTypeface(type);

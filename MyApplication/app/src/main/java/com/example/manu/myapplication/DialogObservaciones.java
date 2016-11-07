@@ -8,8 +8,11 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+
 import com.example.manu.myapplication.Entidades.DetallePedido;
 
 /**
@@ -36,16 +39,19 @@ public class DialogObservaciones extends DialogFragment {
 
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
+
         View myView = inflater.inflate(R.layout.dialog_observaciones,null);
 
         builder.setView(myView);
         txtObservaciones = (EditText) myView.findViewById(R.id.txtObservacionesDetalle);
+        TextView txtTituloDialog = (TextView) myView.findViewById(R.id.txtTituloDialog) ;
         txtObservaciones.setText(item.getObservacion());
         Typeface type = Typeface.createFromAsset(getActivity().getAssets(),"segoeui.ttf");
         txtObservaciones.setTypeface(type);
+        txtTituloDialog.setTypeface(type);
         Button dialogObservacionesButtonAceptar = (Button) myView.findViewById(R.id.dialogObservacionesButtonAceptar);
         dialogObservacionesButtonAceptar.setTypeface(type);
-        builder.setTitle("OBSERVACIONES");
+        //builder.setTitle("OBSERVACIONES");
 
         // if button is clicked, close the custom dialog
         dialogObservacionesButtonAceptar.setOnClickListener(new View.OnClickListener() {

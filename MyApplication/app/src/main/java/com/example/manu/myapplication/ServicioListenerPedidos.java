@@ -226,5 +226,16 @@ public class ServicioListenerPedidos extends IntentService {
         }
         return respuesta;
     }*/
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Runtime.getRuntime().addShutdownHook(new Thread(){public void run(){
+            try {
+                skCliente.close();
+                System.out.println("The server is shut down!");
+            } catch (IOException e) { /* failed */ }
+        }});
+    }
 }
 

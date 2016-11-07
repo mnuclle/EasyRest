@@ -107,6 +107,12 @@ public class MainActivity extends Activity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        super.onStop();
+    }
+
     private void loadSpinner() {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 this, R.array.arrayTipoUsuario, /*android.R.layout.simple_spinner_item*/R.layout.element_list_usuario);

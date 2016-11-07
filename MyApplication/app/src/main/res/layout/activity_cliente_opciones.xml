@@ -21,8 +21,9 @@
         android:gravity="center"
         android:background="#476B85"
         android:textColor="#FFFFFF"
-        android:textSize="40sp"
+        android:textSize="50sp"
         android:textStyle="bold"
+        android:layout_margin="10px"
         android:layout_weight="0"/>
         <ImageView
             android:id="@+id/imageView1"

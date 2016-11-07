@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -1095,13 +1096,16 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
             */
 
             final Dialog dialog = new Dialog(view.getContext());
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.dialog_eliminar_uno_todos);
             Button dialogButtonEliminarUno = (Button) dialog.findViewById(R.id.dialogButtonEliminarUno);
             Button dialogButtonEliminarTodos = (Button) dialog.findViewById(R.id.dialogButtonEliminarTodos);
+            TextView txtTituloDialog = (TextView) dialog.findViewById(R.id.txtTituloDialog) ;
 
             Typeface type = Typeface.createFromAsset(getAssets(),"segoeui.ttf");
             dialogButtonEliminarUno.setTypeface(type);
             dialogButtonEliminarTodos.setTypeface(type);
+            txtTituloDialog.setTypeface(type);
 
 
             dialog.setTitle("ACCIONES");
@@ -1137,12 +1141,15 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
             if (detalle.getIdInsumo() == 0 || (detalle.getIdInsumo() != 0 && detalle.getIdEstado() == 15)) {
 
                 final Dialog dialog = new Dialog(view.getContext());
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.dialog_anular);
                 Button dialogButtonAnular = (Button) dialog.findViewById(R.id.dialogButtonAnular);
+                TextView txtTituloDialog = (TextView) dialog.findViewById(R.id.txtTituloDialog) ;
                 dialog.setTitle("ACCIONES");
 
                 Typeface type = Typeface.createFromAsset(getAssets(),"segoeui.ttf");
                 dialogButtonAnular.setTypeface(type);
+                txtTituloDialog.setTypeface(type);
 
                 // if button is clicked, close the custom dialog
                 dialogButtonAnular.setOnClickListener(new View.OnClickListener() {
@@ -1159,14 +1166,17 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
             else
             {
                 final Dialog dialog = new Dialog(view.getContext());
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.dialog_anular_entregar);
                 Button dialogButtonAnularMenu = (Button) dialog.findViewById(R.id.dialogButtonAnularMenu);
                 Button dialogButtonEntregarMenu = (Button) dialog.findViewById(R.id.dialogButtonEntregarMenu);
+                TextView txtTituloDialog = (TextView) dialog.findViewById(R.id.txtTituloDialog) ;
                 dialog.setTitle("ACCIONES");
 
                 Typeface type = Typeface.createFromAsset(getAssets(),"segoeui.ttf");
                 dialogButtonAnularMenu.setTypeface(type);
                 dialogButtonEntregarMenu.setTypeface(type);
+                txtTituloDialog.setTypeface(type);
 
 
                 // if button is clicked, close the custom dialog
