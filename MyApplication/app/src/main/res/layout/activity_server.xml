@@ -17,25 +17,26 @@
         android:background="#476B85"
         android:id="@+id/linearLTitulo"
         android:layout_width="fill_parent"
+        android:layout_margin="10px"
         android:layout_height="80dp" >
 
-    <ImageButton
-        android:id="@+id/btnLogo"
-        android:layout_width="75dp"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="10dp"
-        android:background="#476B85"
-        android:gravity="left"
-        android:scaleType="fitXY"
-        android:src="@drawable/logo" />
+    <!--<ImageButton-->
+        <!--android:id="@+id/btnLogo"-->
+        <!--android:layout_width="75dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_marginLeft="25dp"-->
+        <!--android:layout_marginRight="10dp"-->
+        <!--android:layout_marginTop="5dp"-->
+        <!--android:layout_marginBottom="5dp"-->
+        <!--android:background="#476B85"-->
+        <!--android:gravity="left"-->
+        <!--android:scaleType="fitXY"-->
+        <!--android:src="@drawable/logo" />-->
         <TextView
             android:id="@+id/txtTituloPedidos"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.8"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:gravity ="left"
+            android:gravity="center_horizontal|center_vertical"
             android:background="#476B85"
             android:textColor="#FFFFFF"
             android:textSize="50sp"

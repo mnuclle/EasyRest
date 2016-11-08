@@ -8,6 +8,7 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -20,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -88,6 +90,10 @@ public class ClientePedidoActivity extends ListActivity implements AdapterView.O
         cuentaPedido.setText(intent.getExtras().get("CUENTAPEDIDO").toString());
         montoTotalPedido = (TextView) findViewById(R.id.montoTotalPedidoCliente);
         btnElegirPedido = (FloatingActionButton) findViewById(R.id.btnElegirPedidoCliente);
+
+        Typeface type = Typeface.createFromAsset(getAssets(),"segoeui.ttf");
+        cuentaPedido.setTypeface(type);
+        montoTotalPedido.setTypeface(type);
 
         btnConfirmarPedido = (FloatingActionButton) findViewById(R.id.btnConfirmarPedidoCliente);
 
@@ -969,6 +975,16 @@ public class ClientePedidoActivity extends ListActivity implements AdapterView.O
                 }
             }
 
+            Typeface type = Typeface.createFromAsset(getAssets(),"segoeui.ttf");
+            holder.txtObservaciones.setTypeface(type);
+            holder.txtNombreMenu.setTypeface(type);
+            holder.txtCantidad.setTypeface(type);
+            holder.txtMontoDetalle.setTypeface(type);
+            holder.txtObservaciones.setTypeface(type);
+            holder.txtEstadoMenu.setTypeface(type);
+            holder.txtDescripcion.setTypeface(type);
+            holder.txtCategoria.setTypeface(type);
+
             return convertView;
         }
 
@@ -1069,9 +1085,17 @@ public class ClientePedidoActivity extends ListActivity implements AdapterView.O
         if(detalle.getIdEstado() == 0) {
 
             final Dialog dialog = new Dialog(view.getContext());
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.dialog_eliminar_uno_todos);
             Button dialogButtonEliminarUno = (Button) dialog.findViewById(R.id.dialogButtonEliminarUno);
             Button dialogButtonEliminarTodos = (Button) dialog.findViewById(R.id.dialogButtonEliminarTodos);
+            TextView txtTituloDialog = (TextView) dialog.findViewById(R.id.txtTituloDialog) ;
+
+            Typeface type = Typeface.createFromAsset(getAssets(),"segoeui.ttf");
+            dialogButtonEliminarUno.setTypeface(type);
+            dialogButtonEliminarTodos.setTypeface(type);
+            txtTituloDialog.setTypeface(type);
+
             dialog.setTitle("ACCIONES");
 
             // if button is clicked, close the custom dialog

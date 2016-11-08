@@ -2,6 +2,7 @@ package com.example.manu.myapplication.Cliente;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +22,7 @@ public class ClienteVerCuentaActivity extends ListActivity {
     private VerCuentaAdapter adapter;
     private String URLGlobal;
     private ArrayList<DetallePedido> listaMenusAConfirmar;
-    private TextView totalResumenCuenta;
+    private TextView totalResumenCuenta, resumenCuenta, totalResumenCuentatxt;
 
 
     @Override
@@ -33,6 +34,8 @@ public class ClienteVerCuentaActivity extends ListActivity {
         NroCliente = (int) intent.getExtras().get("IDCLIENTE");
         URLGlobal = intent.getExtras().get("URLGlobal").toString();
         totalResumenCuenta = (TextView) findViewById(R.id.totalResumenCuenta);
+        resumenCuenta = (TextView) findViewById(R.id.resumenCuenta);
+        totalResumenCuentatxt = (TextView) findViewById(R.id.totalResumenCuentatxt);
 
 
         /**/
@@ -41,6 +44,11 @@ public class ClienteVerCuentaActivity extends ListActivity {
 
         setListAdapter(adapter);
         loadPedidosData();
+
+        Typeface type = Typeface.createFromAsset(getAssets(),"segoeui.ttf");
+        totalResumenCuenta.setTypeface(type);
+        resumenCuenta.setTypeface(type);
+        totalResumenCuentatxt.setTypeface(type);
 
     }
 
@@ -192,7 +200,11 @@ public class ClienteVerCuentaActivity extends ListActivity {
             if (info.getIdEstado() == 25)
                 estado = "COBRO PARCIAL";
 
-
+            Typeface type = Typeface.createFromAsset(getAssets(),"segoeui.ttf");
+            holder.txtNombreMenuVerCuenta.setTypeface(type);
+            holder.txtCantidadMenuVerCuenta.setTypeface(type);
+            holder.txtMontoDetalleVerCuenta.setTypeface(type);
+            holder.txtPrecioIndivDetalleVerCuenta.setTypeface(type);
 
             return convertView;
         }

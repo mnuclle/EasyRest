@@ -1,6 +1,7 @@
 package com.example.manu.myapplication;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -105,6 +106,12 @@ public class DetallePedidoAdapter extends BaseAdapter {
         holder.txtCantidadPedido.setText(""+item.getCantidad());
         holder.txtEstadoPedido.setText(""+item.getNombreEstado());
         holder.txtPreferenciaPedido.setText(""+item.getObservacion());
+
+        Typeface type = Typeface.createFromAsset(convertView.getContext().getAssets(),"segoeui.ttf");
+        holder.txtNombrePedido.setTypeface(type);
+        holder.txtCantidadPedido.setTypeface(type);
+        holder.txtEstadoPedido.setTypeface(type);
+        holder.txtPreferenciaPedido.setTypeface(type);
 
         return convertView;
     }

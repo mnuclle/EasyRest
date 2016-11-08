@@ -16,6 +16,7 @@
             android:textColor="#FFFFFF"
             android:textSize="50sp"
             android:textStyle="bold"
+            android:layout_margin="10px"
             android:layout_weight="0"/>
 
     <FrameLayout
@@ -29,8 +30,8 @@
             android:id="@android:id/list"
             android:layout_marginLeft="25dp"
             android:layout_marginRight="25dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="0dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="10dp"
             android:bottomRightRadius="100dp"
             android:bottomLeftRadius="100dp"
             android:topLeftRadius="100dp"
@@ -66,14 +67,12 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="#F38129"
+        android:layout_margin="10px"
         >
         <TextView
             android:id="@+id/totalResumenCuentatxt"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
             android:text="SUBTOTAL"
             android:layout_gravity="center_horizontal|center_vertical"
             android:gravity="left"
@@ -82,15 +81,13 @@
             android:textSize="50sp"
             android:textStyle="bold"
             android:layout_weight="1"
+            android:layout_marginLeft="20dp"
             />
 
         <TextView
             android:id="@+id/totalResumenCuenta"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
-            android:layout_marginRight="25dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
             android:text="$"
             android:layout_gravity="center_horizontal|center_vertical"
             android:gravity="right"
@@ -99,6 +96,7 @@
             android:textSize="50sp"
             android:textStyle="bold"
             android:layout_weight="1"
+            android:layout_marginRight="20dp"
             />
 
     </LinearLayout>

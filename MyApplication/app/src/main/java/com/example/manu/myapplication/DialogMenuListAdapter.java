@@ -1,5 +1,6 @@
 package com.example.manu.myapplication;
 
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,6 +63,8 @@ public class DialogMenuListAdapter extends BaseAdapter {
             holder = (Holder) convertView.getTag();
         }
 
+        Typeface type = Typeface.createFromAsset(convertView.getContext().getAssets(),"segoeui.ttf");
+        holder.textoItemDialog.setTypeface(type);
         holder.textoItemDialog.setText(getItemTexto(position));
 
         return convertView;

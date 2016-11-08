@@ -4,16 +4,19 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 /**
  * Created by Manu on 20/06/2016.
  */
 
 public class DialogSalir extends DialogFragment {
+    private TextView txtEstaSeguro;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -29,7 +32,16 @@ public class DialogSalir extends DialogFragment {
 
         Button dialogSalirButtonAceptar = (Button) myView.findViewById(R.id.dialogSalirButtonAceptar);
         Button dialogSalirButtonCancelar = (Button) myView.findViewById(R.id.dialogSalirButtonCancelar);
-        builder.setTitle("ATENCIÓN");
+        TextView txtTituloDialog = (TextView) myView.findViewById(R.id.txtTituloDialog) ;
+        //builder.setTitle("ATENCIÓN");
+
+        Typeface type = Typeface.createFromAsset(getActivity().getAssets(),"segoeui.ttf");
+        dialogSalirButtonAceptar.setTypeface(type);
+        dialogSalirButtonCancelar.setTypeface(type);
+        txtTituloDialog.setTypeface(type);
+
+        txtEstaSeguro = (TextView) myView.findViewById(R.id.txtEstaSeguro);
+        txtEstaSeguro.setTypeface(type);
 
         // if button is clicked, close the custom dialog
         dialogSalirButtonAceptar.setOnClickListener(new View.OnClickListener() {

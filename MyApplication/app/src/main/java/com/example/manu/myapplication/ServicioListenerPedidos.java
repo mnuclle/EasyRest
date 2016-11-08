@@ -5,29 +5,16 @@ import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.os.ResultReceiver;
-import android.util.JsonReader;
-import android.util.JsonToken;
 
-import org.json.JSONObject;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -140,7 +127,7 @@ public class ServicioListenerPedidos extends IntentService {
 
     }
 
-
+/*
     public String obtenerMesas() {
         try {
             String response = "No se conecto";
@@ -238,6 +225,17 @@ public class ServicioListenerPedidos extends IntentService {
 
         }
         return respuesta;
+    }*/
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Runtime.getRuntime().addShutdownHook(new Thread(){public void run(){
+            try {
+                skCliente.close();
+                System.out.println("The server is shut down!");
+            } catch (IOException e) { /* failed */ }
+        }});
     }
 }
 

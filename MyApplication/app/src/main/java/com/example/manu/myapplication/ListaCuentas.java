@@ -6,6 +6,7 @@ import android.app.ListActivity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -49,6 +50,8 @@ public class ListaCuentas extends ListActivity implements
     MyResultReceiver mReceiver;
     Thread thPedidos;
     Thread threadListener;
+    TextView txtTitle;
+    CheckBox checkboxVerTodos;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +59,12 @@ public class ListaCuentas extends ListActivity implements
         URLGlobal = getIntent().getExtras().get("URLGlobal").toString();
         idEmpleado = (int)getIntent().getExtras().get("IDEMPLEADO");
         adapter = new CuentasAdapter();
+        txtTitle = (TextView) findViewById(R.id.txtTitle);
+        checkboxVerTodos = (CheckBox) findViewById(R.id.checkbox_ver_todos);
+
+        Typeface type = Typeface.createFromAsset(getAssets(),"segoeui.ttf");
+        txtTitle.setTypeface(type);
+        checkboxVerTodos.setTypeface(type);
 
         setListAdapter(adapter);
 
@@ -188,7 +197,11 @@ public class ListaCuentas extends ListActivity implements
             holder.txtMesas.setText(info.getNumeroMesa());
             holder.txtMontoPedido.setText("$" + String.format("%.2f",info.getMontoPedido()));
             holder.txtNombreMesas.setText("Mesas");
-
+            Typeface type = Typeface.createFromAsset(convertView.getContext().getAssets(),"segoeui.ttf");
+            holder.txtCuenta.setTypeface(type);
+            holder.txtMesas.setTypeface(type);
+            holder.txtMontoPedido.setTypeface(type);
+            holder.txtNombreMesas.setTypeface(type);
             return convertView;
         }
 
