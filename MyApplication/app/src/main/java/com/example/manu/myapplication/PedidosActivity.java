@@ -1111,7 +1111,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
         if (!(detalle.getIdEstado() == 14 || detalle.getIdEstado() == 13 || detalle.getIdEstado() == 16 || detalle.getIdEstado() == 25))
         {
             final CharSequence[] items;
-            if (detalle.getIdInsumo() == 0 || (detalle.getIdInsumo() != 0 && detalle.getIdEstado() == 15)) {
+            if ((detalle.getIdInsumo() == 0 && detalle.getIdEstado() != 11) || (detalle.getIdInsumo() != 0 && detalle.getIdEstado() == 15)) {
 
                 final Dialog dialog = new Dialog(view.getContext());
                 dialog.setContentView(R.layout.dialog_anular);

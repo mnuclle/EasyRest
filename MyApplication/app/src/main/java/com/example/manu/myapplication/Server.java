@@ -496,7 +496,7 @@ public class Server extends ListActivity implements AdapterView.OnItemClickListe
     protected void onDestroy() {
         super.onDestroy();
         //LocalBroadcastManager.getInstance(this)
-        stopService(new Intent(getApplicationContext(), ServicioListenerPedidos.class));
+        //stopService(new Intent(getApplicationContext(), ServicioListenerPedidos.class));
         //Context c = getApplicationContext();
         //c.stopService(i);
         //threadListener.interrupt();

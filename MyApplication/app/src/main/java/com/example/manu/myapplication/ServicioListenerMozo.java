@@ -88,23 +88,44 @@ public class ServicioListenerMozo  extends IntentService {
                 String messageFromClient, messageToClient, request;
 
                 Intent intNotif = new Intent(this,ListaCuentas.class);
+
+
                 intNotif.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);;
                 PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
                         intNotif, 0);
+                Notification notification = null;
+                if(!infoCuenta.contains("A;")){
+                    String nombreCuenta = infoCuenta.substring(0,infoCuenta.indexOf(";"));
+                    String mesasSolicitantes = infoCuenta.substring((infoCuenta.indexOf(";")+1));
+                    notifMan = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                   notification = new Notification.Builder(this)
+                            .setSmallIcon(R.drawable.logo)  // the status icon
+                            .setTicker("NotificacionStatus")  // the status text
+                            .setWhen(System.currentTimeMillis())  // the time stamp
+                            .setContentTitle(getText(R.string.app_name))  // the label of the entry
+                            .setContentText("El cliente " + nombreCuenta +" lo requiere!! Mesas: " + mesasSolicitantes)  // the contents of the entry
+                            .setContentIntent(contentIntent)  // The intent to send when the entry is clicked
+                            .build();
 
-                String nombreCuenta = infoCuenta.substring(0,infoCuenta.indexOf(";"));
-                String mesasSolicitantes = infoCuenta.substring((infoCuenta.indexOf(";")+1));
-                notifMan = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                Notification notification = new Notification.Builder(this)
-                        .setSmallIcon(R.drawable.logo)  // the status icon
-                        .setTicker("NotificacionStatus")  // the status text
-                        .setWhen(System.currentTimeMillis())  // the time stamp
-                        .setContentTitle(getText(R.string.app_name))  // the label of the entry
-                        .setContentText("El cliente " + nombreCuenta +" lo requiere!! Mesas: " + mesasSolicitantes)  // the contents of the entry
-                        .setContentIntent(contentIntent)  // The intent to send when the entry is clicked
-                        .build();
+                    notification.flags |=  Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
+                }
+                else
+                {   infoCuenta = infoCuenta.substring((infoCuenta.indexOf(";")));
+                    String nombreCuenta = infoCuenta.substring(0,infoCuenta.indexOf(";"));
+                    String mesasSolicitantes = infoCuenta.substring((infoCuenta.indexOf(";")+1));
+                    notifMan = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                    notification = new Notification.Builder(this)
+                            .setSmallIcon(R.drawable.logo)  // the status icon
+                            .setTicker("NotificacionStatus")  // the status text
+                            .setWhen(System.currentTimeMillis())  // the time stamp
+                            .setContentTitle(getText(R.string.app_name))  // the label of the entry
+                            .setContentText("El pedido de la cuenta " + nombreCuenta +" está listo!! Mesas: " + mesasSolicitantes)  // the contents of the entry
+                            .setContentIntent(contentIntent)  // The intent to send when the entry is clicked
+                            .build();
 
-                notification.flags |=  Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
+                    notification.flags |=  Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
+                }
+
 
 
 
