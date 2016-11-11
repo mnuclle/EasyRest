@@ -150,7 +150,7 @@ public class MainActivity extends Activity {
         private Exception exception;
         private Context contexto;
         private int error = 0;
-        String response = "USUARIO Y/O CONTRASEÑA NO VALIDOS.";
+        String response = "USUARIO NO VÁLIDO.";
         private String URLGlobal;
         private int idUsuario;
         private String nombre;
@@ -252,7 +252,7 @@ public class MainActivity extends Activity {
                     }
                     else
                     {
-                        response = "USUARIO Y/O CONTRASEÑA NO VALIDOS.";
+                        response = "USUARIO NO VÁLIDO.";
                     }
 
                     Intent intent = new Intent(MainActivity.this, ClienteOpcionesActivity.class);
@@ -295,7 +295,7 @@ public class MainActivity extends Activity {
         private Exception exception;
         private int error = 0;
         private Context contexto;
-        String response = "USUARIO Y/O CONTRASEÑA NO VALIDOS.";
+        String response = "USUARIO Y/O CONTRASEÑA NO VÁLIDOS.";
         String URLGlobal;
         public PostTaskEmp(Context contexto,String url)
         {
@@ -391,7 +391,7 @@ public class MainActivity extends Activity {
                     }
                     else
                     {
-                        response = "USUARIO Y CONTRASEÑA NO VALIDOS";
+                        response = "USUARIO Y CONTRASEÑA NO VÁLIDOS";
                     }
 
                     if (b.getInt("IDTIPOEMPLEADO") == 1) // 1 es el mozo
