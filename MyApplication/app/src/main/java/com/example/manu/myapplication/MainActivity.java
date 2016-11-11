@@ -63,8 +63,8 @@ public class MainActivity extends Activity {
 
         txtUsuario.setGravity(Gravity.CENTER_HORIZONTAL);
         txtContraseña.setGravity(Gravity.CENTER_HORIZONTAL);
-        txtUsuario.setText("DAMIANCERRO");
-        txtContraseña.setText("DCERRO1");
+        txtUsuario.setText("MANUELCALLE");
+        txtContraseña.setText("MANUEL");
 //        txtUsuario.setText("PEDROLOPEZ");
 //        txtContraseña.setText("PLOPEZ1");
 
@@ -150,7 +150,7 @@ public class MainActivity extends Activity {
         private Exception exception;
         private Context contexto;
         private int error = 0;
-        String response = "No se conecto";
+        String response = "USUARIO Y/O CONTRASEÑA NO VALIDOS.";
         private String URLGlobal;
         private int idUsuario;
         private String nombre;
@@ -252,7 +252,7 @@ public class MainActivity extends Activity {
                     }
                     else
                     {
-                        response = "Usuario y contraseña incorrectos.";
+                        response = "USUARIO Y/O CONTRASEÑA NO VALIDOS.";
                     }
 
                     Intent intent = new Intent(MainActivity.this, ClienteOpcionesActivity.class);
@@ -295,7 +295,7 @@ public class MainActivity extends Activity {
         private Exception exception;
         private int error = 0;
         private Context contexto;
-        String response = "No se conecto";
+        String response = "USUARIO Y/O CONTRASEÑA NO VALIDOS.";
         String URLGlobal;
         public PostTaskEmp(Context contexto,String url)
         {

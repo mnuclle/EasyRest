@@ -3,6 +3,9 @@ package com.example.manu.myapplication.Cliente;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ListFragment;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -22,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.manu.myapplication.Entidades.DetallePedido;
+import com.example.manu.myapplication.Entidades.Images;
 import com.example.manu.myapplication.Entidades.Menus;
 import com.example.manu.myapplication.Entidades.TodasImages;
 import com.example.manu.myapplication.InterfazListadoMenus;
@@ -323,6 +327,7 @@ public class ClienteMenuFragment extends ListFragment implements AdapterView.OnI
         private ArrayList<Menus> listaMenus;
         private LayoutInflater inflater;
         private TodasImages ti;
+        private Images im;
 
         public MenusAdapter() {
             listaMenus = new ArrayList<>();
@@ -386,11 +391,17 @@ public class ClienteMenuFragment extends ListFragment implements AdapterView.OnI
             }
 
             Menus info = (Menus) getItem(position);
-            ti = new TodasImages();
+            if (ti.equals(null))
+                ti = new TodasImages();
+
             if (info.isEsMenu()) {
-                holder.imageMenus.setImageResource((ti.obtenerImagen(info.getIdMenu(), true)).getIdImagen());
+                im = (ti.obtenerImagen(info.getIdMenu(), true));
+                holder.imageMenus.setImageBitmap(decodeSampledBitmapFromResource(getResources(), im.getIdImagen(),50,50));
+              //  holder.imageMenus.setImageResource((ti.obtenerImagen(info.getIdMenu(), true)).getIdImagen());
             } else {
-                holder.imageMenus.setImageResource((ti.obtenerImagen(info.getIdInsumo(), false)).getIdImagen());
+                im = (ti.obtenerImagen(info.getIdInsumo(), false));
+                holder.imageMenus.setImageBitmap(decodeSampledBitmapFromResource(getResources(), im.getIdImagen(),50,50));
+                //holder.imageMenus.setImageResource((ti.obtenerImagen(info.getIdInsumo(), false)).getIdImagen());
             }
             int color;
             if (info.getCantidad() == 0)
@@ -560,5 +571,44 @@ public class ClienteMenuFragment extends ListFragment implements AdapterView.OnI
         protected void onPostExecute(String s) {
             loadMenus(listaMenus,listadoDetallePedido);
         }
+    }
+
+    public static int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) >= reqHeight
+                    && (halfWidth / inSampleSize) >= reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
+    }
+
+    public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
+                                                         int reqWidth, int reqHeight) {
+
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeResource(res, resId, options);
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeResource(res, resId, options);
     }
 }

@@ -10,17 +10,10 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.os.ResultReceiver;
 
-import com.example.manu.myapplication.R;
-import com.example.manu.myapplication.Server;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
@@ -94,7 +87,7 @@ public class ServicioListenerMozo  extends IntentService {
                 PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
                         intNotif, 0);
                 Notification notification = null;
-                if(!infoCuenta.contains("A;")){
+                if(!infoCuenta.contains("A$;")){
                     String nombreCuenta = infoCuenta.substring(0,infoCuenta.indexOf(";"));
                     String mesasSolicitantes = infoCuenta.substring((infoCuenta.indexOf(";")+1));
                     notifMan = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -110,7 +103,7 @@ public class ServicioListenerMozo  extends IntentService {
                     notification.flags |=  Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
                 }
                 else
-                {   infoCuenta = infoCuenta.substring((infoCuenta.indexOf(";")));
+                {   infoCuenta = infoCuenta.substring((infoCuenta.indexOf("$;")+2));
                     String nombreCuenta = infoCuenta.substring(0,infoCuenta.indexOf(";"));
                     String mesasSolicitantes = infoCuenta.substring((infoCuenta.indexOf(";")+1));
                     notifMan = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
