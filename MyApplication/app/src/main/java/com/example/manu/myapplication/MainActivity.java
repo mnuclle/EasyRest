@@ -63,10 +63,23 @@ public class MainActivity extends Activity {
 
         txtUsuario.setGravity(Gravity.CENTER_HORIZONTAL);
         txtContraseña.setGravity(Gravity.CENTER_HORIZONTAL);
-        txtUsuario.setText("MANUELCALLE");
-        txtContraseña.setText("MANUEL");
-//        txtUsuario.setText("PEDROLOPEZ");
-//        txtContraseña.setText("PLOPEZ1");
+
+        // USUARIO MOZO
+        /*
+            txtUsuario.setText("MANUELCALLE");
+            txtContraseña.setText("MANUEL");
+        */
+
+        //USUARIO CLIENTE
+        /*
+            txtUsuario.setText("35111222");
+            cmbTipoUsuario.setSelection(1);
+         */
+        // USUARIO COCINA
+
+            txtUsuario.setText("DANIELMALVAREZ");
+            txtContraseña.setText("DANIEL");
+
 
         Typeface type = Typeface.createFromAsset(getAssets(),"segoeui.ttf");
         txtUsuario.setTypeface(type);

@@ -14,7 +14,7 @@
 
     <LinearLayout
         android:orientation="horizontal"
-        android:background="#476B85"
+        android:background="#F38129"
         android:id="@+id/linearLTitulo"
         android:layout_width="fill_parent"
         android:layout_margin="10px"
@@ -37,7 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_horizontal|center_vertical"
-            android:background="#476B85"
+            android:background="#F38129"
             android:textColor="#FFFFFF"
             android:textSize="50sp"
             android:textStyle="bold"
@@ -46,7 +46,7 @@
     </LinearLayout>
     <LinearLayout
         android:orientation="vertical"
-        android:background="#314550"
+        android:background="#476B85"
         android:id="@+id/linearContenido"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
@@ -67,6 +67,21 @@
                     android:divider="#476B85"
                     android:dividerHeight="3px">
                 </ListView>
+                <TextView
+                    android:id="@android:id/empty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.05"
+                    android:gravity ="center"
+                    android:background="#476B85"
+                    android:textColor="#FFFFFF"
+                    android:textSize="35sp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="0dp"
+                    android:textStyle="bold"
+                    android:text="NO POSEE PEDIDOS PARA REALIZAR." />
     </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
