@@ -32,7 +32,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.manu.myapplication.CategoriaMenuActivity;
 import com.example.manu.myapplication.DialogObservaciones;
 import com.example.manu.myapplication.Entidades.DetallePedido;
 import com.example.manu.myapplication.Entidades.DetallesPedido;
@@ -291,7 +290,7 @@ public class ClientePedidoActivity extends ListActivity implements AdapterView.O
     }
 
     private void startActivityCategoria() {
-        Intent intent = new Intent(this, CategoriaMenuActivity.class);
+        Intent intent = new Intent(this, ClienteCategoriaMenuActivity.class);
         intent.putExtra("IDCLIENTE", NroCliente);
         intent.putExtra("URLGlobal",URLGlobal);
         listaMenusAConfirmar = new ArrayList<>();

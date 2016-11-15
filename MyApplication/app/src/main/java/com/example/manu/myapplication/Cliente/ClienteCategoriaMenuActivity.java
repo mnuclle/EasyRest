@@ -11,12 +11,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
-import com.example.manu.myapplication.CategoriaFragment;
 import com.example.manu.myapplication.Entidades.DetallePedido;
 import com.example.manu.myapplication.Entidades.Menus;
 import com.example.manu.myapplication.InterfazCategorias;
 import com.example.manu.myapplication.InterfazListadoMenus;
-import com.example.manu.myapplication.MenusFragment;
 import com.example.manu.myapplication.R;
 
 import java.util.ArrayList;
@@ -68,8 +66,8 @@ public class ClienteCategoriaMenuActivity extends FragmentActivity implements In
         FragmentTransaction fragmentTransaction = fragmentManager
                 .beginTransaction();
 
-        CategoriaFragment fragment1 = new CategoriaFragment();
-        MenusFragment fragment2 = MenusFragment.newInstance(1,URLGlobal,listadoDetalleAConfirmar);
+        ClienteCategoriaFragment fragment1 = new ClienteCategoriaFragment();
+        ClienteMenuFragment fragment2 = ClienteMenuFragment.newInstance(1,URLGlobal,listadoDetalleAConfirmar);
 
         fragmentTransaction.add(R.id.FragmentContainer1Cliente, fragment1);
         fragmentTransaction.add(R.id.FragmentContainer2Cliente, fragment2);
@@ -182,7 +180,7 @@ public class ClienteCategoriaMenuActivity extends FragmentActivity implements In
     public void onCategoriaSelect(int idCategoria) {
 
         listadoDetalleAConfirmar = loadListadoMenus(listadoMenus,listadoMenusABorrar);
-        MenusFragment frag2 = MenusFragment.newInstance(idCategoria,URLGlobal,listadoDetalleAConfirmar);
+        ClienteMenuFragment frag2 = ClienteMenuFragment.newInstance(idCategoria,URLGlobal,listadoDetalleAConfirmar);
 
         FragmentManager fm = getFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();

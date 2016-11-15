@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+
 public class CategoriaFragment extends ListFragment implements AdapterView.OnItemClickListener{
 
     private InterfazCategorias listener;

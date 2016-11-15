@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:background="#314550">
     <TextView
-        android:id="@+id/textoMenus"
+        android:id="@+id/textoMenusCliente"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="CATEGORÍAS"

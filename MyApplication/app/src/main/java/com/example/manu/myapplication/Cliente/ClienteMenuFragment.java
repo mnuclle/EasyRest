@@ -29,7 +29,6 @@ import com.example.manu.myapplication.Entidades.Images;
 import com.example.manu.myapplication.Entidades.Menus;
 import com.example.manu.myapplication.Entidades.TodasImages;
 import com.example.manu.myapplication.InterfazListadoMenus;
-import com.example.manu.myapplication.MenusFragment;
 import com.example.manu.myapplication.R;
 
 import java.io.BufferedInputStream;
@@ -52,8 +51,8 @@ public class ClienteMenuFragment extends ListFragment implements AdapterView.OnI
     private TextView cantidadMenus,textoMenus;
     private ArrayList<DetallePedido> listadoDetallePedido;
 
-    public static MenusFragment newInstance(int idCategoria, String url, ArrayList<DetallePedido> listadoDetallePedido) {
-        MenusFragment fragment = new MenusFragment();
+    public static ClienteMenuFragment newInstance(int idCategoria, String url, ArrayList<DetallePedido> listadoDetallePedido) {
+        ClienteMenuFragment fragment = new ClienteMenuFragment();
         Bundle args = new Bundle();
         args.putInt("idCategoria", idCategoria);
         args.putString("URLGlobal",url);
@@ -71,10 +70,10 @@ public class ClienteMenuFragment extends ListFragment implements AdapterView.OnI
             menus = (TextView) v.findViewById(R.id.textoMenusCliente);
             cantidadMenus = (TextView) v.findViewById(R.id.cantidadDeMenus);
 
-            textoMenus = (TextView) getActivity().findViewById(R.id.textoMenus);
+
 
             Typeface type = Typeface.createFromAsset(getActivity().getAssets(),"segoeui.ttf");
-            textoMenus.setTypeface(type);
+            menus.setTypeface(type);
         }
         return v;
     }
@@ -125,6 +124,7 @@ public class ClienteMenuFragment extends ListFragment implements AdapterView.OnI
         adapter = new MenusAdapter();
         setListAdapter(adapter);
         getListView().setOnItemClickListener(this);
+        getListView().setOnItemLongClickListener(this);
 
         Object[] obj = new Object[3];
         obj[0] = categ;
@@ -431,7 +431,8 @@ public class ClienteMenuFragment extends ListFragment implements AdapterView.OnI
             if (info.isEsMenu())
                 holder.txtNombreMenu.setText(info.getNombreMenu());
             else
-                holder.txtNombreMenu.setText(info.getNombreMenu() ); // + " (Stock: " + stock + ")"
+                holder.txtNombreMenu.setText(info.getNombreMenu());
+            // + " (Stock: " + stock + ")"
 
             holder.txtPrecio.setText("$" + String.format("%.2f",info.getPrecio()));
             holder.txtDescripcion.setText(info.getDescripcion());
