@@ -431,7 +431,7 @@ public class ClienteMenuFragment extends ListFragment implements AdapterView.OnI
             if (info.isEsMenu())
                 holder.txtNombreMenu.setText(info.getNombreMenu());
             else
-                holder.txtNombreMenu.setText(info.getNombreMenu() + " (Stock: " + stock + ")" );
+                holder.txtNombreMenu.setText(info.getNombreMenu() ); // + " (Stock: " + stock + ")"
 
             holder.txtPrecio.setText("$" + String.format("%.2f",info.getPrecio()));
             holder.txtDescripcion.setText(info.getDescripcion());

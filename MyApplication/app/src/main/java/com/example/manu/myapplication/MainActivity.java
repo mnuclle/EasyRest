@@ -71,16 +71,16 @@ public class MainActivity extends Activity {
         */
 
         //USUARIO CLIENTE
-        /*
-            txtUsuario.setText("35111222");
-            cmbTipoUsuario.setSelection(1);
-         */
-        // USUARIO COCINA
 
+            txtUsuario.setText("37437336");
+            cmbTipoUsuario.setSelection(1);
+
+        // USUARIO COCINA
+/*
             txtUsuario.setText("DANIELMALVAREZ");
             txtContraseña.setText("DANIEL");
 
-
+*/
         Typeface type = Typeface.createFromAsset(getAssets(),"segoeui.ttf");
         txtUsuario.setTypeface(type);
         txtContraseña.setTypeface(type);
