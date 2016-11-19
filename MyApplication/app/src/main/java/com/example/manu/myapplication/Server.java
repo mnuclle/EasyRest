@@ -39,7 +39,7 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.Socket;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +48,7 @@ public class Server extends ListActivity implements AdapterView.OnItemClickListe
 
     private String URLGlobal;
     private TextView txtNotificaciones,txtTituloPedidos;
-    private TextView txtIdPedido;
+    private TextView txtIdPedido,txtEmpty;
     private Button btnEnviarIdPedido;
     Socket skCliente;
     private NotificationManager notifMan;
@@ -87,10 +87,12 @@ public class Server extends ListActivity implements AdapterView.OnItemClickListe
         txtNotificaciones = (TextView) findViewById(R.id.txtNotificaciones);
         txtIdPedido = (TextView) findViewById(R.id.txtIdPedido);
         btnEnviarIdPedido = (Button) findViewById(R.id.btnEnviarPedido);
+        txtEmpty = (TextView) findViewById(android.R.id.empty);
 
         Typeface type = Typeface.createFromAsset(getAssets(),"segoeui.ttf");
         txtNotificaciones.setTypeface(type);
         txtIdPedido.setTypeface(type);
+        txtEmpty.setTypeface(type);
         btnEnviarIdPedido.setTypeface(type);
         txtTituloPedidos.setTypeface(type);
 
@@ -379,7 +381,7 @@ public class Server extends ListActivity implements AdapterView.OnItemClickListe
             try {
 
 
-                urlConn.setChunkedStreamingMode(0);
+                //urlConn.setChunkedStreamingMode(0);
                 urlConn.setDoOutput(true);
                 urlConn.setDoInput(true);
                 urlConn.setRequestProperty("Content-Type", "application/json");
@@ -555,7 +557,7 @@ public class Server extends ListActivity implements AdapterView.OnItemClickListe
 
 
                 try {
-                    JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(StandardCharsets.UTF_8))));
+                    JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(Charset.forName("UTF-8")))));
 
                     try {
 
@@ -857,7 +859,7 @@ public class Server extends ListActivity implements AdapterView.OnItemClickListe
             try {
 
 
-                urlConn.setChunkedStreamingMode(0);
+                //urlConn.setChunkedStreamingMode(0);
                 urlConn.setDoOutput(true);
                 urlConn.setDoInput(true);
                 urlConn.setRequestProperty("Content-Type", "application/json");
@@ -900,7 +902,7 @@ public class Server extends ListActivity implements AdapterView.OnItemClickListe
             try {
 
 
-                urlConn.setChunkedStreamingMode(0);
+                //urlConn.setChunkedStreamingMode(0);
                 urlConn.setDoOutput(true);
                 urlConn.setDoInput(true);
                 urlConn.setRequestProperty("Content-Type", "application/json");

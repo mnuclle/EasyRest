@@ -53,7 +53,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -66,7 +66,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
     private String URLGlobal;
     private ArrayList<DetallePedido> listaMenusAConfirmar;
     private TextView montoTotalPedido;
-    private TextView cuentaPedido;
+    private TextView cuentaPedido,txtEmpty;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -90,10 +90,12 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
         cuentaPedido = (TextView) findViewById(R.id.cuentaPedido);
         cuentaPedido.setText(intent.getExtras().get("CUENTAPEDIDO").toString());
         montoTotalPedido = (TextView) findViewById(R.id.montoTotalPedido);
+        txtEmpty = (TextView) findViewById(android.R.id.empty);
 
         Typeface type = Typeface.createFromAsset(getAssets(),"segoeui.ttf");
         cuentaPedido.setTypeface(type);
         montoTotalPedido.setTypeface(type);
+        txtEmpty.setTypeface(type);
 
         btnElegirPedido = (FloatingActionButton) findViewById(R.id.btnElegirPedido);
 
@@ -197,7 +199,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                 HttpURLConnection urlConn = (HttpURLConnection) url2.openConnection();
                 try {
                     lista = (ArrayList<DetallePedido>) params[0];
-                    urlConn.setChunkedStreamingMode(0);
+                    //urlConn.setChunkedStreamingMode(0);
                     urlConn.setDoOutput(true);
                     urlConn.setDoInput(true);
                     urlConn.setRequestProperty("Content-Type", "application/json");
@@ -366,7 +368,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                         result.append(line);
                     }
                     try {
-                        JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(StandardCharsets.UTF_8))));
+                        JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(Charset.forName("UTF-8")))));
                         response = "GET: ";
 
                         reader1.beginArray();
@@ -438,7 +440,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                                 result.append(line);
                             }
                             try {
-                                JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(StandardCharsets.UTF_8))));
+                                JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(Charset.forName("UTF-8")))));
                                 response = "GET: ";
 
                                 reader1.beginArray();
@@ -539,7 +541,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                                         result.append(line);
                                     }
                                     try {
-                                        JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(StandardCharsets.UTF_8))));
+                                        JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(Charset.forName("UTF-8")))));
                                         response = "GET: ";
 
                                         reader1.beginArray();
@@ -607,7 +609,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                                         result.append(line);
                                     }
                                     try {
-                                        JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(StandardCharsets.UTF_8))));
+                                        JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(Charset.forName("UTF-8")))));
                                         response = "GET: ";
 
                                         reader1.beginArray();
@@ -879,11 +881,11 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
 
             if (info.getIdInsumo() == 0) {
                 im = (ti.obtenerImagen(info.getIdMenu(), true));
-                holder.imageMenu.setImageBitmap(decodeSampledBitmapFromResource(getResources(), im.getIdImagen(),50,50));
+                holder.imageMenu.setImageBitmap(decodeSampledBitmapFromResource(getResources(), im.getIdImagen(),100,100));
               //  holder.imageMenu.setImageResource((ti.obtenerImagen(info.getIdMenu(), true)).getIdImagen());
             } else {
                 im = (ti.obtenerImagen(info.getIdInsumo(), false));
-                holder.imageMenu.setImageBitmap(decodeSampledBitmapFromResource(getResources(), im.getIdImagen(),50,50));
+                holder.imageMenu.setImageBitmap(decodeSampledBitmapFromResource(getResources(), im.getIdImagen(),100,100));
                 // holder.imageMenu.setImageResource((ti.obtenerImagen(info.getIdInsumo(), false)).getIdImagen());
             }
 
@@ -1257,7 +1259,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                     urlConn = (HttpURLConnection) url.openConnection();
                     try {
 
-                        urlConn.setChunkedStreamingMode(0);
+                        //urlConn.setChunkedStreamingMode(0);
                         urlConn.setDoOutput(true);
                         urlConn.setDoInput(true);
                         urlConn.setRequestProperty("Content-Type", "application/json");
@@ -1343,7 +1345,7 @@ public class PedidosActivity extends ListActivity implements AdapterView.OnItemC
                     urlConn = (HttpURLConnection) url.openConnection();
                     try {
 
-                        urlConn.setChunkedStreamingMode(0);
+                        //urlConn.setChunkedStreamingMode(0);
                         urlConn.setDoOutput(true);
                         urlConn.setDoInput(true);
                         urlConn.setRequestProperty("Content-Type", "application/json");

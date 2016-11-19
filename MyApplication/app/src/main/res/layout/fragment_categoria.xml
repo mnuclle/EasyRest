@@ -8,7 +8,7 @@
         android:id="@+id/textoMenus"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="CATEGORÍAS"
+        android:text="Categorías"
         android:gravity="center"
         android:layout_margin="10px"
         android:background="#F38129"

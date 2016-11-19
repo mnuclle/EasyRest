@@ -34,7 +34,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 public class MainActivity extends Activity {
@@ -64,11 +64,13 @@ public class MainActivity extends Activity {
         txtUsuario.setGravity(Gravity.CENTER_HORIZONTAL);
         txtContraseña.setGravity(Gravity.CENTER_HORIZONTAL);
 
+        btnIniciarSesion.setText("Iniciar sesión");
+
         // USUARIO MOZO
-        /*
+/*
             txtUsuario.setText("MANUELCALLE");
             txtContraseña.setText("MANUEL");
-        */
+*/
 
         //USUARIO CLIENTE
 
@@ -79,13 +81,16 @@ public class MainActivity extends Activity {
 /*
             txtUsuario.setText("DANIELMALVAREZ");
             txtContraseña.setText("DANIEL");
-
 */
+
         Typeface type = Typeface.createFromAsset(getAssets(),"segoeui.ttf");
         txtUsuario.setTypeface(type);
         txtContraseña.setTypeface(type);
         btnIniciarSesion.setTypeface(type);
-        NombreApp.setTypeface(type);
+
+
+        Typeface type1 = Typeface.createFromAsset(getAssets(),"unicaoneregular.ttf");
+        NombreApp.setTypeface(type1);
 
         btnIniciarSesion.setOnClickListener(new View.OnClickListener() {
             @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -118,6 +123,8 @@ public class MainActivity extends Activity {
         );
 
 
+
+
     }
 
     @Override
@@ -139,8 +146,8 @@ public class MainActivity extends Activity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String text = cmbTipoUsuario.getSelectedItem().toString();
-                String cliente = "CLIENTE";
-                String empleado = "EMPLEADO";
+                String cliente = "Cliente";
+                String empleado = "Empleado";
                 if (cliente.equals(text)) {
                     tipoUsr = 1;
                     txtContraseña.setVisibility(View.INVISIBLE);
@@ -181,7 +188,7 @@ public class MainActivity extends Activity {
                 HttpURLConnection urlConn = (HttpURLConnection)url2.openConnection();
                 try {
                     Usuario us = params[0];
-                    urlConn.setChunkedStreamingMode(0);
+                    //urlConn.setChunkedStreamingMode(0);
                     urlConn.setDoOutput(true);
                     urlConn.setDoInput(true);
                     urlConn.setRequestProperty("Content-Type", "application/json");
@@ -215,7 +222,7 @@ public class MainActivity extends Activity {
 
                     if(leyo = true)
                     {
-                        JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(StandardCharsets.UTF_8))));
+                        JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(Charset.forName("UTF-8")))));
 
                             response = "POST: ";
 
@@ -272,7 +279,7 @@ public class MainActivity extends Activity {
                     Bundle b = new Bundle();
                     b.putInt("IDCLIENTE", cm.getIdCliente());
                     b.putString("URLGlobal", URLGlobal);
-                    b.putString("CUENTAPEDIDO","MESA: " + cm.getNumeroMesa() + " - CLIENTE: " + cm.getNumeroDocumento() + ", " + cm.getNombreCuenta());
+                    b.putString("CUENTAPEDIDO","Mesa: " + cm.getNumeroMesa() + " - Cliente: " + cm.getNumeroDocumento() + ", " + cm.getNombreCuenta());
 
                     intent.putExtras(b);
                     startActivity(intent);
@@ -325,7 +332,7 @@ public class MainActivity extends Activity {
                 Bundle b = new Bundle();
                 try {
 
-                    urlConn.setChunkedStreamingMode(0);
+                 //   urlConn.setChunkedStreamingMode(0);
                     urlConn.setDoOutput(true);
                     urlConn.setDoInput(true);
                     urlConn.setRequestProperty("Content-Type", "application/json");
@@ -333,6 +340,7 @@ public class MainActivity extends Activity {
                     urlConn.connect();
                     //Create JSONObject here
                     JSONObject jsonParam = new JSONObject();
+
                     jsonParam.put("nombreUsuario", us.getNombreUsuario());
                     jsonParam.put("contraseña", us.getContraseña());
 
@@ -359,7 +367,7 @@ public class MainActivity extends Activity {
                     if(leyo = true)
                     {
 
-                            JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(StandardCharsets.UTF_8))));
+                            JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(Charset.forName("UTF-8")))));
                             response = "POST: ";
                             reader1.beginObject();
                                 int idUsuario = -1;
@@ -427,7 +435,7 @@ public class MainActivity extends Activity {
 
 
                         try {
-                            JsonReader reader2 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result1.toString().getBytes(StandardCharsets.UTF_8))));
+                            JsonReader reader2 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result1.toString().getBytes(Charset.forName("UTF-8")))));
 
                             try {
                                 response = "GET: ";

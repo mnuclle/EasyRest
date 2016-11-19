@@ -29,7 +29,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 public class ClienteOpcionesActivity extends Activity implements DialogSalir.NoticeDialogListener{
@@ -55,8 +55,8 @@ public class ClienteOpcionesActivity extends Activity implements DialogSalir.Not
         btnVerPedido = (FloatingActionButton) findViewById(R.id.btnVerPedido);
         NombreApp = (TextView) findViewById(R.id.NombreApp);
 
-        Typeface type = Typeface.createFromAsset(getAssets(),"segoeui.ttf");
-        NombreApp.setTypeface(type);
+        Typeface type1 = Typeface.createFromAsset(getAssets(),"unicaoneregular.ttf");
+        NombreApp.setTypeface(type1);
 
         btnVerPedido.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -119,7 +119,7 @@ public class ClienteOpcionesActivity extends Activity implements DialogSalir.Not
                 URL url = new URL(URLGlobal+"mozo/llamarMozo");
                 HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
                 try {
-                    urlConn.setChunkedStreamingMode(0);
+                    //urlConn.setChunkedStreamingMode(0);
                     urlConn.setDoOutput(true);
                     urlConn.setDoInput(true);
                     urlConn.setRequestProperty("Content-Type", "application/json");
@@ -210,7 +210,7 @@ public class ClienteOpcionesActivity extends Activity implements DialogSalir.Not
                         result.append(line);
                     }
                     try {
-                        JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(StandardCharsets.UTF_8))));
+                        JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(Charset.forName("UTF-8")))));
                         response = "GET: ";
 
                         reader1.beginArray();
@@ -283,7 +283,7 @@ public class ClienteOpcionesActivity extends Activity implements DialogSalir.Not
                                 result.append(line);
                             }
                             try {
-                                JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(StandardCharsets.UTF_8))));
+                                JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(Charset.forName("UTF-8")))));
                                 response = "GET: ";
 
                                 reader1.beginArray();
@@ -386,7 +386,7 @@ public class ClienteOpcionesActivity extends Activity implements DialogSalir.Not
                                         result.append(line);
                                     }
                                     try {
-                                        JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(StandardCharsets.UTF_8))));
+                                        JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(Charset.forName("UTF-8")))));
                                         response = "GET: ";
 
                                         reader1.beginArray();
@@ -456,7 +456,7 @@ public class ClienteOpcionesActivity extends Activity implements DialogSalir.Not
                                         result.append(line);
                                     }
                                     try {
-                                        JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(StandardCharsets.UTF_8))));
+                                        JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(Charset.forName("UTF-8")))));
                                         response = "GET: ";
 
                                         reader1.beginArray();
@@ -525,7 +525,7 @@ public class ClienteOpcionesActivity extends Activity implements DialogSalir.Not
                                 result.append(line);
                             }
                             try {
-                                JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(StandardCharsets.UTF_8))));
+                                JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(Charset.forName("UTF-8")))));
                                 response = "GET: ";
 
                                 reader1.beginArray();

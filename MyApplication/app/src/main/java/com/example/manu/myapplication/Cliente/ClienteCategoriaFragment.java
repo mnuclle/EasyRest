@@ -72,14 +72,14 @@ public class ClienteCategoriaFragment extends ListFragment implements AdapterVie
             inflater = LayoutInflater.from(getActivity());
 
 
-            listaCategorias.add("MINUTAS");
-            listaCategorias.add("LOMITOS");
-            listaCategorias.add("PASTAS");
-            listaCategorias.add("TABLAS");
-            listaCategorias.add("BEBIDAS");
-            listaCategorias.add("PIZZAS");
-            listaCategorias.add("POSTRES");
-            listaCategorias.add("DESAYUNO");
+            listaCategorias.add("Minutas");
+            listaCategorias.add("Lomitos");
+            listaCategorias.add("Pastas");
+            listaCategorias.add("Tablas");
+            listaCategorias.add("Bebidas");
+            listaCategorias.add("Pizzas");
+            listaCategorias.add("Postres");
+            listaCategorias.add("Desayuno");
 
         }
 

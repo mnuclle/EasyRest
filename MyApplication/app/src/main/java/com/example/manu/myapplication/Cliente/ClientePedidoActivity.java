@@ -55,7 +55,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -197,7 +197,7 @@ public class ClientePedidoActivity extends ListActivity implements AdapterView.O
                 HttpURLConnection urlConn = (HttpURLConnection) url2.openConnection();
                 try {
                     lista = (ArrayList<DetallePedido>) params[0];
-                    urlConn.setChunkedStreamingMode(0);
+                    //urlConn.setChunkedStreamingMode(0);
                     urlConn.setDoOutput(true);
                     urlConn.setDoInput(true);
                     urlConn.setRequestProperty("Content-Type", "application/json");
@@ -366,7 +366,7 @@ public class ClientePedidoActivity extends ListActivity implements AdapterView.O
                         result.append(line);
                     }
                     try {
-                        JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(StandardCharsets.UTF_8))));
+                        JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(Charset.forName("UTF-8")))));
                         response = "GET: ";
 
                         reader1.beginArray();
@@ -438,7 +438,7 @@ public class ClientePedidoActivity extends ListActivity implements AdapterView.O
                                 result.append(line);
                             }
                             try {
-                                JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(StandardCharsets.UTF_8))));
+                                JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(Charset.forName("UTF-8")))));
                                 response = "GET: ";
 
                                 reader1.beginArray();
@@ -539,7 +539,7 @@ public class ClientePedidoActivity extends ListActivity implements AdapterView.O
                                         result.append(line);
                                     }
                                     try {
-                                        JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(StandardCharsets.UTF_8))));
+                                        JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(Charset.forName("UTF-8")))));
                                         response = "GET: ";
 
                                         reader1.beginArray();
@@ -607,7 +607,7 @@ public class ClientePedidoActivity extends ListActivity implements AdapterView.O
                                         result.append(line);
                                     }
                                     try {
-                                        JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(StandardCharsets.UTF_8))));
+                                        JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(Charset.forName("UTF-8")))));
                                         response = "GET: ";
 
                                         reader1.beginArray();
@@ -877,11 +877,11 @@ public class ClientePedidoActivity extends ListActivity implements AdapterView.O
 
             if (info.getIdInsumo() == 0) {
                 im = (ti.obtenerImagen(info.getIdMenu(), true));
-                holder.imageMenu.setImageBitmap(decodeSampledBitmapFromResource(getResources(), im.getIdImagen(),50,50));
+                holder.imageMenu.setImageBitmap(decodeSampledBitmapFromResource(getResources(), im.getIdImagen(),100,100));
                 //holder.imageMenu.setImageResource((ti.obtenerImagen(info.getIdMenu(), true)).getIdImagen());
             } else {
                 im = (ti.obtenerImagen(info.getIdInsumo(), false));
-                holder.imageMenu.setImageBitmap(decodeSampledBitmapFromResource(getResources(), im.getIdImagen(),50,50));
+                holder.imageMenu.setImageBitmap(decodeSampledBitmapFromResource(getResources(), im.getIdImagen(),100,100));
             //    holder.imageMenu.setImageResource((ti.obtenerImagen(info.getIdInsumo(), false)).getIdImagen());
             }
 
@@ -1174,7 +1174,7 @@ public class ClientePedidoActivity extends ListActivity implements AdapterView.O
                     urlConn = (HttpURLConnection) url.openConnection();
                     try {
 
-                        urlConn.setChunkedStreamingMode(0);
+                       // urlConn.setChunkedStreamingMode(0);
                         urlConn.setDoOutput(true);
                         urlConn.setDoInput(true);
                         urlConn.setRequestProperty("Content-Type", "application/json");
@@ -1253,7 +1253,7 @@ public class ClientePedidoActivity extends ListActivity implements AdapterView.O
                     urlConn = (HttpURLConnection) url.openConnection();
                     try {
 
-                        urlConn.setChunkedStreamingMode(0);
+                       // urlConn.setChunkedStreamingMode(0);
                         urlConn.setDoOutput(true);
                         urlConn.setDoInput(true);
                         urlConn.setRequestProperty("Content-Type", "application/json");

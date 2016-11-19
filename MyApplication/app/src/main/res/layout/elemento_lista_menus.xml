@@ -28,7 +28,7 @@
             android:layout_height="150dp"
             android:src="@drawable/contacto"
             android:padding="5dp"
-            android:background="#476B85"
+            android:background="#314550"
            />
         <LinearLayout
             android:layout_width="fill_parent"

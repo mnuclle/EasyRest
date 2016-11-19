@@ -36,7 +36,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 
@@ -87,28 +87,28 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
             String categoria = "";
             switch (categ){
                 case 0 :
-                    categoria = "MINUTAS";
+                    categoria = "Minutas";
                     break;
                 case 1 :
-                    categoria = "LOMITOS";
+                    categoria = "Lomitos";
                     break;
                 case 2 :
-                    categoria = "PASTAS";
+                    categoria = "Pastas";
                     break;
                 case 3 :
-                    categoria = "TABLAS";
+                    categoria = "Tablas";
                     break;
                 case 4 :
-                    categoria = "BEBIDAS";
+                    categoria = "Bebidas";
                     break;
                 case 5 :
-                    categoria = "PIZZAS";
+                    categoria = "Pizzas";
                     break;
                 case 6 :
-                    categoria = "POSTRES";
+                    categoria = "Postres";
                     break;
                 case 7 :
-                    categoria = "DESAYUNO";
+                    categoria = "Desayuno";
                     break;
                 default:
                     categoria = "NO SELECCCIONÓ CATEGORÍA.";
@@ -395,13 +395,13 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
 
             if (info.isEsMenu()) {
                 im = (ti.obtenerImagen(info.getIdMenu(), true));
-                holder.imageMenus.setImageBitmap(decodeSampledBitmapFromResource(getResources(), im.getIdImagen(),50,50));
+                holder.imageMenus.setImageBitmap(decodeSampledBitmapFromResource(getResources(), im.getIdImagen(),100,100));
               /*  mImageView.setImageBitmap(
                         decodeSampledBitmapFromResource(getResources(), R.id.myimage, 100, 100));
                 holder.imageMenus.setImageResource((ti.obtenerImagen(info.getIdMenu(), true)).getIdImagen());*/
             } else {
                 im = (ti.obtenerImagen(info.getIdInsumo(), false));
-                holder.imageMenus.setImageBitmap(decodeSampledBitmapFromResource(getResources(), im.getIdImagen(),50,50));
+                holder.imageMenus.setImageBitmap(decodeSampledBitmapFromResource(getResources(), im.getIdImagen(),100,100));
               //  holder.imageMenus.setImageResource((ti.obtenerImagen(info.getIdInsumo(), false)).getIdImagen());
             }
             int color;
@@ -476,7 +476,7 @@ public class MenusFragment extends ListFragment implements AdapterView.OnItemCli
                         result.append(line);
                     }
                     try {
-                        JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(StandardCharsets.UTF_8))));
+                        JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(Charset.forName("UTF-8")))));
                         response = "GET: ";
 
                         reader1.beginArray();

@@ -36,23 +36,24 @@
             android:id="@+id/txtTituloPedidos"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_horizontal|center_vertical"
+            android:gravity="left"
             android:background="#F38129"
             android:textColor="#FFFFFF"
             android:textSize="50sp"
+            android:layout_margin="10dp"
             android:textStyle="bold"
             android:text="Pedidos"
             />
     </LinearLayout>
     <LinearLayout
         android:orientation="vertical"
-        android:background="#476B85"
+        android:background="#314550"
         android:id="@+id/linearContenido"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
                 <ListView
                     android:id="@android:id/list"
-                    android:background="#476B85"
+                    android:background="#314550"
                     android:layout_width="match_parent"
                     android:layout_height="500dp"
                     android:layout_weight="0.8"
@@ -72,8 +73,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.05"
-                    android:gravity ="center"
-                    android:background="#476B85"
+                    android:gravity ="left|top"
+                    android:background="#314550"
                     android:textColor="#FFFFFF"
                     android:textSize="35sp"
                     android:layout_marginLeft="25dp"
@@ -81,7 +82,8 @@
                     android:layout_marginTop="0dp"
                     android:layout_marginBottom="0dp"
                     android:textStyle="bold"
-                    android:text="NO POSEE PEDIDOS PARA REALIZAR." />
+                    android:text="No posee pedidos para preparar."
+                    android:dividerHeight="3px"/>
     </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

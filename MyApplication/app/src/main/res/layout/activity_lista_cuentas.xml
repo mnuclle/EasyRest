@@ -16,11 +16,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Clientes"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:gravity="center"
+
+            android:gravity="left"
             android:background="#F38129"
             android:textColor="#FFFFFF"
-
+            android:layout_marginLeft="10dp"
             android:textSize="50sp"
             android:textStyle="bold"
             android:layout_weight="1"/>
@@ -74,8 +74,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.05"
-            android:gravity ="center"
-            android:background="#476B85"
+            android:gravity ="left"
+            android:background="#314550"
             android:textColor="#FFFFFF"
             android:textSize="35sp"
             android:layout_marginLeft="25dp"
@@ -83,6 +83,7 @@
             android:layout_marginTop="0dp"
             android:layout_marginBottom="0dp"
             android:textStyle="bold"
-            android:text="NO HAY CLIENTES." />
+            android:text="No hay clientes actualmente en el restaurante."
+            android:dividerHeight="3px"/>
     </FrameLayout>
 </LinearLayout>

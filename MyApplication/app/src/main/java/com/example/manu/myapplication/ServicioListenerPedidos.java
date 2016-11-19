@@ -1,6 +1,5 @@
 package com.example.manu.myapplication;
 
-import android.app.ActivityManager;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -15,7 +14,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.List;
 
 /**
  * Created by Danielito on 12/05/2016.
@@ -87,10 +85,10 @@ public class ServicioListenerPedidos extends IntentService {
 
                 LocalBroadcastManager.getInstance(this)
                         .sendBroadcast(in);
-                ActivityManager am = (ActivityManager) this.getSystemService(ACTIVITY_SERVICE);
+               /* ActivityManager am = (ActivityManager) this.getSystemService(ACTIVITY_SERVICE);
                 List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
                 String nombreClase = taskInfo.get(0).topActivity.getClassName();
-                if(nombreClase.contains("Server"))
+                if(nombreClase.contains("Server"))*/
                 notifMan.notify(R.string.app_name,notification);
 
 

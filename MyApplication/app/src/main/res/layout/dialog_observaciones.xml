@@ -17,7 +17,7 @@
         android:textStyle="bold"
         android:includeFontPadding="false"
         android:layout_weight="0"
-        android:text="OBSERVACIONES"
+        android:text="Observaciones"
         android:paddingStart="10dp"
         android:paddingBottom="10dp"
         android:paddingTop="10dp"
@@ -31,18 +31,18 @@
         android:maxLength="200"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
-        android:textSize="20sp"
+        android:textSize="25sp"
         android:layout_margin="10dp"
         android:background="#476B85"
         android:gravity="top"
         android:layout_weight="1"
         />
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_weight="0"
-        android:background="#476B85"
-        />
+    <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:layout_weight="0"-->
+        <!--android:background="#476B85"-->
+        <!--/>-->
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
@@ -57,12 +57,13 @@
             android:id="@+id/dialogObservacionesButtonAceptar"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="ACEPTAR"
+            android:text="Aceptar"
             android:layout_margin="10dp"
             android:textColor="#FFFFFF"
             android:textStyle="bold"
-            android:textSize="35dp"
-            android:background="#314550"
+            android:textSize="25sp"
+            android:textAllCaps="false"
+            android:background="@drawable/botonformato"
 
         />
 

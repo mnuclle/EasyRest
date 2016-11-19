@@ -68,7 +68,7 @@
         <activity
             android:name=".Cliente.ClienteVerCuentaActivity"
             android:screenOrientation="landscape" />
-        <activity android:name=".GridListFragment"></activity>
+
     </application>
 
 </manifest>

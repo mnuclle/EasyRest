@@ -35,7 +35,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 
@@ -50,7 +50,7 @@ public class ListaCuentas extends ListActivity implements
     MyResultReceiver mReceiver;
     Thread thPedidos;
     Thread threadListener;
-    TextView txtTitle;
+    TextView txtTitle, txtEmpty;
     CheckBox checkboxVerTodos;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +60,12 @@ public class ListaCuentas extends ListActivity implements
         idEmpleado = (int)getIntent().getExtras().get("IDEMPLEADO");
         adapter = new CuentasAdapter();
         txtTitle = (TextView) findViewById(R.id.txtTitle);
+        txtEmpty = (TextView) findViewById(android.R.id.empty);
         checkboxVerTodos = (CheckBox) findViewById(R.id.checkbox_ver_todos);
 
         Typeface type = Typeface.createFromAsset(getAssets(),"segoeui.ttf");
         txtTitle.setTypeface(type);
+        txtEmpty.setTypeface(type);
         checkboxVerTodos.setTypeface(type);
 
         setListAdapter(adapter);
@@ -227,7 +229,7 @@ public class ListaCuentas extends ListActivity implements
         Object[] listaObjetos = new Object[5];
         listaObjetos[0] = idCliente;
         listaObjetos[1] = URLGlobal;
-        listaObjetos[2] = "MESA: " + cm.getNumeroMesa() + " - CLIENTE: " + cm.getNumeroDocumento() + ", " + cm.getNombreCuenta() ;
+        listaObjetos[2] = "Mesa: " + cm.getNumeroMesa() + " - Cliente: " + cm.getNumeroDocumento() + ", " + cm.getNombreCuenta();
         new GetTask().execute(listaObjetos);
     }
 
@@ -275,7 +277,7 @@ public class ListaCuentas extends ListActivity implements
                             result.append(line);
                         }
                     try {
-                        JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(StandardCharsets.UTF_8))));
+                        JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(Charset.forName("UTF-8")))));
                         response = "GET: ";
 
                         reader1.beginArray();
@@ -348,7 +350,7 @@ public class ListaCuentas extends ListActivity implements
                                 result.append(line);
                             }
                             try {
-                                JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(StandardCharsets.UTF_8))));
+                                JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(Charset.forName("UTF-8")))));
                                 response = "GET: ";
 
                                 reader1.beginArray();
@@ -451,7 +453,7 @@ public class ListaCuentas extends ListActivity implements
                                         result.append(line);
                                     }
                                     try {
-                                        JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(StandardCharsets.UTF_8))));
+                                        JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(Charset.forName("UTF-8")))));
                                         response = "GET: ";
 
                                         reader1.beginArray();
@@ -522,7 +524,7 @@ public class ListaCuentas extends ListActivity implements
                                         result.append(line);
                                     }
                                     try {
-                                        JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(StandardCharsets.UTF_8))));
+                                        JsonReader reader1 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result.toString().getBytes(Charset.forName("UTF-8")))));
                                         response = "GET: ";
 
                                         reader1.beginArray();
@@ -668,7 +670,7 @@ public class ListaCuentas extends ListActivity implements
 
 
                         try {
-                            JsonReader reader2 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result1.toString().getBytes(StandardCharsets.UTF_8))));
+                            JsonReader reader2 = new JsonReader(new InputStreamReader(new ByteArrayInputStream(result1.toString().getBytes(Charset.forName("UTF-8")))));
 
                             try {
                                 response = "GET: ";
