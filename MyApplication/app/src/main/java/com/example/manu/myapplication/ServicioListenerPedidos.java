@@ -64,7 +64,7 @@ public class ServicioListenerPedidos extends IntentService {
                 notifMan = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                 Notification notification = new Notification.Builder(this)
                         .setSmallIcon(R.drawable.logo)  // the status icon
-                        .setTicker("NotificacionStatus")  // the status text
+                        .setTicker("Notificación Easyrest")  // the status text
                         .setWhen(System.currentTimeMillis())  // the time stamp
                         .setContentTitle(getText(R.string.app_name))  // the label of the entry
                         .setContentText("Nuevo Pedido.")  // the contents of the entry

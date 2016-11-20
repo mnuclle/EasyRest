@@ -687,7 +687,7 @@ public class ClientePedidoActivity extends ListActivity implements AdapterView.O
         for (DetallePedido cm : listaDetalle
                 ) {
             info = cm;
-            if (cm.getIdEstado() == 11 || cm.getIdEstado() == 12 || cm.getIdEstado() == 13 || cm.getIdEstado() == 16  || cm.getIdEstado() == 15)
+            if (cm.getIdEstado() == 11 || cm.getIdEstado() == 12 || cm.getIdEstado() == 10 || cm.getIdEstado() == 16  || cm.getIdEstado() == 15)
                 montoDetalles = montoDetalles + cm.getTotalDetalle();
             adapter.addDetallesInfo(info);
         }
@@ -703,7 +703,7 @@ public class ClientePedidoActivity extends ListActivity implements AdapterView.O
         for (DetallePedido cm : listaDetalle
                 ) {
             info = cm;
-            if (cm.getIdEstado() == 11 || cm.getIdEstado() == 12 || cm.getIdEstado() == 13 || cm.getIdEstado() == 16 || cm.getIdEstado() == 15)
+            if (cm.getIdEstado() == 11 || cm.getIdEstado() == 12 || cm.getIdEstado() == 10 || cm.getIdEstado() == 16 || cm.getIdEstado() == 15)
                 montoDetalles = montoDetalles + cm.getTotalDetalle();
             adapter.addDetallesInfo(info);
         }
@@ -711,7 +711,7 @@ public class ClientePedidoActivity extends ListActivity implements AdapterView.O
         for (DetallePedido cm : listaMenus
                 ) {
             info = cm;
-            if (cm.getIdEstado() == 11 || cm.getIdEstado() == 12 || cm.getIdEstado() == 13 || cm.getIdEstado() == 16 || cm.getIdEstado() == 15)
+            if (cm.getIdEstado() == 11 || cm.getIdEstado() == 12 || cm.getIdEstado() == 10 || cm.getIdEstado() == 16 || cm.getIdEstado() == 15)
                 montoDetalles = montoDetalles + cm.getTotalDetalle();
             adapter.addDetallesInfo(info);
         }

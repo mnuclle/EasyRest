@@ -86,19 +86,39 @@ public class ServicioListenerMozo  extends IntentService {
                         intNotif, 0);
                 Notification notification = null;
                 if(!infoCuenta.contains("A$;")){
-                    String nombreCuenta = infoCuenta.substring(0,infoCuenta.indexOf(";"));
-                    String mesasSolicitantes = infoCuenta.substring((infoCuenta.indexOf(";")+1));
-                    notifMan = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                   notification = new Notification.Builder(this)
-                            .setSmallIcon(R.drawable.logo)  // the status icon
-                            .setTicker("NotificacionStatus")  // the status text
-                            .setWhen(System.currentTimeMillis())  // the time stamp
-                            .setContentTitle(getText(R.string.app_name))  // the label of the entry
-                            .setContentText("El cliente " + nombreCuenta +" lo requiere!! Mesas: " + mesasSolicitantes)  // the contents of the entry
-                            .setContentIntent(contentIntent)  // The intent to send when the entry is clicked
-                            .build();
+                    if(!infoCuenta.contains("B$;")){
+                        String nombreCuenta = infoCuenta.substring(0,infoCuenta.indexOf(";"));
+                        String mesasSolicitantes = infoCuenta.substring((infoCuenta.indexOf(";")+1));
+                        notifMan = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                        notification = new Notification.Builder(this)
+                                .setSmallIcon(R.drawable.logo)  // the status icon
+                                .setTicker("Notificación Easyrest")  // the status text
+                                .setWhen(System.currentTimeMillis())  // the time stamp
+                                .setContentTitle(getText(R.string.app_name))  // the label of the entry
+                                .setContentText("El cliente " + nombreCuenta +" lo requiere!! Mesas: " + mesasSolicitantes)  // the contents of the entry
+                                .setContentIntent(contentIntent)  // The intent to send when the entry is clicked
+                                .build();
 
-                    notification.flags |=  Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
+                        notification.flags |=  Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
+                    }
+
+                    else
+                    {
+                        infoCuenta = infoCuenta.substring((infoCuenta.indexOf("$;")+2));
+                        String nombreCuenta = infoCuenta.substring(0,infoCuenta.indexOf(";"));
+                        String mesasSolicitantes = infoCuenta.substring((infoCuenta.indexOf(";")+1));
+                        notifMan = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                        notification = new Notification.Builder(this)
+                                .setSmallIcon(R.drawable.logo)  // the status icon
+                                .setTicker("Notificación Easyrest")  // the status text
+                                .setWhen(System.currentTimeMillis())  // the time stamp
+                                .setContentTitle(getText(R.string.app_name))  // the label of the entry
+                                .setContentText("El cliente " + nombreCuenta + " ha realizado un pedido!! Mesas: " + mesasSolicitantes)  // the contents of the entry
+                                .setContentIntent(contentIntent)  // The intent to send when the entry is clicked
+                                .build();
+
+                        notification.flags |= Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
+                    }
                 }
                 else
                 {   infoCuenta = infoCuenta.substring((infoCuenta.indexOf("$;")+2));
@@ -107,7 +127,7 @@ public class ServicioListenerMozo  extends IntentService {
                     notifMan = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                     notification = new Notification.Builder(this)
                             .setSmallIcon(R.drawable.logo)  // the status icon
-                            .setTicker("NotificacionStatus")  // the status text
+                            .setTicker("Notificación Easyrest")  // the status text
                             .setWhen(System.currentTimeMillis())  // the time stamp
                             .setContentTitle(getText(R.string.app_name))  // the label of the entry
                             .setContentText("El pedido de la cuenta " + nombreCuenta +" está listo!! Mesas: " + mesasSolicitantes)  // the contents of the entry
